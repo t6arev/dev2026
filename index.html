@@ -952,8 +952,8 @@
         /* Mobile */
         @media (max-width: 900px) {
             .hero {
-                flexDirection: column-reverse;
-                textAlign: center;
+                flex-direction: column-reverse;
+                text-align: center;
                 padding-top: 40px;
                 gap: 40px;
             }
@@ -970,8 +970,35 @@
                 display: none;
             }
 
+            nav {
+                padding: 16px 20px;
+                height: auto;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+            }
+
             h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+
+            .lead {
+                font-size: 1.1rem;
+            }
+
+            .primary-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .code-line-wrapper {
+                font-size: 0.85rem;
             }
 
             .carousel-item {
@@ -980,6 +1007,14 @@
 
             .container {
                 padding: 0 24px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            h2 {
+                font-size: 2rem;
             }
 
             /* Floating button mobile */
