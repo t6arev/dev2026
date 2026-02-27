@@ -2080,16 +2080,18 @@
             }
         });
 
-        document.getElementById('callbackForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const name = this.cbName.value;
-            const phone = this.cbPhone.value;
-            const token = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
-            const chatId = '8519277765';
-            const text = `📞 Заявка на звонок!\n\nИмя: ${name}\nКонтакт: ${phone}`;
-            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
-            try { await fetch(url); } catch (err) { }
-            document.getElementById('floatPanel').innerHTML = '<div style="padding: 28px 20px; text-align: center;"><div style="font-size: 2rem; margin-bottom: 12px;">✅</div><p style="font-weight: 600; color: var(--text-main);">Спасибо! Свяжусь с вами в ближайшее время.</p></div>';
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('callbackForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const name = this.cbName.value;
+                const phone = this.cbPhone.value;
+                const token = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
+                const chatId = '8519277765';
+                const text = `📞 Заявка на звонок!\n\nИмя: ${name}\nКонтакт: ${phone}`;
+                const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+                try { await fetch(url); } catch (err) { }
+                document.getElementById('floatPanel').innerHTML = '<div style="padding: 28px 20px; text-align: center;"><div style="font-size: 2rem; margin-bottom: 12px;">✅</div><p style="font-weight: 600; color: var(--text-main);">Спасибо! Свяжусь с вами в ближайшее время.</p></div>';
+            });
         });
     </script>
 
