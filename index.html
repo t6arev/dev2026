@@ -315,7 +315,7 @@
 
         .code-line {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #60a5fa;
             font-weight: 600;
             display: flex;
@@ -513,7 +513,7 @@
             width: max-content;
             gap: 16px;
             padding: 0 16px;
-            animation: servicesScroll 58s linear infinite;
+            animation: servicesScroll 36s linear infinite;
             will-change: transform;
             position: relative;
             z-index: 1;
@@ -528,7 +528,7 @@
             background: transparent;
             color: #f1f5f9;
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.85rem;
             display: inline-flex;
             align-items: center;
             transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -598,72 +598,22 @@
             color: var(--text-muted);
         }
 
-        .case-layout {
-            display: grid;
-            grid-template-columns: 320px minmax(0, 1fr);
-            gap: 24px;
-            align-items: stretch;
+        .case-carousel {
+            max-width: 980px;
+            margin: 0 auto;
         }
 
-        .case-list,
         .case-detail {
             background: linear-gradient(160deg, rgba(30, 41, 59, 0.42) 0%, rgba(15, 23, 42, 0.8) 100%);
             border: 1px solid var(--border-light);
             border-radius: 20px;
             backdrop-filter: blur(10px);
-        }
-
-        .case-list {
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 640px;
-            overflow-y: auto;
-        }
-
-        .case-tab {
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-main);
-            border-radius: 12px;
-            padding: 14px 15px;
-            font-size: 0.95rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            min-height: 72px;
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-        }
-
-        .case-tab small {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            margin-bottom: 4px;
-        }
-
-        .case-tab:hover {
-            border-color: rgba(96, 165, 250, 0.45);
-            transform: translateY(-1px);
-        }
-
-        .case-tab.active {
-            border-color: rgba(96, 165, 250, 0.95);
-            background: linear-gradient(160deg, rgba(59, 130, 246, 0.18) 0%, rgba(30, 41, 59, 0.75) 100%);
-            box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.45), 0 0 24px rgba(96, 165, 250, 0.4), 0 10px 25px -15px rgba(96, 165, 250, 0.6);
-        }
-
-        .case-detail {
             padding: 24px;
             position: relative;
             overflow: hidden;
-            animation: caseFade 0.35s ease;
-            min-height: 640px;
             display: flex;
             flex-direction: column;
+            min-height: 640px;
         }
 
         .case-detail::before {
@@ -674,37 +624,60 @@
             pointer-events: none;
         }
 
-        @keyframes caseFade {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
+        .case-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .case-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .case-arrow {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .case-arrow:hover {
+            border-color: rgba(96, 165, 250, 0.6);
+            background: rgba(59, 130, 246, 0.14);
         }
 
         .case-visual {
             width: 100%;
-            aspect-ratio: 16/9;
+            aspect-ratio: 16/8;
+            max-height: 320px;
             border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 2;
         }
 
         .case-visual img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .case-visual:hover img {
-            transform: scale(1.04);
+            background: transparent;
+            image-rendering: auto;
         }
 
         .case-category {
@@ -714,17 +687,23 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
         }
 
         .case-title {
-            font-size: 1.55rem;
+            font-size: 1.85rem;
             margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
         }
 
         .case-desc {
             color: var(--text-muted);
             margin-bottom: 20px;
-            font-size: 1.02rem;
+            font-size: 1.12rem;
+            position: relative;
+            z-index: 2;
         }
 
         .case-grid {
@@ -732,6 +711,8 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
             margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
         }
 
         .case-cell {
@@ -741,35 +722,6 @@
             padding: 12px;
             position: relative;
             overflow: hidden;
-        }
-
-        .case-cell::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -120%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-            transition: left 0.45s ease;
-        }
-
-        .case-cell:hover::after {
-            left: 120%;
-        }
-
-        .case-cell.entering {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: cellIn 0.4s ease forwards;
-            animation-delay: var(--delay, 0ms);
-        }
-
-        @keyframes cellIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .case-cell h4 {
@@ -783,7 +735,7 @@
         .case-cell p {
             font-weight: 600;
             color: #e2e8f0;
-            font-size: 0.95rem;
+            font-size: 1.02rem;
         }
 
         .feature-lines {
@@ -809,6 +761,29 @@
             position: absolute;
             left: 0;
             top: 0.5em;
+        }
+
+        .case-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 14px;
+        }
+
+        .case-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            border: none;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            padding: 0;
+            transition: width 0.2s ease, background 0.2s ease;
+        }
+
+        .case-dot.active {
+            width: 22px;
+            background: rgba(96, 165, 250, 0.95);
         }
 
         /* Lightbox */
@@ -1141,98 +1116,178 @@
             border-color: var(--accent-blue);
         }
 
-        /* Floating Telegram Button */
-        .floating-telegram {
+        /* Float Contact Widget */
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .float-widget {
             position: fixed;
             bottom: 32px;
             right: 32px;
             z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .float-panel {
+            background: #0f172a;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            width: 300px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
             opacity: 0;
-            transform: translateY(100px);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateY(16px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
         }
 
-        .floating-telegram.visible {
+        .float-panel.open {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+            pointer-events: all;
         }
 
-        .floating-telegram a {
+        .float-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .float-tab {
+            flex: 1;
+            padding: 13px 8px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .float-tab.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        .float-tab-content {
+            display: none;
+            padding: 18px;
+        }
+
+        .float-tab-content.active {
+            display: block;
+        }
+
+        .float-tg-btn {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px 24px;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2AABEE, #229ED9);
             color: white;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 1rem;
-            box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4);
+            font-size: 0.95rem;
+            font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+
+        .float-tg-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(42, 171, 238, 0.4);
+        }
+
+        .float-input {
+            width: 100%;
+            padding: 11px 13px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+            font-family: var(--font-main);
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .float-input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .float-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .float-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--deep-glow));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+
+        .float-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(86, 157, 243, 0.4);
+        }
+
+        .float-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--deep-glow));
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(86, 157, 243, 0.4);
             transition: all 0.3s;
             position: relative;
-            overflow: hidden;
+            flex-shrink: 0;
         }
 
-        .floating-telegram a::before {
+        .float-toggle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 32px rgba(86, 157, 243, 0.6);
+        }
+
+        .float-toggle svg {
+            width: 26px;
+            height: 26px;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .float-toggle.open svg {
+            transform: rotate(45deg);
+        }
+
+        .float-toggle::after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
+            inset: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .floating-telegram a:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .floating-telegram a:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 12px 32px rgba(96, 165, 250, 0.6);
-        }
-
-        .floating-telegram svg {
-            width: 24px;
-            height: 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .floating-telegram span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Пульсация для привлечения внимания */
-        @keyframes pulse-ring {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(1.4);
-                opacity: 0;
-            }
-        }
-
-        .floating-telegram::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 50px;
             background: var(--accent-blue);
             z-index: -1;
-            animation: pulse-ring 2s infinite;
+            animation: pulse-ring 2.5s infinite;
         }
 
         /* Mobile */
@@ -1295,24 +1350,30 @@
                 width: 100%;
             }
 
-            .case-layout {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .case-list {
-                overflow-x: auto;
-                overflow-y: hidden;
-                flex-direction: row;
-                padding: 10px;
-                scroll-snap-type: x mandatory;
-                max-height: none;
-            }
-
-            .case-tab {
-                min-width: 220px;
-                scroll-snap-align: start;
+            .case-detail {
                 min-height: auto;
+                padding: 18px;
+            }
+
+            .case-visual {
+                max-height: 220px;
+            }
+
+            .case-title {
+                font-size: 1.55rem;
+            }
+
+            .case-desc {
+                font-size: 1rem;
+            }
+
+            .case-top {
+                margin-bottom: 10px;
+            }
+
+            .case-arrow {
+                width: 38px;
+                height: 38px;
             }
 
             .case-grid {
@@ -1320,11 +1381,11 @@
             }
 
             .marquee-track {
-                animation-duration: 72s;
+                animation-duration: 48s;
             }
 
             .marquee-item {
-                font-size: 1.05rem;
+                font-size: 1.25rem;
                 padding: 0 8px;
                 min-height: 42px;
             }
@@ -1363,27 +1424,14 @@
                 background: radial-gradient(circle, rgba(124, 58, 237, 1) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(124, 58, 237, 0) 70%);
             }
 
-            /* Floating button mobile */
-            .floating-telegram {
+            /* Float widget mobile */
+            .float-widget {
                 bottom: 20px;
-                right: 20px;
+                right: 16px;
             }
 
-            .floating-telegram a {
-                padding: 14px 20px;
-                font-size: 0.9rem;
-            }
-
-            .floating-telegram span {
-                display: none;
-            }
-
-            .floating-telegram a {
-                width: 56px;
-                height: 56px;
-                padding: 0;
-                justify-content: center;
-                border-radius: 50%;
+            .float-panel {
+                width: 272px;
             }
         }
     </style>
@@ -1488,7 +1536,7 @@
 
                 <h1>Делаю Telegram-ботов, сайты для бизнеса и личных задач.</h1>
                 <p class="lead">
-                    Помогаю даже если у вас только идея в голове. На выходе — готовый работающий бот.
+                    Помогаю даже если у вас только идея в голове. На выходе — готовый работающий продукт.
                 </p>
                 <div class="hero-cta-row">
                     <button onclick="openModal()" class="primary-btn">
@@ -1537,32 +1585,25 @@
         <!-- Portfolio Section -->
         <section id="portfolio" class="section">
             <h2>Кейсы</h2>
-            <p class="portfolio-lead">
-                Выберите кейс слева: справа увидите задачу клиента, что реализовано, цену и срок запуска.
-            </p>
-            <div class="case-layout">
-                <div class="case-list">
-                    <button class="case-tab active" data-case="bot2">AI-бот в Telegram с админ-панелью</button>
-                    <button class="case-tab" data-case="bot3">AI-ведущий D&amp;D и генератор сюжетов</button>
-                    <button class="case-tab" data-case="bot4">Сервис рассылок внутри мессенджера</button>
-                    <button class="case-tab" data-case="bot5">Крипто-кошелек в Telegram Mini App</button>
-                    <button class="case-tab" data-case="bot">AI-сервис для примерки одежды и дизайна</button>
-                    <button class="case-tab" data-case="bot6">AI-тренер в Telegram Mini App</button>
-                    <button class="case-tab" data-case="site1">Интернет-магазин дизайнерской мебели</button>
-                    <button class="case-tab" data-case="site2">Имиджевый сайт бренда одежды</button>
-                    <button class="case-tab" data-case="site4">Сайт студии интерактивного дизайна (2 языка)</button>
-                </div>
+            <div class="case-carousel">
                 <article class="case-detail" id="caseDetail">
+                    <div class="case-top">
+                        <div class="case-category" id="caseCategory">Боты</div>
+                        <div class="case-nav">
+                            <button class="case-arrow" id="casePrev" aria-label="Предыдущий кейс">&#10094;</button>
+                            <button class="case-arrow" id="caseNext" aria-label="Следующий кейс">&#10095;</button>
+                        </div>
+                    </div>
                     <div class="case-visual" onclick="openLightbox(document.getElementById('caseImage').src)">
                         <img id="caseImage" src="КЕЙС БОТ 2.jpg" alt="Кейс">
                     </div>
-                    <div class="case-category" id="caseCategory">Боты</div>
                     <h3 class="case-title" id="caseTitle">AI-бот в Telegram с админ-панелью</h3>
                     <p class="case-desc" id="caseDesc">
                         Генерация текста, фото и видео, чат с AI и удобная админ-панель для управления сервисом.
                     </p>
                     <div class="case-grid" id="caseGrid"></div>
                 </article>
+                <div class="case-dots" id="caseDots"></div>
             </div>
         </section>
 
@@ -1599,7 +1640,7 @@
                         </svg>
                     </div>
                     <h3 class="price-title">Mini Apps</h3>
-                    <div class="price-value"><small>от</small> 25 000 ₽</div>
+                    <div class="price-value"><small>от</small> 20 000 ₽</div>
                 </div>
                 <div class="price-card">
                     <div class="card-icon" style="margin: 0 auto 24px auto;">
@@ -1613,7 +1654,7 @@
                         </svg>
                     </div>
                     <h3 class="price-title">Сайты</h3>
-                    <div class="price-value"><small>от</small> 30 000 ₽</div>
+                    <div class="price-value"><small>от</small> 35 000 ₽</div>
                 </div>
             </div>
         </section>
@@ -1688,44 +1729,30 @@
             <form id="quizForm">
                 <!-- Step 1 -->
                 <div class="quiz-step active" id="step1">
-                    <h3 style="margin-bottom: 24px;">Что нужно разработать?</h3>
-                    <label class="quiz-option"><input type="radio" name="type" value="Чат-бот" onclick="nextStep(2)">
-                        Чат-бот</label>
-                    <label class="quiz-option"><input type="radio" name="type" value="AI-ассистент"
-                            onclick="nextStep(2)"> AI-ассистент / Нейросеть</label>
-                    <label class="quiz-option"><input type="radio" name="type" value="Mini App" onclick="nextStep(2)">
-                        Telegram Mini App</label>
-                    <label class="quiz-option"><input type="radio" name="type" value="Сайт" onclick="nextStep(2)"> Сайт
-                        / Лендинг</label>
+                    <h3 style="margin-bottom: 8px;">Что требуется создать?</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Опишите тезисно вашу задачу</p>
+                    <textarea name="task" id="taskInput" class="quiz-input" rows="4"
+                        placeholder="Нужен ИИ-ассистент, отвечающий на вопросы пользователей по услугам компании."
+                        style="resize: none; line-height: 1.5;"></textarea>
+                    <button type="button" class="primary-btn" onclick="quizNextStep(2)"
+                        style="width: 100%; justify-content: center; margin-top: 4px;">Далее →</button>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="quiz-step" id="step2">
-                    <h3 style="margin-bottom: 24px;">Есть ли Техническое Задание?</h3>
-                    <label class="quiz-option"><input type="radio" name="tz" value="Есть готовое ТЗ"
-                            onclick="nextStep(3)"> Да, есть готовое ТЗ</label>
-                    <label class="quiz-option"><input type="radio" name="tz" value="Есть идея" onclick="nextStep(3)">
-                        Есть идея, нужно обсудить</label>
-                    <label class="quiz-option"><input type="radio" name="tz" value="Нужна консультация"
-                            onclick="nextStep(3)"> Нужна консультация</label>
+                    <h3 style="margin-bottom: 24px;">Есть техническое задание?</h3>
+                    <label class="quiz-option"><input type="radio" name="tz" value="Да" onclick="quizNextStep(3)"> Да</label>
+                    <label class="quiz-option"><input type="radio" name="tz" value="Нет" onclick="quizNextStep(3)"> Нет</label>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="quiz-step" id="step3">
-                    <h3 style="margin-bottom: 24px;">Как с вами связаться?</h3>
-                    <label class="quiz-option"><input type="radio" name="contactMethod" value="Telegram"
-                            onclick="showContactInput('telegram')"> Telegram</label>
-                    <label class="quiz-option"><input type="radio" name="contactMethod" value="Email"
-                            onclick="showContactInput('email')"> Email</label>
-                    <label class="quiz-option"><input type="radio" name="contactMethod" value="Телефон"
-                            onclick="showContactInput('phone')"> Телефон</label>
-
-                    <div id="contactInputContainer" style="display:none; margin-top: 16px;">
-                        <input type="text" id="contactInput" name="contact" class="quiz-input"
-                            placeholder="Введите контакт" required>
-                        <button type="submit" class="primary-btn"
-                            style="width: 100%; justify-content: center;">Отправить заявку</button>
-                    </div>
+                    <h3 style="margin-bottom: 20px;">Как с вами связаться?</h3>
+                    <input type="text" name="contactName" id="contactName" class="quiz-input" placeholder="Ваше имя" required>
+                    <input type="tel" name="contactPhone" id="contactPhone" class="quiz-input"
+                        placeholder="Телефон или Telegram (@username)" required>
+                    <button type="submit" class="primary-btn"
+                        style="width: 100%; justify-content: center;">Отправить заявку</button>
                 </div>
             </form>
         </div>
@@ -1750,7 +1777,7 @@
 
         // Typewriter
         const textElement = document.querySelector('.typewriter-text');
-        const phrases = ['7 лет разработки', '100+ реализованных проектов', 'Работаю по договору', 'Помогаю воплотить идею в код'];
+        const phrases = ['7 лет в разработке', '100+ реализованных проектов', 'Работаю по договору', 'Помогаю воплотить идею в код'];
         let phraseIndex = 0, charIndex = 0, isDeleting = false;
 
         function type() {
@@ -1911,6 +1938,9 @@
             }
         };
 
+        const caseOrder = ['bot2', 'bot3', 'bot4', 'bot5', 'bot', 'bot6', 'site1', 'site2', 'site4'];
+        let activeCaseIndex = 0;
+
         function renderCase(caseId) {
             const data = caseData[caseId];
             if (!data) return;
@@ -1929,126 +1959,157 @@
                 { label: 'Срок запуска', value: data.duration, isHtml: false }
             ];
 
-            caseGrid.innerHTML = fields.map((field, index) => `
-                <div class="case-cell entering" style="--delay:${index * 90}ms">
+            caseGrid.innerHTML = fields.map((field) => `
+                <div class="case-cell">
                     <h4>${field.label}</h4>
                     ${field.isHtml ? field.value : `<p>${field.value}</p>`}
                 </div>
             `).join('');
         }
 
+        function updateCaseDots() {
+            const dots = document.querySelectorAll('.case-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeCaseIndex);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            const tabs = document.querySelectorAll('.case-tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function () {
-                    tabs.forEach(item => item.classList.remove('active'));
-                    this.classList.add('active');
-                    renderCase(this.dataset.case);
-                });
+            const dotsWrap = document.getElementById('caseDots');
+            const prevBtn = document.getElementById('casePrev');
+            const nextBtn = document.getElementById('caseNext');
+
+            dotsWrap.innerHTML = caseOrder
+                .map((caseId, index) => `<button class="case-dot${index === 0 ? ' active' : ''}" data-case="${caseId}" aria-label="Кейс ${index + 1}"></button>`)
+                .join('');
+
+            dotsWrap.addEventListener('click', function (e) {
+                const dot = e.target.closest('.case-dot');
+                if (!dot) return;
+                activeCaseIndex = caseOrder.indexOf(dot.dataset.case);
+                if (activeCaseIndex < 0) activeCaseIndex = 0;
+                renderCase(caseOrder[activeCaseIndex]);
+                updateCaseDots();
             });
 
-            const firstTab = document.querySelector('.case-tab.active');
-            if (firstTab) {
-                renderCase(firstTab.dataset.case);
-            }
+            prevBtn.addEventListener('click', function () {
+                activeCaseIndex = (activeCaseIndex - 1 + caseOrder.length) % caseOrder.length;
+                renderCase(caseOrder[activeCaseIndex]);
+                updateCaseDots();
+            });
+
+            nextBtn.addEventListener('click', function () {
+                activeCaseIndex = (activeCaseIndex + 1) % caseOrder.length;
+                renderCase(caseOrder[activeCaseIndex]);
+                updateCaseDots();
+            });
+
+            renderCase(caseOrder[activeCaseIndex]);
+            updateCaseDots();
         });
 
         // Quiz Modal Logic
         function openModal() { document.getElementById('cost-modal').classList.add('active'); }
         function closeModal() { document.getElementById('cost-modal').classList.remove('active'); }
 
-        // Close modal on outside click
         document.getElementById('cost-modal').addEventListener('click', function (e) {
             if (e.target === this) closeModal();
         });
 
-        function nextStep(stepNum) {
+        function quizNextStep(stepNum) {
+            if (stepNum === 2) {
+                const task = document.getElementById('taskInput').value.trim();
+                if (!task) { document.getElementById('taskInput').focus(); return; }
+            }
             document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
             document.getElementById('step' + stepNum).classList.add('active');
         }
 
-        function showContactInput(type) {
-            const container = document.getElementById('contactInputContainer');
-            const input = document.getElementById('contactInput');
-
-            container.style.display = 'block';
-
-            if (type === 'telegram') {
-                input.placeholder = 'Ваш Telegram (например, @username)';
-                input.type = 'text';
-            } else if (type === 'email') {
-                input.placeholder = 'Ваш Email';
-                input.type = 'email';
-            } else if (type === 'phone') {
-                input.placeholder = 'Ваш телефон';
-                input.type = 'tel';
-            }
-            input.focus();
-        }
-
-        // Form Submission
         document.getElementById('quizForm').addEventListener('submit', async function (e) {
             e.preventDefault();
+            const task = document.getElementById('taskInput').value;
+            const tz = document.querySelector('input[name="tz"]:checked')?.value || 'не указано';
+            const name = document.getElementById('contactName').value;
+            const phone = document.getElementById('contactPhone').value;
 
-            const formData = new FormData(this);
-            const type = formData.get('type');
-            const tz = formData.get('tz');
-            const contactMethod = formData.get('contactMethod');
-            const contact = formData.get('contact');
-
-            // ⚠️ ВНИМАНИЕ: Токен бота виден в коде (клиентская сторона)
-            // Для production рекомендуется использовать backend API
-            // Но для лендинга это допустимо, т.к. бот может писать только вам
             const token = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
             const chatId = '8519277765';
+            const text = `📋 Новая заявка!\n\nЗадача: ${task}\nТЗ есть: ${tz}\nИмя: ${name}\nКонтакт: ${phone}`;
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
 
-            const txt = `<b>💼 Новая заявка!</b>%0A%0A<b>Тип проекта:</b> ${type}%0A<b>ТЗ:</b> ${tz}%0A<b>Способ связи:</b> ${contactMethod}%0A<b>Контакт:</b> ${contact}`;
-
-            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&parse_mode=html&text=${txt}`;
-
-            try {
-                await fetch(url);
-                alert('Спасибо! Я свяжусь с вами в ближайшее время.');
-            } catch (error) {
-                alert('Заявка отправлена! Скоро свяжусь с вами.');
-            }
-
+            try { await fetch(url); } catch (err) {}
+            alert('Спасибо! Я свяжусь с вами в ближайшее время.');
             closeModal();
-            // Reset form
             this.reset();
-            document.getElementById('contactInputContainer').style.display = 'none';
-            nextStep(1);
+            document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
         });
 
-        // Floating Telegram Button - показывается после скролла
-        window.addEventListener('DOMContentLoaded', function () {
-            const floatingBtn = document.getElementById('floatingTelegram');
+        // Float Contact Widget
+        function toggleFloatWidget() {
+            const panel = document.getElementById('floatPanel');
+            const toggle = document.getElementById('floatToggle');
+            panel.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
 
-            if (!floatingBtn) return;
+        function switchFloatTab(tab, btn) {
+            document.querySelectorAll('.float-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.float-tab-content').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(tab === 'tg' ? 'floatTabTg' : 'floatTabCall').classList.add('active');
+        }
 
-            window.addEventListener('scroll', function () {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        document.addEventListener('click', function (e) {
+            const widget = document.getElementById('floatWidget');
+            const panel = document.getElementById('floatPanel');
+            if (widget && !widget.contains(e.target) && panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                document.getElementById('floatToggle').classList.remove('open');
+            }
+        });
 
-                // Показываем кнопку после 300px скролла
-                if (scrollTop > 300) {
-                    floatingBtn.classList.add('visible');
-                } else {
-                    floatingBtn.classList.remove('visible');
-                }
-            });
+        document.getElementById('callbackForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const name = this.cbName.value;
+            const phone = this.cbPhone.value;
+            const token = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
+            const chatId = '8519277765';
+            const text = `📞 Заявка на звонок!\n\nИмя: ${name}\nКонтакт: ${phone}`;
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+            try { await fetch(url); } catch (err) {}
+            document.getElementById('floatPanel').innerHTML = '<div style="padding: 28px 20px; text-align: center;"><div style="font-size: 2rem; margin-bottom: 12px;">✅</div><p style="font-weight: 600; color: var(--text-main);">Спасибо! Свяжусь с вами в ближайшее время.</p></div>';
         });
     </script>
 
-    <!-- Floating Telegram Button -->
-    <div class="floating-telegram" id="floatingTelegram">
-        <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+    <!-- Float Contact Widget -->
+    <div class="float-widget" id="floatWidget">
+        <div class="float-panel" id="floatPanel">
+            <div class="float-tabs">
+                <button class="float-tab active" onclick="switchFloatTab('tg', this)">Написать в ТГ</button>
+                <button class="float-tab" onclick="switchFloatTab('call', this)">Заказать звонок</button>
+            </div>
+            <div class="float-tab-content active" id="floatTabTg">
+                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="float-tg-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/>
+                    </svg>
+                    Написать в Telegram
+                </a>
+            </div>
+            <div class="float-tab-content" id="floatTabCall">
+                <form id="callbackForm">
+                    <input type="text" class="float-input" placeholder="Ваше имя" name="cbName" required>
+                    <input type="tel" class="float-input" placeholder="Телефон или @telegram" name="cbPhone" required>
+                    <button type="submit" class="float-submit">Заказать звонок</button>
+                </form>
+            </div>
+        </div>
+        <button class="float-toggle" id="floatToggle" aria-label="Открыть контакты" onclick="toggleFloatWidget()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
-            <span>Написать в Telegram</span>
-        </a>
+        </button>
     </div>
 
 </body>
