@@ -11,18 +11,18 @@
     <title>Разработка Telegram-ботов и сайтов | AI Architect</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --void-bg: #0b0e14;
             --card-bg-top: rgba(30, 41, 59, 0.5);
             --card-bg-btm: rgba(15, 23, 42, 0.9);
-            --accent-blue: #60a5fa;
-            --deep-glow: #2563eb;
+            --accent-blue: #569df3;
+            --deep-glow: #3c72e9;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-light: rgba(255, 255, 255, 0.08);
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-main: 'Jost', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         * {
@@ -82,7 +82,7 @@
         .blob-3 {
             width: 50vw;
             height: 50vw;
-            background: radial-gradient(circle, rgba(124, 58, 237, 0.9) 0%, rgba(124, 58, 237, 0) 70%);
+            background: radial-gradient(circle, rgba(129, 80, 214, 0.9) 0%, rgba(124, 58, 237, 0) 70%);
             top: 30%;
             left: 30%;
             animation: float3 16s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
@@ -315,7 +315,7 @@
 
         .code-line {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
+            font-size: 1.5rem;
             color: #60a5fa;
             font-weight: 600;
             display: flex;
@@ -432,29 +432,138 @@
             filter: brightness(1.1);
         }
 
-        /* Services Grid */
-        .glass-card {
-            background: linear-gradient(160deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 32px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            height: 100%;
+        .hero-cta-row {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 32px;
         }
 
-        .glass-card:hover {
+        .hero-cta-row .primary-btn {
+            margin-top: 0;
+        }
+
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            padding: 16px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border-light);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+        }
+
+        .secondary-btn:hover {
             border-color: rgba(96, 165, 250, 0.6);
-            transform: translateY(-8px);
-            background: linear-gradient(160deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5),
-                0 0 40px rgba(96, 165, 250, 0.3),
-                0 0 60px rgba(96, 165, 250, 0.15);
+            background: rgba(59, 130, 246, 0.14);
+            transform: translateY(-3px);
+        }
+
+        /* Services Marquee */
+        .services-marquee {
+            overflow: hidden;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            min-height: 90px;
+            padding: 16px 0;
+            position: relative;
+            box-shadow: none;
+        }
+
+        .marquee-row {
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%);
+        }
+
+        /* Fallback for browsers without mask support */
+        @supports not ((-webkit-mask-image: linear-gradient(to right, transparent, #000)) or (mask-image: linear-gradient(to right, transparent, #000))) {
+
+            .marquee-row::before,
+            .marquee-row::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                width: 90px;
+                height: 100%;
+                z-index: 2;
+                pointer-events: none;
+            }
+
+            .marquee-row::before {
+                left: 0;
+                background: linear-gradient(to right, rgba(24, 35, 56, 0.95), rgba(24, 35, 56, 0));
+            }
+
+            .marquee-row::after {
+                right: 0;
+                background: linear-gradient(to left, rgba(17, 25, 43, 0.95), rgba(17, 25, 43, 0));
+            }
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            gap: 16px;
+            padding: 0 16px;
+            animation: servicesScroll 58s linear infinite;
+            will-change: transform;
+            position: relative;
+            z-index: 1;
+        }
+
+        .marquee-item {
+            white-space: nowrap;
+            min-height: 44px;
+            padding: 0 10px;
+            border-radius: 0;
+            border: none;
+            background: transparent;
+            color: #f1f5f9;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .marquee-item::before {
+            content: none;
+        }
+
+        @keyframes servicesScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track {
+                animation: none;
+            }
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .services-marquee:hover .marquee-track {
+                animation-play-state: paused;
+            }
+
+            .marquee-item:hover {
+                transform: translateY(-2px);
+                color: #ffffff;
+                text-shadow: 0 0 18px rgba(96, 165, 250, 0.45);
+            }
         }
 
         .card-icon {
@@ -476,145 +585,230 @@
             stroke-width: 1.5;
         }
 
-        .card-title {
-            font-size: 1.15rem;
-            margin-bottom: 30px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-        }
-
-        /* Experience */
-        .experience-card {
-            background: var(--card-bg-btm);
-            border: 1px solid var(--border-light);
-            border-radius: 24px;
-            padding: 60px;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.5);
-        }
-
-        .experience-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.1), transparent 60%);
-            pointer-events: none;
-            animation: spin 15s linear infinite;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .experience-text {
-            font-size: 1.5rem;
-            color: var(--text-main);
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
         .highlight {
             color: var(--accent-blue);
             font-weight: 700;
         }
 
-        /* Portfolio Slider (Carousel) */
-        .portfolio-carousel {
-            display: flex;
-            overflow-x: auto;
+        /* Portfolio Interactive */
+        .portfolio-lead {
+            max-width: 760px;
+            margin: -20px auto 32px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .case-layout {
+            display: grid;
+            grid-template-columns: 320px minmax(0, 1fr);
             gap: 24px;
-            padding-bottom: 24px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
+            align-items: stretch;
         }
 
-        .portfolio-carousel::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .portfolio-carousel::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-
-        .portfolio-carousel::-webkit-scrollbar-thumb {
-            background: rgba(96, 165, 250, 0.3);
-            border-radius: 4px;
-        }
-
-        .portfolio-carousel::-webkit-scrollbar-thumb:hover {
-            background: rgba(96, 165, 250, 0.5);
-        }
-
-        .carousel-item {
-            min-width: 400px;
-            scroll-snap-align: center;
-            background: var(--card-bg-btm);
+        .case-list,
+        .case-detail {
+            background: linear-gradient(160deg, rgba(30, 41, 59, 0.42) 0%, rgba(15, 23, 42, 0.8) 100%);
             border: 1px solid var(--border-light);
             border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .case-list {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 640px;
+            overflow-y: auto;
+        }
+
+        .case-tab {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            border-radius: 12px;
+            padding: 14px 15px;
+            font-size: 0.95rem;
+            text-align: left;
             cursor: pointer;
+            transition: all 0.25s ease;
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
         }
 
-        .carousel-item:hover {
-            transform: translateY(-5px);
-            border-color: rgba(96, 165, 250, 0.4);
-        }
-
-        .carousel-visual {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #1e293b;
-            overflow: hidden;
-        }
-
-        .carousel-visual img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .carousel-item:hover .carousel-visual img {
-            transform: scale(1.05);
-        }
-
-        .carousel-info {
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid var(--border-light);
-        }
-
-        .carousel-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: white;
+        .case-tab small {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.78rem;
             margin-bottom: 4px;
         }
 
-        .carousel-desc {
-            font-size: 0.9rem;
+        .case-tab:hover {
+            border-color: rgba(96, 165, 250, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .case-tab.active {
+            border-color: rgba(96, 165, 250, 0.95);
+            background: linear-gradient(160deg, rgba(59, 130, 246, 0.18) 0%, rgba(30, 41, 59, 0.75) 100%);
+            box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.45), 0 0 24px rgba(96, 165, 250, 0.4), 0 10px 25px -15px rgba(96, 165, 250, 0.6);
+        }
+
+        .case-detail {
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            animation: caseFade 0.35s ease;
+            min-height: 640px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .case-detail::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(125deg, rgba(96, 165, 250, 0.16), rgba(124, 58, 237, 0.08), transparent 45%);
+            pointer-events: none;
+        }
+
+        @keyframes caseFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .case-visual {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .case-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .case-visual:hover img {
+            transform: scale(1.04);
+        }
+
+        .case-category {
+            display: inline-block;
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .case-title {
+            font-size: 1.55rem;
+            margin-bottom: 12px;
+        }
+
+        .case-desc {
             color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1.02rem;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .case-cell {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-cell::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+            transition: left 0.45s ease;
+        }
+
+        .case-cell:hover::after {
+            left: 120%;
+        }
+
+        .case-cell.entering {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: cellIn 0.4s ease forwards;
+            animation-delay: var(--delay, 0ms);
+        }
+
+        @keyframes cellIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .case-cell h4 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+
+        .case-cell p {
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .feature-lines {
+            display: grid;
+            gap: 6px;
+            color: #e2e8f0;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .feature-lines span {
+            display: block;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .feature-lines span::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            position: absolute;
+            left: 0;
+            top: 0.5em;
         }
 
         /* Lightbox */
@@ -707,12 +901,104 @@
             margin-right: 4px;
         }
 
+        .final-cta {
+            margin-top: 90px;
+            background: linear-gradient(140deg, rgba(37, 99, 235, 0.23) 0%, rgba(15, 23, 42, 0.6) 55%, rgba(124, 58, 237, 0.22) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 60px -35px rgba(37, 99, 235, 0.7);
+        }
+
+        .final-cta h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 12px;
+        }
+
+        .final-cta p {
+            color: #cbd5e1;
+            max-width: 680px;
+            margin: 0 auto 22px;
+        }
+
+        .cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .cta-actions .primary-btn,
+        .cta-actions .secondary-btn {
+            min-height: 54px;
+            min-width: 230px;
+            padding: 0 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .cta-actions .primary-btn {
+            margin-top: 0;
+        }
+
+        .faq-list {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 14px;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.56);
+            overflow: hidden;
+        }
+
+        .faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 18px 20px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary::after {
+            content: '+';
+            position: absolute;
+            right: 20px;
+            top: 16px;
+            color: var(--accent-blue);
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .faq-item[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-item p {
+            color: var(--text-muted);
+            padding: 0 20px 20px;
+        }
+
         /* Footer */
         footer {
             border-top: 1px solid var(--border-light);
             padding: 80px 0;
             background: transparent;
-            margin-top: 120px;
+            margin-top: 64px;
         }
 
         .footer-content {
@@ -998,11 +1284,53 @@
             }
 
             .code-line-wrapper {
-                font-size: 0.85rem;
+                font-size: 1.5rem;
             }
 
-            .carousel-item {
-                min-width: 300px;
+            .hero-cta-row {
+                flex-direction: column;
+            }
+
+            .secondary-btn {
+                width: 100%;
+            }
+
+            .case-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .case-list {
+                overflow-x: auto;
+                overflow-y: hidden;
+                flex-direction: row;
+                padding: 10px;
+                scroll-snap-type: x mandatory;
+                max-height: none;
+            }
+
+            .case-tab {
+                min-width: 220px;
+                scroll-snap-align: start;
+                min-height: auto;
+            }
+
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .marquee-track {
+                animation-duration: 72s;
+            }
+
+            .marquee-item {
+                font-size: 1.05rem;
+                padding: 0 8px;
+                min-height: 42px;
+            }
+
+            .final-cta {
+                padding: 28px 20px;
             }
 
             .container {
@@ -1140,9 +1468,9 @@
             </a>
             <div class="nav-links">
                 <a href="#services" class="nav-link">Услуги</a>
-                <a href="#experience" class="nav-link">Опыт</a>
                 <a href="#portfolio" class="nav-link">Кейсы</a>
                 <a href="#prices" class="nav-link">Цены</a>
+                <a href="#faq" class="nav-link">FAQ</a>
             </div>
             <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="cta-button">Связаться</a>
         </nav>
@@ -1162,14 +1490,14 @@
                 <p class="lead">
                     Помогаю даже если у вас только идея в голове. На выходе — готовый работающий бот.
                 </p>
-                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="primary-btn">
-                    Написать в Telegram
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </a>
+                <div class="hero-cta-row">
+                    <button onclick="openModal()" class="primary-btn">
+                        Обсудить проект
+                    </button>
+                    <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="secondary-btn">
+                        Написать в Telegram
+                    </a>
+                </div>
             </div>
             <div class="hero-image-container">
                 <div class="hero-bg-glow"></div>
@@ -1180,184 +1508,61 @@
         <!-- Services Section -->
         <section id="services" class="section">
             <h2>Что делаю</h2>
-            <div class="services-grid">
-                <!-- Service Cards (kept same) -->
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                            <rect x="9" y="9" width="2" height="2"></rect>
-                            <rect x="9" y="13" width="2" height="2"></rect>
-                            <rect x="13" y="9" width="2" height="2"></rect>
-                            <rect x="13" y="13" width="2" height="2"></rect>
-                            <line x1="12" y1="2" x2="12" y2="4"></line>
-                            <line x1="12" y1="20" x2="12" y2="22"></line>
-                            <line x1="20" y1="12" x2="22" y2="12"></line>
-                            <line x1="2" y1="12" x2="4" y2="12"></line>
-                        </svg></div>
-                    <h3 class="card-title">AI-боты</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Интеграция ChatGPT и нейросетей для умных
-                        ответов.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg></div>
-                    <h3 class="card-title">Чат-боты</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Классические боты для поддержки и
-                        консультаций.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                        </svg></div>
-                    <h3 class="card-title">Игровые боты</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Геймификация, квизы и интерактивные
-                        механики.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                            <polyline points="17 6 23 6 23 12"></polyline>
-                        </svg></div>
-                    <h3 class="card-title">Боты для продаж</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Автоворонки, прогрев клиентов и закрытие
-                        сделок.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg></div>
-                    <h3 class="card-title">Прием заявок</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Автоматический сбор заказов и передача в
-                        CRM.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                            <line x1="1" y1="10" x2="23" y2="10"></line>
-                        </svg></div>
-                    <h3 class="card-title">Боты с оплатой</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Подключение платежных систем прямо в
-                        Telegram.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg></div>
-                    <h3 class="card-title">Для сообществ</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Модерация чатов, приветствия, платные
-                        подписки.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path
-                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-                            </path>
-                        </svg></div>
-                    <h3 class="card-title">Автоматизация</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Избавление от рутины с помощью скриптов.</p>
-                </div>
-                <div class="glass-card">
-                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6"></polyline>
-                            <polyline points="8 6 2 12 8 18"></polyline>
-                        </svg></div>
-                    <h3 class="card-title">Кастомные решения</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Разработка под уникальные задачи бизнеса.
-                    </p>
+            <div class="services-marquee" aria-label="Список услуг">
+                <div class="marquee-row">
+                    <div class="marquee-track">
+                        <span class="marquee-item">AI-боты</span>
+                        <span class="marquee-item">Чат-боты</span>
+                        <span class="marquee-item">Игровые боты</span>
+                        <span class="marquee-item">Боты для продаж</span>
+                        <span class="marquee-item">Прием заявок</span>
+                        <span class="marquee-item">Боты с оплатой</span>
+                        <span class="marquee-item">Для сообществ</span>
+                        <span class="marquee-item">Автоматизация</span>
+                        <span class="marquee-item">Кастомные решения</span>
+                        <span class="marquee-item">AI-боты</span>
+                        <span class="marquee-item">Чат-боты</span>
+                        <span class="marquee-item">Игровые боты</span>
+                        <span class="marquee-item">Боты для продаж</span>
+                        <span class="marquee-item">Прием заявок</span>
+                        <span class="marquee-item">Боты с оплатой</span>
+                        <span class="marquee-item">Для сообществ</span>
+                        <span class="marquee-item">Автоматизация</span>
+                        <span class="marquee-item">Кастомные решения</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Experience Section -->
-        <section id="experience" class="section">
-            <div class="experience-card">
-                <h2 style="margin-bottom: 24px;">Опыт</h2>
-                <p class="experience-text">
-                    Опыт — <span class="highlight">5+ лет</span> в разработке. Основная специализация — <span
-                        class="highlight">backend</span>. Работал в стартапах, понимаю задачи продукта и бизнеса.
-                </p>
-            </div>
-        </section>
-
-        <!-- Portfolio Section (Carousel) -->
+        <!-- Portfolio Section -->
         <section id="portfolio" class="section">
-            <h2>Примеры работ</h2>
-            <div class="portfolio-carousel">
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС БОТ 2.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС БОТ 2.jpg" alt="AI Media Generator"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">AI Media Generator</div>
-                        <div class="carousel-desc">Генерация фото/видео и чат с AI в Telegram.</div>
-                    </div>
+            <h2>Кейсы</h2>
+            <p class="portfolio-lead">
+                Выберите кейс слева: справа увидите задачу клиента, что реализовано, цену и срок запуска.
+            </p>
+            <div class="case-layout">
+                <div class="case-list">
+                    <button class="case-tab active" data-case="bot2">AI-бот в Telegram с админ-панелью</button>
+                    <button class="case-tab" data-case="bot3">AI-ведущий D&amp;D и генератор сюжетов</button>
+                    <button class="case-tab" data-case="bot4">Сервис рассылок внутри мессенджера</button>
+                    <button class="case-tab" data-case="bot5">Крипто-кошелек в Telegram Mini App</button>
+                    <button class="case-tab" data-case="bot">AI-сервис для примерки одежды и дизайна</button>
+                    <button class="case-tab" data-case="bot6">AI-тренер в Telegram Mini App</button>
+                    <button class="case-tab" data-case="site1">Интернет-магазин дизайнерской мебели</button>
+                    <button class="case-tab" data-case="site2">Имиджевый сайт бренда одежды</button>
+                    <button class="case-tab" data-case="site4">Сайт студии интерактивного дизайна (2 языка)</button>
                 </div>
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС БОТ 3.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС БОТ 3.jpg" alt="AI Game Master"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">AI Game Master</div>
-                        <div class="carousel-desc">Ведущий D&D игр и генератор сюжетов.</div>
+                <article class="case-detail" id="caseDetail">
+                    <div class="case-visual" onclick="openLightbox(document.getElementById('caseImage').src)">
+                        <img id="caseImage" src="КЕЙС БОТ 2.jpg" alt="Кейс">
                     </div>
-                </div>
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС БОТ 4.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС БОТ 4.jpg" alt="B2B Email Service"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">B2B Email Service</div>
-                        <div class="carousel-desc">Сервис рассылок для бизнеса внутри мессенджера.</div>
-                    </div>
-                </div>
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС БОТ 5.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС БОТ 5.jpg" alt="Crypto Wallet"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">Crypto Wallet</div>
-                        <div class="carousel-desc">Полноценный криптокошелек в Telegram (Mini App).</div>
-                    </div>
-                </div>
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС БОТ.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС БОТ.jpg" alt="AI Fashion Try-On"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">AI Fashion Try-On</div>
-                        <div class="carousel-desc">Виртуальная примерка и AI-дизайн одежды.</div>
-                    </div>
-                </div>
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС САЙТ 1.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС САЙТ 1.jpg" alt="Furniture Store"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">Furniture Store</div>
-                        <div class="carousel-desc">Интернет-магазин дизайнерской мебели.</div>
-                    </div>
-                </div>
-
-                <div class="carousel-item" onclick="openLightbox('КЕЙС САЙТ 2.jpg')">
-                    <div class="carousel-visual"><img src="КЕЙС САЙТ 2.jpg" alt="Fashion Brand"></div>
-                    <div class="carousel-info">
-                        <div class="carousel-title">Fashion Brand</div>
-                        <div class="carousel-desc">Имиджевый сайт для бренда одежды.</div>
-                    </div>
-                </div>
-
+                    <div class="case-category" id="caseCategory">Боты</div>
+                    <h3 class="case-title" id="caseTitle">AI-бот в Telegram с админ-панелью</h3>
+                    <p class="case-desc" id="caseDesc">
+                        Генерация текста, фото и видео, чат с AI и удобная админ-панель для управления сервисом.
+                    </p>
+                    <div class="case-grid" id="caseGrid"></div>
+                </article>
             </div>
         </section>
 
@@ -1413,18 +1618,45 @@
             </div>
         </section>
 
+        <section id="faq" class="section">
+            <h2>FAQ</h2>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Сколько стоит разработка?</summary>
+                    <p>Зависит от задачи и интеграций. Быстрые проекты стартуют от 5 000 ₽, полноценные продукты —
+                        выше. После короткого брифа даю понятную вилку стоимости.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Можно без готового ТЗ?</summary>
+                    <p>Да. Если есть только идея, помогаю собрать структуру проекта: что делать в первой версии, что
+                        отложить и как запуститься быстрее.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>С какими задачами работаете?</summary>
+                    <p>Telegram-боты, Mini Apps, AI-сервисы, сайты, автоматизация и кастомные решения как для бизнеса,
+                        так и для личных задач.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Сколько занимает запуск?</summary>
+                    <p>Простые MVP можно запустить за 7-14 дней. Более сложные кейсы с интеграциями — от 3-6 недель.
+                        Срок фиксируем до старта.</p>
+                </details>
+            </div>
+        </section>
+
+        <section class="final-cta">
+            <h3>Готов обсудить вашу задачу и предложить лучший формат</h3>
+            <p>Выберите удобный вариант: пройти короткий онбординг с вопросами или сразу написать в Telegram.</p>
+            <div class="cta-actions">
+                <button onclick="openModal()" class="primary-btn">Обсудить проект</button>
+                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="secondary-btn">Написать
+                    в Telegram</a>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer>
             <div class="footer-content">
-                <h2>Готовы начать?</h2>
-                <p class="lead" style="margin-bottom: 32px;">
-                    Пишите, обсудим вашу задачу и найдем лучшее решение.
-                </p>
-                <!-- Trigger Quiz Modal -->
-                <button onclick="openModal()" class="primary-btn">
-                    Обсудить проект
-                </button>
-
                 <div class="social-links">
                     <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="social-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1518,7 +1750,7 @@
 
         // Typewriter
         const textElement = document.querySelector('.typewriter-text');
-        const phrases = ['npm install telegram-bot-api', 'initializing ai-core...', 'deploying production-build...', 'optimizing database...', 'ready to code'];
+        const phrases = ['7 лет разработки', '100+ реализованных проектов', 'Работаю по договору', 'Помогаю воплотить идею в код'];
         let phraseIndex = 0, charIndex = 0, isDeleting = false;
 
         function type() {
@@ -1530,7 +1762,7 @@
                 textElement.textContent = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
             }
-            let typeSpeed = isDeleting ? 40 : 80;
+            let typeSpeed = isDeleting ? 30 : 60;
             if (!isDeleting && charIndex === currentPhrase.length) {
                 typeSpeed = 1500; isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
@@ -1548,6 +1780,178 @@
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
         }
+
+        // Interactive Cases
+        const caseData = {
+            bot2: {
+                category: 'Боты',
+                title: 'AI-бот в Telegram с админ-панелью',
+                desc: 'Генерация текста, фото и видео, чат с AI и удобная админ-панель для управления сервисом.',
+                price: '30 000 ₽',
+                duration: '2 недели',
+                task: 'Собрать генеративный AI-сервис в одном Telegram-продукте.',
+                img: 'КЕЙС БОТ 2.jpg',
+                features: [
+                    'Генерация текста, фото и видео',
+                    'Чат с ИИ внутри Telegram',
+                    'Админ-панель и подписка через Ю-Касса'
+                ]
+            },
+            bot3: {
+                category: 'Mini Apps',
+                title: 'AI-ведущий D&D и генератор сюжетов',
+                desc: 'Интерактивный мастер игры: сценарии, квесты и атмосфера для партий D&D.',
+                price: '50 000 ₽',
+                duration: 'от 2-3 недель',
+                task: 'Создать ИИ ведушего DND игр.',
+                img: 'КЕЙС БОТ 3.jpg',
+                features: [
+                    'Генератор квестов и сценариев',
+                    'Создание NPC и сюжетных веток',
+                    'Атмосферные описания под сеттинг'
+                ]
+            },
+            bot4: {
+                category: 'Боты',
+                title: 'Сервис рассылок для бизнеса в мессенджере',
+                desc: 'Собственный рассылочный инструмент внутри мессенджера с админ-панелью и аналитикой.',
+                price: '45 000 ₽',
+                duration: 'от 3-4 недель',
+                task: 'Автоматизировать коммуникации и сегментировать аудиторию.',
+                img: 'КЕЙС БОТ 4.jpg',
+                features: [
+                    'Сегментация аудитории',
+                    'Автоматическая отправка Email писем',
+                    'Метрики и контроль в админке'
+                ]
+            },
+            bot5: {
+                category: 'Mini Apps',
+                title: 'Крипто-кошелек (Telegram Mini App)',
+                desc: 'Удобный интерфейс операций и баланса для Web3-сценариев внутри Telegram.',
+                price: '100 000',
+                duration: 'от 4 недель',
+                task: 'Подготовить MVP кошелька для запуска и теста гипотез.',
+                img: 'КЕЙС БОТ 5.jpg',
+                features: [
+                    'Ключевые пользовательские сценарии',
+                    'Безопасность базовых операций',
+                    'Готовность к масштабированию'
+                ]
+            },
+            bot: {
+                category: 'Mini Apps',
+                title: 'Универсальный AI для fashion-задач',
+                desc: 'AI-сервис для примерки одежды, генерации визуалов и наложения дизайна.',
+                price: '45 000 ₽',
+                duration: 'от 3 недель',
+                task: 'Сделать интерактивный AI-инструмент для визуальной примерки.',
+                img: 'КЕЙС БОТ.jpg',
+                features: [
+                    'Виртуальная примерка',
+                    'Генерация дизайн-вариантов',
+                    'Удобный сценарий работы в Telegram'
+                ]
+            },
+            bot6: {
+                category: 'Mini Apps',
+                title: 'AI-тренер в Telegram Mini App',
+                desc: 'Персональный AI-наставник: индивидуальные планы, прогресс и удерживающие механики.',
+                price: '80 000 ₽',
+                duration: '2 недели',
+                task: 'Создать персонализированный продукт с монетизацией.',
+                img: 'КЕЙС БОТ 6.jpg',
+                features: [
+                    'Персональные AI-рекомендации',
+                    'Аналитика прогресса пользователя',
+                    'Push-механики и подписочная логика'
+                ]
+            },
+            site1: {
+                category: 'Сайты',
+                title: 'Интернет-магазин дизайнерской мебели',
+                desc: 'Конверсионный e-commerce сайт с удобным каталогом и фокусом на продажу.',
+                price: '35 000 ₽',
+                duration: 'от 2 недель',
+                task: 'Усилить онлайн-продажи и презентацию ассортимента.',
+                img: 'КЕЙС САЙТ 1.jpg',
+                features: [
+                    'Каталог и карточки товаров',
+                    'Структура под конверсию',
+                    'Адаптив под мобильный трафик'
+                ]
+            },
+            site2: {
+                category: 'Сайты',
+                title: 'Имиджевый сайт бренда одежды',
+                desc: 'Сайт с акцентом на визуал и позиционирование бренда.',
+                price: 'от 25 000 ₽',
+                duration: '2 недели',
+                task: 'Упаковать бренд и повысить доверие к продукту.',
+                img: 'КЕЙС САЙТ 2.jpg',
+                features: [
+                    'Дизайн-система бренда',
+                    'Сценарии вовлечения на лендинге',
+                    'Скорость и адаптивность'
+                ]
+            },
+            site4: {
+                category: 'Сайты',
+                title: 'Студия интерактивного дизайна (2 языка)',
+                desc: 'Двуязычный сайт со сложной визуальной подачей и анимациями.',
+                price: '45 000 ₽',
+                duration: '2 Недели',
+                task: 'Презентовать студию для русскоязычной и международной аудитории.',
+                img: 'КЕЙС САЙТ 4.jpg',
+                features: [
+                    'Двуязычный интерфейс',
+                    'Интерактивные анимации',
+                    'SEO-база и удобная CMS'
+                ]
+            }
+        };
+
+        function renderCase(caseId) {
+            const data = caseData[caseId];
+            if (!data) return;
+
+            document.getElementById('caseImage').src = data.img;
+            document.getElementById('caseImage').alt = data.title;
+            document.getElementById('caseCategory').textContent = data.category;
+            document.getElementById('caseTitle').textContent = data.title;
+            document.getElementById('caseDesc').textContent = data.desc;
+            const caseGrid = document.getElementById('caseGrid');
+            const featuresHtml = data.features.map(item => `<span>${item}</span>`).join('');
+            const fields = [
+                { label: 'Задача клиента', value: data.task, isHtml: false },
+                { label: 'Что реализовано', value: `<div class="feature-lines">${featuresHtml}</div>`, isHtml: true },
+                { label: 'Цена проекта', value: data.price, isHtml: false },
+                { label: 'Срок запуска', value: data.duration, isHtml: false }
+            ];
+
+            caseGrid.innerHTML = fields.map((field, index) => `
+                <div class="case-cell entering" style="--delay:${index * 90}ms">
+                    <h4>${field.label}</h4>
+                    ${field.isHtml ? field.value : `<p>${field.value}</p>`}
+                </div>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.case-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    this.classList.add('active');
+                    renderCase(this.dataset.case);
+                });
+            });
+
+            const firstTab = document.querySelector('.case-tab.active');
+            if (firstTab) {
+                renderCase(firstTab.dataset.case);
+            }
+        });
 
         // Quiz Modal Logic
         function openModal() { document.getElementById('cost-modal').classList.add('active'); }
