@@ -876,6 +876,10 @@
             margin-right: 4px;
         }
 
+        .tg-link {
+            cursor: pointer;
+        }
+
         .final-cta {
             margin-top: 90px;
             background: linear-gradient(140deg, rgba(37, 99, 235, 0.23) 0%, rgba(15, 23, 42, 0.6) 55%, rgba(124, 58, 237, 0.22) 100%);
@@ -1415,20 +1419,35 @@
 
             /* Усиление фоновой анимации для мобильных */
             .blob {
-                filter: blur(40px);
+                filter: blur(56px);
                 opacity: 1;
             }
 
             .blob-1 {
+                width: 110vw;
+                height: 110vw;
+                top: -30%;
+                left: -35%;
                 background: radial-gradient(circle, rgba(37, 99, 235, 1) 0%, rgba(37, 99, 235, 0.2) 50%, rgba(37, 99, 235, 0) 70%);
+                animation-duration: 5s;
             }
 
             .blob-2 {
+                width: 100vw;
+                height: 100vw;
+                bottom: -35%;
+                right: -30%;
                 background: radial-gradient(circle, rgba(59, 130, 246, 1) 0%, rgba(59, 130, 246, 0.2) 50%, rgba(59, 130, 246, 0) 70%);
+                animation-duration: 7s;
             }
 
             .blob-3 {
+                width: 95vw;
+                height: 95vw;
+                top: 24%;
+                left: 12%;
                 background: radial-gradient(circle, rgba(124, 58, 237, 1) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(124, 58, 237, 0) 70%);
+                animation-duration: 9s;
             }
 
             /* Float widget mobile */
@@ -1439,6 +1458,33 @@
 
             .float-panel {
                 width: 272px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .prices-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .price-card {
+                padding: 26px 18px;
+                border-radius: 16px;
+            }
+
+            .price-title {
+                font-size: 1.05rem;
+                margin-bottom: 14px;
+            }
+
+            .price-value {
+                font-size: clamp(1.75rem, 9vw, 2.3rem);
+                line-height: 1.1;
+                word-break: keep-all;
+            }
+
+            .price-value small {
+                font-size: 0.92rem;
             }
         }
     </style>
@@ -1527,7 +1573,7 @@
                 <a href="#prices" class="nav-link">Цены</a>
                 <a href="#faq" class="nav-link">FAQ</a>
             </div>
-            <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="cta-button">Связаться</a>
+            <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="cta-button tg-link">Связаться</a>
         </nav>
 
         <!-- Hero Section -->
@@ -1549,7 +1595,7 @@
                     <button onclick="openModal()" class="primary-btn">
                         Обсудить проект
                     </button>
-                    <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="secondary-btn">
+                    <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="secondary-btn tg-link">
                         Написать в Telegram
                     </a>
                 </div>
@@ -1697,7 +1743,7 @@
             <p>Выберите удобный вариант: пройти короткий онбординг с вопросами или сразу написать в Telegram.</p>
             <div class="cta-actions">
                 <button onclick="openModal()" class="primary-btn">Обсудить проект</button>
-                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="secondary-btn">Написать
+                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="secondary-btn tg-link">Написать
                     в Telegram</a>
             </div>
         </section>
@@ -1706,7 +1752,7 @@
         <footer>
             <div class="footer-content">
                 <div class="social-links">
-                    <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="social-btn tg-link">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -1777,6 +1823,58 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
             });
         });
+
+        // Telegram links: better opening behavior on mobile/in-app browsers
+        function handleTelegramClick(e) {
+            const link = e.currentTarget;
+            const href = link.getAttribute('href') || '';
+            const match = href.match(/t\.me\/([^/?#]+)/i);
+            if (!match) return;
+
+            const username = match[1];
+            const tgDeepLink = `tg://resolve?domain=${username}`;
+            if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                e.preventDefault();
+                window.location.href = tgDeepLink;
+                setTimeout(() => {
+                    window.location.href = `https://t.me/${username}`;
+                }, 900);
+            }
+        }
+
+        document.querySelectorAll('.tg-link').forEach((link) => {
+            link.addEventListener('click', handleTelegramClick);
+        });
+
+        // Telegram sender helper (more reliable on some mobile browsers)
+        const TELEGRAM_BOT_TOKEN = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
+        const TELEGRAM_CHAT_ID = '8519277765';
+
+        function sendTelegramMessage(text) {
+            return new Promise((resolve, reject) => {
+                const endpoint = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(text)}`;
+                const beacon = new Image();
+                const timeout = setTimeout(() => reject(new Error('timeout')), 8000);
+
+                beacon.onload = () => {
+                    clearTimeout(timeout);
+                    resolve(true);
+                };
+
+                beacon.onerror = async () => {
+                    try {
+                        await fetch(endpoint, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+                        clearTimeout(timeout);
+                        resolve(true);
+                    } catch (error) {
+                        clearTimeout(timeout);
+                        reject(error);
+                    }
+                };
+
+                beacon.src = `${endpoint}&_=${Date.now()}`;
+            });
+        }
 
         // Scroll Reveal
         const observer = new IntersectionObserver((entries) => {
@@ -2042,18 +2140,18 @@
             const tz = document.querySelector('input[name="tz"]:checked')?.value || 'не указано';
             const name = document.getElementById('contactName').value;
             const phone = document.getElementById('contactPhone').value;
-
-            const token = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
-            const chatId = '8519277765';
             const text = `📋 Новая заявка!\n\nЗадача: ${task}\nТЗ есть: ${tz}\nИмя: ${name}\nКонтакт: ${phone}`;
-            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
 
-            try { await fetch(url); } catch (err) { }
-            alert('Спасибо! Я свяжусь с вами в ближайшее время.');
-            closeModal();
-            this.reset();
-            document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step1').classList.add('active');
+            try {
+                await sendTelegramMessage(text);
+                alert('Спасибо! Заявка отправлена, свяжусь с вами в ближайшее время.');
+                closeModal();
+                this.reset();
+                document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step1').classList.add('active');
+            } catch (err) {
+                alert('Не получилось отправить заявку. Напишите мне сразу в Telegram.');
+            }
         });
 
         // Float Contact Widget
@@ -2086,12 +2184,13 @@
             const form = e.target;
             const name = form.cbName.value;
             const phone = form.cbPhone.value;
-            const token = '8292648544:AAFVweoBy65gdm8hzvbBNX_2djkiDGuCJf4';
-            const chatId = '8519277765';
             const text = `📞 Заявка на звонок!\n\nИмя: ${name}\nКонтакт: ${phone}`;
-            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
-            try { await fetch(url); } catch (err) { }
-            document.getElementById('floatPanel').innerHTML = '<div style="padding: 28px 20px; text-align: center;"><div style="font-size: 2rem; margin-bottom: 12px;">✅</div><p style="font-weight: 600; color: var(--text-main);">Спасибо! Свяжусь с вами в ближайшее время.</p></div>';
+            try {
+                await sendTelegramMessage(text);
+                document.getElementById('floatPanel').innerHTML = '<div style="padding: 28px 20px; text-align: center;"><div style="font-size: 2rem; margin-bottom: 12px;">✅</div><p style="font-weight: 600; color: var(--text-main);">Спасибо! Свяжусь с вами в ближайшее время.</p></div>';
+            } catch (err) {
+                alert('Не удалось отправить заявку. Напишите мне сразу в Telegram.');
+            }
         });
     </script>
 
@@ -2103,7 +2202,7 @@
                 <button class="float-tab" onclick="switchFloatTab('call', this)">Заказать звонок</button>
             </div>
             <div class="float-tab-content active" id="floatTabTg">
-                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="float-tg-btn">
+                <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="float-tg-btn tg-link">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                         <path
                             d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z" />
