@@ -7,7 +7,7 @@ window.SITE_CONFIG = {
     apiUrl: '/api/leads',
     telegramLeadUsername: 't6arev',
     telegramTargetChatId: '-5488894002',
-    allowTelegramFallback: false,
+    allowTelegramFallback: true,
     metrikaId: 106920579,
     background: {
         // Easy rollback: switch to 'simple' if advanced V2 feels too busy.
