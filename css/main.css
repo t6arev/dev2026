@@ -834,10 +834,10 @@
         }
 
         .case-collage-item--hero img {
-            object-fit: cover;
-            object-position: center;
-            padding: 0;
-            transform: scale(1.005);
+            object-fit: contain;
+            padding: 8px;
+            transform: none;
+            background: rgba(3, 7, 18, 0.92);
         }
 
         .case-page[data-collage-fit="contain"] .case-collage-item--hero img {
@@ -2209,7 +2209,7 @@
             }
 
             .case-collage-item--hero img {
-                object-position: center top;
+                object-position: center;
             }
 
             .case-page[data-collage-fit="contain"] .case-collage-item--hero img {
