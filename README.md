@@ -2,36 +2,48 @@
 
 Одностраничный лендинг для разработчика Telegram-ботов и сайтов.
 
-## 🚀 Технологии
+## Технологии
 
-- HTML5
-- CSS3 (анимации, flexbox, grid)
-- Vanilla JavaScript
-- Telegram Bot API (для приема заявок)
+- HTML5 / CSS3 / Vanilla JavaScript
+- Node.js + Express (API заявок)
+- Telegram Bot API (серверная отправка)
+- Яндекс.Метрика
 
-## 📦 Деплой
+## Запуск локально
 
-Сайт готов к деплою на GitHub Pages или Netlify.
+```bash
+cd server
+cp .env.example .env
+# Заполните TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID в .env
+npm install
+npm start
+```
 
-### Структура файлов:
-- `index.html` - основной файл
-- `*.jpg` - изображения проектов и фото владельца
+Сайт и API доступны на `http://localhost:3001`
 
-### Интеграция с Telegram:
-- Все ссылки "Связаться" ведут на @t6arev
-- Форма заявок отправляет данные в Telegram бота (ID: 5164788770)
+## Структура
 
-## 🎨 Особенности
+- `index.html` — точка входа
+- `css/main.css` — стили
+- `js/` — config, leads, cases-data, analytics, main
+- `server/` — Node.js API (`POST /api/leads`)
+- `assets/img/` — изображения
+- `roadmap/` — цели и workflow
+- `cur/` — журнал работ
 
-- 🌊 Живой фон "Lava Lamp"
-- ⌨️ Typewriter эффект
-- 💡 Неоновое свечение на hover
-- 📱 Полностью адаптивный дизайн
-- 🖼️ Lightbox для кейсов
-- 📋 Интерактивная форма-квиз
-- 💬 Floating CTA кнопка
+## Формы
+
+- Квиз «Обсудить проект» и виджет обратной связи
+- Выбор канала: Telegram / Телефон / Почта
+- Отправка через `/api/leads` (токен только на сервере)
+
+## Деплой
+
+1. Развернуть Node.js сервер (VPS)
+2. Настроить `server/.env`
+3. Запустить `npm start` (или PM2)
+4. Настроить nginx: статика + proxy `/api/leads` → Node
 
 ---
 
 © 2026 AI Architect
-

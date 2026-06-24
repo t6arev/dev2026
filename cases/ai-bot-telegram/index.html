@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Кейс разработки ИИ-агента для Telegram. AI-чат, генерация изображений, видео и музыки, интеграция нейросетей и создание многофункционального Telegram-бота.">
+    <meta name="keywords"
+        content="разработка ии-агентов для telegram, ai бот telegram, разработка telegram бота, генерация изображений в telegram, telegram бот с нейросетями">
+    <meta property="og:title" content="Разработка ИИ-агентов для Telegram — кейс AI-бота">
+    <meta property="og:description"
+        content="AI-чат, генерация изображений, видео и музыки, несколько моделей и работа полностью внутри Telegram.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="https://dev2026.ru/cases/ai-bot-telegram/">
+    <meta property="og:image" content="https://dev2026.ru/assets/img/%D0%BA%D0%B5%D0%B9%D1%81%D1%8B.png">
+    <meta property="og:image:alt" content="Telegram-бот с искусственным интеллектом — коллаж экранов проекта">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Разработка ИИ-агентов для Telegram — кейс AI-бота">
+    <meta name="twitter:description" content="Многофункциональный AI-бот в Telegram: чат, изображения, видео, музыка и подписка.">
+    <meta name="twitter:image" content="https://dev2026.ru/assets/img/%D0%BA%D0%B5%D0%B9%D1%81%D1%8B.png">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="canonical" href="https://dev2026.ru/cases/ai-bot-telegram/">
+    <link rel="icon" href="../../assets/brand/logo.png" type="image/png" sizes="512x512">
+    <link rel="icon" href="../../assets/brand/logo.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/brand/logo.png">
+    <title>Разработка ИИ-агентов для Telegram — кейс AI-бота с генерацией изображений, видео и музыки</title>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dev2026.ru/" },
+                    { "@type": "ListItem", "position": 2, "name": "Кейсы", "item": "https://dev2026.ru/#portfolio" },
+                    { "@type": "ListItem", "position": 3, "name": "Telegram-бот с искусственным интеллектом", "item": "https://dev2026.ru/cases/ai-bot-telegram/" }
+                ]
+            },
+            {
+                "@type": "CreativeWork",
+                "name": "Telegram-бот с искусственным интеллектом",
+                "description": "Кейс разработки ИИ-агента для Telegram: AI-чат, генерация изображений, видео и музыки в одном интерфейсе.",
+                "url": "https://dev2026.ru/cases/ai-bot-telegram/",
+                "image": "https://dev2026.ru/assets/img/%D0%BA%D0%B5%D0%B9%D1%81%D1%8B.png",
+                "author": { "@type": "Person", "name": "AI Architect", "url": "https://dev2026.ru/" },
+                "keywords": "разработка ии-агентов для telegram, ai бот telegram, разработка telegram бота"
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Сколько стоит разработка такого AI-бота в Telegram?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Проекты такого типа обычно стартуют от 30 000 ₽. После брифа даю точную вилку по срокам и бюджету."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Какие AI-функции можно встроить в Telegram-бота?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Текстовые ответы, генерация изображений и видео, сценарии с контекстом, лимиты по тарифам и модерация из админ-панели."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Сколько занимает разработка Telegram-бота под ключ?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "MVP с базовым AI и админкой — от 2 недель. Срок фиксируем до старта."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+    <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+</head>
+
+<body class="case-page" data-case-id="bot2">
+
+    <div class="background-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+    <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+    <div class="texture-overlay"></div>
+
+    <div class="container">
+        <nav>
+            <a href="../../" class="logo" aria-label="На главную">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span class="logo-text">AI Architect</span>
+            </a>
+            <div class="nav-links">
+                <a href="../../#services" class="nav-link">Услуги</a>
+                <a href="../../#portfolio" class="nav-link">Кейсы</a>
+                <a href="../../#prices" class="nav-link">Цены</a>
+                <a href="../../#about" class="nav-link">Обо мне</a>
+            </div>
+            <a href="#contact" class="cta-button">Связаться</a>
+        </nav>
+
+        <header class="case-hero section visible">
+            <div class="case-hero-copy">
+                <span class="portfolio-card-badge">Боты</span>
+                <h1>Telegram-бот с искусственным интеллектом</h1>
+                <p class="case-hero-lead">Разработка ИИ-агента для Telegram: один бот, который объединяет AI-чат, генерацию изображений, видео, музыки и работу с несколькими нейросетями.</p>
+                <div class="case-meta-row">
+                    <span class="case-meta-pill">2 недели</span>
+                    <span class="case-meta-pill">Telegram + AI</span>
+                </div>
+                <div class="case-hero-actions">
+                    <a href="#contact" class="primary-btn">Обсудить похожий проект</a>
+                    <a href="../../#portfolio" class="secondary-btn">Все кейсы</a>
+                </div>
+            </div>
+
+            <div class="case-collage" id="caseCollage" aria-label="Скриншоты проекта">
+                <!-- Коллаж заполняется из cases-data.js; пока — текущий скрин -->
+                <button type="button" class="case-collage-item case-collage-item--hero" data-open-image="../../assets/img/кейсы.png">
+                    <img src="../../assets/img/кейсы.png" alt="Telegram-бот с искусственным интеллектом — коллаж экранов" loading="eager">
+                </button>
+            </div>
+        </header>
+
+        <section class="section case-highlights">
+            <div class="case-features-grid">
+                <article class="case-feature-card">
+                    <span class="about-kicker">Функции</span>
+                    <h2>Что реализовано</h2>
+                    <div class="case-feature-lines" id="caseFeatures">
+                        <span>AI-чат для общения и решения задач</span>
+                        <span>Генерация изображений</span>
+                        <span>Создание AI-видео</span>
+                    </div>
+                </article>
+                <article class="case-feature-card case-feature-card--muted">
+                    <span class="about-kicker">Кратко</span>
+                    <h2>О проекте</h2>
+                    <p>Один из моих проектов — многофункциональный Telegram-бот, который объединяет популярные нейросети в одном интерфейсе. Пользователь может общаться с AI-помощником, генерировать изображения, создавать видео, писать тексты, получать ответы на вопросы и создавать музыку без необходимости переключаться между разными сервисами.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="task" class="section case-section">
+            <span class="about-kicker">Задача</span>
+            <h2>Создать единую точку доступа к AI-инструментам внутри Telegram</h2>
+            <div class="case-prose">
+                <p>Целью разработки было создание единой точки доступа к популярным AI-инструментам. Вместо использования отдельных сервисов для генерации текста, изображений, музыки и видео пользователь получает все возможности в одном Telegram-боте.</p>
+                <p>Особое внимание было уделено простому интерфейсу и удобной навигации через меню и быстрые кнопки, чтобы пользователь мог быстро выбирать нужный сценарий и работать в привычной среде без лишних переходов.</p>
+            </div>
+        </section>
+
+        <section id="solution" class="section case-section">
+            <span class="about-kicker">Решение</span>
+            <h2>Многофункциональный Telegram-бот с несколькими AI-сценариями</h2>
+            <div class="case-prose">
+                <p>Бот выступает в роли универсального ИИ-агента и позволяет работать с несколькими моделями искусственного интеллекта через привычный интерфейс Telegram. Пользователь может общаться с AI-помощником, генерировать изображения, создавать видео, писать тексты, получать ответы на вопросы и создавать музыку в одном месте.</p>
+                <p>В проекте реализована интеграция различных AI-сервисов и языковых моделей. Архитектура позволяет добавлять новые нейросети и инструменты без существенной переработки системы, что делает продукт удобным для дальнейшего роста.</p>
+                <div class="case-solution-points">
+                    <span>ChatGPT и другие языковые модели</span>
+                    <span>Генерация изображений по текстовому описанию</span>
+                    <span>Создание AI-видео</span>
+                    <span>Генерация песен и музыки через AI</span>
+                    <span>Выбор разных моделей и ролей</span>
+                    <span>Подписочная модель доступа и обработка платежей</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="result" class="section case-section">
+            <span class="about-kicker">Результат</span>
+            <h2>Универсальный ИИ-агент в привычном интерфейсе Telegram</h2>
+            <div class="case-prose">
+                <p>Такой подход позволяет использовать возможности современных нейросетей без установки дополнительных приложений и регистрации в десятках отдельных сервисов. Пользователь получает один понятный интерфейс, а владелец продукта — основу для подписочной модели и масштабирования.</p>
+                <p>Я занимаюсь разработкой Telegram-ботов, AI-ассистентов и ИИ-агентов под разные задачи. Это могут быть как простые чат-боты, так и сложные системы с интеграцией нейросетей, CRM, платёжных сервисов и внешних API.</p>
+            </div>
+        </section>
+
+        <section id="faq" class="section">
+            <h2>Вопросы по разработке Telegram-ботов</h2>
+            <div class="faq-list" id="caseFaq">
+                <details class="faq-item" open>
+                    <summary>Сколько стоит разработка такого AI-бота в Telegram?</summary>
+                    <p>Бюджет зависит от набора AI-модулей, админки и платёжной логики. Проекты такого типа обычно стартуют от 30 000 ₽. После брифа даю точную вилку.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Какие AI-функции можно встроить в Telegram-бота?</summary>
+                    <p>Текстовые ответы, генерация изображений и видео, сценарии с контекстом, лимиты по тарифам, история диалогов и модерация из админ-панели.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Можно подключить оплату подписки в боте?</summary>
+                    <p>Да. В этом кейсе использована ЮKassa: тарифы, продление доступа и контроль статуса подписки из админки.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Нужна ли отдельная админ-панель?</summary>
+                    <p>Для AI-ботов с тарифами и контентом — да. Админка упрощает управление пользователями, лимитами, промптами и аналитикой без правок в коде.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Сколько занимает разработка Telegram-бота под ключ?</summary>
+                    <p>MVP с базовым AI и админкой — от 2 недель. Сложные интеграции и кастомные модели увеличивают срок; фиксируем до старта.</p>
+                </details>
+            </div>
+        </section>
+
+        <section id="contact" class="section case-contact">
+            <div class="case-contact-inner">
+                <div class="case-contact-copy">
+                    <span class="about-kicker">Связаться</span>
+                    <h2>Хотите похожий Telegram-бот?</h2>
+                    <p>Опишите задачу — подготовлю вилку по срокам и бюджету. Отвечаю в Telegram, по телефону или на почту.</p>
+                    <ul class="case-contact-points">
+                        <li>Бесплатная первичная консультация</li>
+                        <li>Помощь с идеей, даже без готового ТЗ</li>
+                        <li>Договор и прозрачные этапы</li>
+                    </ul>
+                </div>
+
+                <form id="caseContactForm" class="case-contact-form">
+                    <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                    <label class="field-label" for="caseTask">Ваша задача</label>
+                    <textarea id="caseTask" name="task" class="quiz-input" rows="4"
+                        placeholder="Нужен AI-бот в Telegram с генерацией контента и подпиской…"></textarea>
+
+                    <label class="field-label" for="caseName">Имя</label>
+                    <input type="text" id="caseName" name="contactName" class="quiz-input" placeholder="Как к вам обращаться" required>
+
+                    <p class="field-hint">Предпочтительный канал</p>
+                    <div class="channel-selector">
+                        <button type="button" class="channel-btn" data-channel="telegram">Telegram</button>
+                        <button type="button" class="channel-btn" data-channel="phone">Телефон</button>
+                        <button type="button" class="channel-btn" data-channel="email">Почта</button>
+                    </div>
+                    <input type="hidden" name="channel" value="telegram">
+
+                    <div class="contact-field-wrap visible">
+                        <label class="field-label field-label--sm" for="caseContactValue">Контакт</label>
+                        <input type="text" id="caseContactValue" class="quiz-input contact-value-input"
+                            placeholder="@username или t.me/..." required>
+                    </div>
+
+                    <button type="submit" class="primary-btn case-contact-submit">Отправить заявку</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="https://t.me/DelaDes" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Telegram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </a>
+                </div>
+                <div style="margin-top: 48px; color: var(--text-muted); font-size: 0.8rem;">
+                    © 2026 AI Architect. <a href="../../" class="case-footer-link">На главную</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Полноэкранный просмотр">
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/leads.js"></script>
+    <script src="../../js/cases-data.js"></script>
+    <script src="../../js/case-collage.js"></script>
+    <script src="../../js/analytics.js"></script>
+    <script src="../../js/particles.js"></script>
+    <script src="../../js/case-page.js"></script>
+
+</body>
+
+</html>

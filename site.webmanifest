@@ -1,0 +1,24 @@
+{
+  "name": "AI Architect — Telegram-боты и сайты",
+  "short_name": "AI Architect",
+  "description": "Разработка Telegram-ботов, AI-ассистентов и сайтов под ключ.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "assets/brand/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/brand/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
