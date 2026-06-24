@@ -190,16 +190,18 @@ function initPortfolio() {
 document.addEventListener('DOMContentLoaded', function () {
     initPortfolio();
     initContactChannel(document.getElementById('quizForm'));
-    initContactChannel(document.getElementById('callbackForm'));
 });
 
 // Quiz modal
 function openModal() { document.getElementById('cost-modal').classList.add('active'); }
 function closeModal() { document.getElementById('cost-modal').classList.remove('active'); }
 
-document.getElementById('cost-modal').addEventListener('click', function (e) {
-    if (e.target === this) closeModal();
-});
+const costModalEl = document.getElementById('cost-modal');
+if (costModalEl) {
+    costModalEl.addEventListener('click', function (e) {
+        if (e.target === this) closeModal();
+    });
+}
 
 function quizNextStep(stepNum) {
     if (stepNum === 2) {
@@ -210,9 +212,11 @@ function quizNextStep(stepNum) {
     document.getElementById('step' + stepNum).classList.add('active');
 }
 
-document.getElementById('quizForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    showFormError(this, '');
+const quizFormEl = document.getElementById('quizForm');
+if (quizFormEl) {
+    quizFormEl.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        showFormError(this, '');
 
     const submitBtn = this.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
@@ -258,73 +262,5 @@ document.getElementById('quizForm').addEventListener('submit', async function (e
     } finally {
         if (submitBtn) submitBtn.disabled = false;
     }
-});
-
-// Float contact widget
-function toggleFloatWidget() {
-    const panel = document.getElementById('floatPanel');
-    const toggle = document.getElementById('floatToggle');
-    panel.classList.toggle('open');
-    toggle.classList.toggle('open');
+    });
 }
-
-function switchFloatTab(tab, btn) {
-    document.querySelectorAll('.float-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.float-tab-content').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(tab === 'tg' ? 'floatTabTg' : 'floatTabCall').classList.add('active');
-}
-
-document.addEventListener('click', function (e) {
-    const widget = document.getElementById('floatWidget');
-    const panel = document.getElementById('floatPanel');
-    if (widget && !widget.contains(e.target) && panel.classList.contains('open')) {
-        panel.classList.remove('open');
-        document.getElementById('floatToggle').classList.remove('open');
-    }
-});
-
-document.getElementById('callbackForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    showFormError(this, '');
-
-    const submitBtn = this.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-
-    const name = this.querySelector('[name="name"]').value.trim();
-    const channel = this.querySelector('input[name="channel"]').value;
-    const contact = this.querySelector('.contact-value-input').value.trim();
-
-    if (!name || name.length < 2) {
-        showFormError(this, 'Укажите имя');
-        if (submitBtn) submitBtn.disabled = false;
-        return;
-    }
-
-    const contactError = validateContact(channel, contact);
-    if (contactError) {
-        showFormError(this, contactError);
-        if (submitBtn) submitBtn.disabled = false;
-        return;
-    }
-
-    try {
-        await submitLead({
-            source: 'виджет «Заказать звонок»',
-            name,
-            channel,
-            contact,
-            website: this.querySelector('[name="website"]')?.value || ''
-        });
-        trackLeadSubmit();
-        showFormSuccess(document.getElementById('floatPanel'), `
-            <div class="form-success">
-                <div class="form-success-icon">✓</div>
-                <p>Спасибо! Свяжусь с вами в ближайшее время.</p>
-            </div>
-        `);
-    } catch (err) {
-        showFormError(this, err.message || 'Не удалось отправить заявку');
-        if (submitBtn) submitBtn.disabled = false;
-    }
-});

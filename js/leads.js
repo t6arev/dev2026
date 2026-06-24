@@ -16,6 +16,11 @@ const PLACEHOLDERS = {
     email: 'email@example.com'
 };
 
+function getTelegramUsername() {
+    const raw = (window.SITE_CONFIG?.telegramLeadUsername || 't6arev').trim();
+    return raw.replace(/^@/, '');
+}
+
 function buildLeadText(data) {
     const lines = [
         'Новая заявка с dev2026.ru',
@@ -34,7 +39,7 @@ function buildLeadText(data) {
 }
 
 function sendLeadToTelegram(data) {
-    const username = window.SITE_CONFIG.telegramLeadUsername || 't6arev';
+    const username = getTelegramUsername();
     const text = encodeURIComponent(buildLeadText(data));
     const url = `https://t.me/${username}?text=${text}`;
 
@@ -71,9 +76,12 @@ async function submitLead(data) {
         }
         return body;
     } catch (_) {
-        // Fallback: если API недоступен, открываем диалог с @t6arev и подставляем заявку.
-        sendLeadToTelegram(data);
-        return { ok: true, fallback: 'telegram' };
+        const allowFallback = Boolean(window.SITE_CONFIG?.allowTelegramFallback);
+        if (allowFallback) {
+            sendLeadToTelegram(data);
+            return { ok: true, fallback: 'telegram' };
+        }
+        throw new Error('Не удалось отправить заявку: сервер /api/leads недоступен. Проверьте VPS и TELEGRAM_CHAT_ID.');
     }
 }
 
@@ -133,3 +141,133 @@ function showFormError(formEl, message) {
 function showFormSuccess(container, html) {
     container.innerHTML = html;
 }
+
+function ensureFloatWidget() {
+    if (document.getElementById('floatWidget')) return;
+    const username = getTelegramUsername();
+    const widget = document.createElement('div');
+    widget.id = 'floatWidget';
+    widget.className = 'float-widget';
+    widget.innerHTML = `
+        <div class="float-panel" id="floatPanel">
+            <div class="float-tabs">
+                <button class="float-tab active" data-float-tab="tg">Написать в ТГ</button>
+                <button class="float-tab" data-float-tab="call">Заявка</button>
+            </div>
+            <div class="float-tab-content active" id="floatTabTg">
+                <a href="https://t.me/${username}" target="_blank" rel="noopener noreferrer" class="float-tg-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z" />
+                    </svg>
+                    Написать в Telegram
+                </a>
+            </div>
+            <div class="float-tab-content" id="floatTabCall">
+                <form id="callbackForm">
+                    <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <input type="text" class="float-input" placeholder="Ваше имя" name="name" required>
+                    <p class="field-hint">Как связаться?</p>
+                    <div class="channel-selector channel-selector--compact">
+                        <button type="button" class="channel-btn" data-channel="telegram">ТГ</button>
+                        <button type="button" class="channel-btn" data-channel="phone">Тел.</button>
+                        <button type="button" class="channel-btn" data-channel="email">Почта</button>
+                    </div>
+                    <input type="hidden" name="channel" value="telegram">
+                    <div class="contact-field-wrap visible">
+                        <input type="text" class="float-input contact-value-input" placeholder="@username" required>
+                    </div>
+                    <button type="submit" class="float-submit">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+        <button class="float-toggle" id="floatToggle" aria-label="Открыть контакты">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </button>
+    `;
+    document.body.appendChild(widget);
+}
+
+function initFloatWidget() {
+    ensureFloatWidget();
+    const widget = document.getElementById('floatWidget');
+    const panel = document.getElementById('floatPanel');
+    const toggle = document.getElementById('floatToggle');
+    const callbackForm = document.getElementById('callbackForm');
+
+    if (!widget || !panel || !toggle || !callbackForm || callbackForm.dataset.inited === '1') return;
+    callbackForm.dataset.inited = '1';
+
+    toggle.addEventListener('click', () => {
+        panel.classList.toggle('open');
+        toggle.classList.toggle('open');
+    });
+
+    widget.querySelectorAll('.float-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            widget.querySelectorAll('.float-tab').forEach((el) => el.classList.remove('active'));
+            widget.querySelectorAll('.float-tab-content').forEach((el) => el.classList.remove('active'));
+            btn.classList.add('active');
+            const tabId = btn.dataset.floatTab === 'tg' ? 'floatTabTg' : 'floatTabCall';
+            const tab = document.getElementById(tabId);
+            if (tab) tab.classList.add('active');
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!widget.contains(e.target) && panel.classList.contains('open')) {
+            panel.classList.remove('open');
+            toggle.classList.remove('open');
+        }
+    });
+
+    initContactChannel(callbackForm);
+
+    callbackForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        showFormError(this, '');
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+
+        const name = this.querySelector('[name="name"]').value.trim();
+        const channel = this.querySelector('input[name="channel"]').value;
+        const contact = this.querySelector('.contact-value-input').value.trim();
+
+        if (!name || name.length < 2) {
+            showFormError(this, 'Укажите имя');
+            if (submitBtn) submitBtn.disabled = false;
+            return;
+        }
+
+        const contactError = validateContact(channel, contact);
+        if (contactError) {
+            showFormError(this, contactError);
+            if (submitBtn) submitBtn.disabled = false;
+            return;
+        }
+
+        try {
+            await submitLead({
+                source: 'виджет «Заказать звонок»',
+                name,
+                channel,
+                contact,
+                website: this.querySelector('[name="website"]')?.value || ''
+            });
+            trackLeadSubmit();
+            showFormSuccess(panel, `
+                <div class="form-success">
+                    <div class="form-success-icon">✓</div>
+                    <p>Спасибо! Свяжусь с вами в ближайшее время.</p>
+                </div>
+            `);
+        } catch (err) {
+            showFormError(this, err.message || 'Не удалось отправить заявку');
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initFloatWidget);

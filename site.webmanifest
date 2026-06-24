@@ -1,6 +1,6 @@
 {
-  "name": "AI Architect — Telegram-боты и сайты",
-  "short_name": "AI Architect",
+  "name": "dev2026.ru — Telegram-боты и сайты",
+  "short_name": "dev2026.ru",
   "description": "Разработка Telegram-ботов, AI-ассистентов и сайтов под ключ.",
   "start_url": "/",
   "display": "standalone",
@@ -9,15 +9,9 @@
   "lang": "ru",
   "icons": [
     {
-      "src": "assets/brand/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "assets/brand/logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "assets/brand/logo.jpg",
+      "sizes": "1200x1200",
+      "type": "image/jpeg",
       "purpose": "any"
     }
   ]
