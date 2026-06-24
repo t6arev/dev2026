@@ -219,7 +219,11 @@ if (quizFormEl) {
         showFormError(this, '');
 
     const submitBtn = this.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
+    const originalLabel = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
+    }
 
     const task = document.getElementById('taskInput').value.trim();
     const tz = document.querySelector('input[name="tz"]:checked')?.value || 'не указано';
@@ -260,7 +264,10 @@ if (quizFormEl) {
     } catch (err) {
         showFormError(this, err.message || 'Не удалось отправить заявку');
     } finally {
-        if (submitBtn) submitBtn.disabled = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+        }
     }
     });
 }

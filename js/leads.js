@@ -57,11 +57,15 @@ function trackLeadSubmit() {
 }
 
 async function submitLead(data) {
+    const controller = new AbortController();
+    const timeoutMs = 12000;
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
         const response = await fetch(window.SITE_CONFIG.apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            signal: controller.signal
         });
 
         let body = {};
@@ -75,13 +79,18 @@ async function submitLead(data) {
             throw new Error(body.errors?.join('\n') || body.error || 'Ошибка отправки');
         }
         return body;
-    } catch (_) {
+    } catch (err) {
         const allowFallback = Boolean(window.SITE_CONFIG?.allowTelegramFallback);
         if (allowFallback) {
             sendLeadToTelegram(data);
             return { ok: true, fallback: 'telegram' };
         }
-        throw new Error('Не удалось отправить заявку: сервер /api/leads недоступен. Проверьте VPS и TELEGRAM_CHAT_ID.');
+        if (err?.name === 'AbortError') {
+            throw new Error('Сервер долго не отвечает. Проверьте VPS и HTTPS endpoint формы.');
+        }
+        throw new Error(`Не удалось отправить заявку. Проверьте endpoint: ${window.SITE_CONFIG.apiUrl}`);
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
@@ -229,7 +238,11 @@ function initFloatWidget() {
         showFormError(this, '');
 
         const submitBtn = this.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = true;
+        const originalLabel = submitBtn ? submitBtn.textContent : '';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправка...';
+        }
 
         const name = this.querySelector('[name="name"]').value.trim();
         const channel = this.querySelector('input[name="channel"]').value;
@@ -265,7 +278,10 @@ function initFloatWidget() {
             `);
         } catch (err) {
             showFormError(this, err.message || 'Не удалось отправить заявку');
-            if (submitBtn) submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalLabel;
+            }
         }
     });
 }
