@@ -2268,16 +2268,22 @@
                 flex-direction: column;
                 text-align: center;
                 padding: 24px 18px 28px;
-                gap: 24px;
+                gap: 20px;
             }
 
             .hero-content {
+                order: 1;
                 width: 100%;
-                padding: 16px;
+                padding: 14px 12px 8px;
+            }
+
+            .hero-image-container {
+                order: 2;
+                width: 100%;
             }
 
             .hero-photo {
-                max-width: 276px;
+                max-width: 240px;
             }
 
             .hero-photo-flip {
@@ -2308,11 +2314,14 @@
             }
 
             nav {
-                padding: 16px 20px;
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                left: auto;
+                right: auto;
+                padding: 12px clamp(16px, 4vw, 22px);
+                min-height: 68px;
                 height: auto;
-                width: 100%;
-                margin-left: 0;
-                left: 0;
+                gap: 12px;
             }
 
             .logo {
@@ -2324,8 +2333,9 @@
             }
 
             .cta-button {
-                padding: 10px 20px;
+                padding: 9px 14px;
                 font-size: 0.85rem;
+                min-height: 40px;
             }
 
             h1 {
@@ -2347,6 +2357,7 @@
 
             .hero-cta-row {
                 flex-direction: column;
+                margin-top: 22px;
             }
 
             .secondary-btn {
@@ -2468,7 +2479,7 @@
 
             .modal-content {
                 max-width: min(94vw, 560px);
-                padding: 28px 22px 26px;
+                padding: 24px 18px 20px;
             }
 
             .modal-header {
@@ -2478,22 +2489,40 @@
 
             .channel-selector {
                 gap: 6px;
-                margin-bottom: 12px;
+                margin-bottom: 10px;
             }
 
             .quiz-input {
-                margin-bottom: 12px;
+                margin-bottom: 10px;
+                padding: 12px 14px;
+            }
+
+            .field-label {
+                margin-bottom: 4px;
+            }
+
+            .field-hint {
+                margin-bottom: 8px;
+            }
+
+            .channel-btn {
+                padding: 10px 8px;
+                font-size: var(--text-xs);
+            }
+
+            .contact-field-wrap.visible {
+                margin-bottom: 2px;
             }
 
             h2 {
                 font-size: 2rem;
             }
 
-            /* Усиление фоновой анимации для мобильных — облегчённый blur */
+            /* Облегчённый фон на мобильных для более быстрой отрисовки */
             .blob {
-                filter: blur(28px);
-                opacity: 0.85;
-                animation-duration: 20s;
+                filter: blur(22px);
+                opacity: 0.76;
+                animation-duration: 24s;
             }
 
             .blob-1 {
