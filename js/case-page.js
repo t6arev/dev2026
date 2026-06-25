@@ -88,14 +88,12 @@ function initCasePage() {
                     website: form.querySelector('[name="website"]')?.value || ''
                 });
                 trackLeadSubmit();
-                form.innerHTML = `
-                    <div class="form-success case-form-success">
-                        <div class="form-success-icon">✓</div>
-                        <p>Спасибо! Свяжусь с вами в ближайшее время.</p>
-                    </div>
-                `;
+                showSuccessToast();
+                form.reset();
+                initContactChannel(form);
             } catch (err) {
                 showFormError(form, err.message || 'Не удалось отправить заявку');
+            } finally {
                 if (submitBtn) submitBtn.disabled = false;
             }
         });

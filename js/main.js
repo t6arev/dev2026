@@ -260,7 +260,7 @@ if (quizFormEl) {
         document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
         document.getElementById('step1').classList.add('active');
         initContactChannel(this);
-        alert('Спасибо! Я свяжусь с вами в ближайшее время.');
+        showSuccessToast();
     } catch (err) {
         showFormError(this, err.message || 'Не удалось отправить заявку');
     } finally {

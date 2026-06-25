@@ -107,11 +107,30 @@
             </div>
             <div class="hero-image-container">
                 <div class="hero-bg-glow"></div>
-                <img src="assets/img/ЭТО Я.jpg" alt="Разработчик" class="hero-photo">
-                <a href="#about" class="hero-about-link">
-                    <span class="hero-about-link-label">Узнать больше</span>
-                    <strong>Обо мне</strong>
-                </a>
+                <div class="hero-photo-flip" tabindex="0" aria-label="Карточка с фотографией и тезисами обо мне">
+                    <div class="hero-photo-face hero-photo-front">
+                        <img src="assets/img/ЭТО Я.jpg" alt="Разработчик" class="hero-photo" loading="eager" fetchpriority="high" decoding="async">
+                    </div>
+                    <div class="hero-photo-face hero-photo-back" role="note" aria-label="Кратко обо мне">
+                        <span class="hero-about-link-label">Обо мне</span>
+                        <strong>Что вы получаете в работе со мной</strong>
+                        <ul class="hero-about-list">
+                            <li>
+                                <span class="hero-roadmap-title">Понятный план реализации</span>
+                                <span class="hero-roadmap-copy">Превращаю идею в четкую структуру, MVP и дорожную карту запуска.</span>
+                            </li>
+                            <li>
+                                <span class="hero-roadmap-title">Разработку под ключ</span>
+                                <span class="hero-roadmap-copy">Беру на себя сайт, CRM, интеграции, API и автоматизацию процессов.</span>
+                            </li>
+                            <li>
+                                <span class="hero-roadmap-title">Запуск и развитие продукта</span>
+                                <span class="hero-roadmap-copy">Довожу проект до релиза, помогаю с улучшениями и поддержкой после запуска.</span>
+                            </li>
+                        </ul>
+                        <a href="#about" class="hero-about-card-link">Подробнее</a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -445,13 +464,13 @@
         </button>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/leads.js"></script>
-    <script src="js/cases-data.js"></script>
-    <script src="js/case-collage.js"></script>
-    <script src="js/analytics.js"></script>
-    <script src="js/particles.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/config.js" defer></script>
+    <script src="js/leads.js" defer></script>
+    <script src="js/cases-data.js" defer></script>
+    <script src="js/case-collage.js" defer></script>
+    <script src="js/analytics.js" defer></script>
+    <script src="js/particles.js" defer></script>
+    <script src="js/main.js" defer></script>
 
 </body>
 

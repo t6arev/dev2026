@@ -151,6 +151,40 @@ function showFormSuccess(container, html) {
     container.innerHTML = html;
 }
 
+function getToastStack() {
+    let stack = document.querySelector('.site-toast-stack');
+    if (!stack) {
+        stack = document.createElement('div');
+        stack.className = 'site-toast-stack';
+        document.body.appendChild(stack);
+    }
+    return stack;
+}
+
+function showSiteToast(message, type = 'success', duration = 5000) {
+    const stack = getToastStack();
+    const toast = document.createElement('div');
+    toast.className = `site-toast site-toast--${type}`;
+    toast.innerHTML = `
+        <span class="site-toast-icon">${type === 'success' ? '✓' : '!'}</span>
+        <span class="site-toast-text">${message}</span>
+    `;
+    stack.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
+
+    const hide = () => {
+        toast.classList.add('is-exit');
+        setTimeout(() => toast.remove(), 260);
+    };
+
+    setTimeout(hide, duration);
+}
+
+function showSuccessToast(message = 'Спасибо! Свяжусь с вами в ближайшее время.') {
+    showSiteToast(message, 'success', 5000);
+}
+
 function ensureFloatWidget() {
     if (document.getElementById('floatWidget')) return;
     const username = getTelegramUsername();
@@ -270,14 +304,14 @@ function initFloatWidget() {
                 website: this.querySelector('[name="website"]')?.value || ''
             });
             trackLeadSubmit();
-            showFormSuccess(panel, `
-                <div class="form-success">
-                    <div class="form-success-icon">✓</div>
-                    <p>Спасибо! Свяжусь с вами в ближайшее время.</p>
-                </div>
-            `);
+            showSuccessToast();
+            this.reset();
+            initContactChannel(this);
+            panel.classList.remove('open');
+            toggle.classList.remove('open');
         } catch (err) {
             showFormError(this, err.message || 'Не удалось отправить заявку');
+        } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalLabel;
