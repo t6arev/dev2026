@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Кейс разработки Telegram-бота для трейдинга и анализа криптовалютного рынка. Торговые сигналы, мониторинг рынка, ИИ-агенты, автоматизация анализа данных и уведомления в реальном времени.">
+    <meta name="keywords"
+        content="разработка телеграм бота на заказ, разработка телеграмм бота под ключ, разработка чат ботов для бизнеса, разработка ии бота, разработка telegram-бота для трейдинга">
+    <meta property="og:title" content="Разработка Telegram-бота для трейдинга | Разработка ИИ-агентов и торговых ботов">
+    <meta property="og:description"
+        content="Telegram-бот для автоматизации мониторинга крипторынка: анализ сотен пар, сигналы по стратегиям и уведомления в реальном времени.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="https://dev2026.ru/cases/telegram-bot-dlya-treydinga/">
+    <meta property="og:image" content="https://dev2026.ru/assets/img/%D0%BA%D0%B5%D0%B9%D1%81%20%D0%B1%D0%B8%D1%80%D0%B6%D0%B0.png">
+    <meta property="og:image:alt" content="Telegram-бот для трейдинга и анализа крипторынка — экран проекта">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Разработка Telegram-бота для трейдинга и анализа крипторынка">
+    <meta name="twitter:description"
+        content="Кейс: торговые сигналы, автоматический мониторинг рынка, гибкие фильтры и AI-анализ данных в Telegram-боте.">
+    <meta name="twitter:image" content="https://dev2026.ru/assets/img/%D0%BA%D0%B5%D0%B9%D1%81%20%D0%B1%D0%B8%D1%80%D0%B6%D0%B0.png">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="canonical" href="https://dev2026.ru/cases/telegram-bot-dlya-treydinga/">
+    <link rel="icon" href="/assets/brand/logo.jpg" type="image/jpeg" sizes="512x512">
+    <link rel="shortcut icon" href="/assets/brand/logo.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="/assets/brand/logo.jpg">
+    <title>Разработка Telegram-бота для трейдинга | Разработка ИИ-агентов и торговых ботов</title>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://dev2026.ru/" },
+                    { "@type": "ListItem", "position": 2, "name": "Кейсы", "item": "https://dev2026.ru/#portfolio" },
+                    { "@type": "ListItem", "position": 3, "name": "Telegram-бот для трейдинга", "item": "https://dev2026.ru/cases/telegram-bot-dlya-treydinga/" }
+                ]
+            },
+            {
+                "@type": "CreativeWork",
+                "name": "Разработка Telegram-бота для трейдинга и анализа криптовалютного рынка",
+                "description": "Кейс разработки Telegram-бота для анализа крипторынка, поиска торговых сигналов и автоматизации мониторинга данных в реальном времени.",
+                "url": "https://dev2026.ru/cases/telegram-bot-dlya-treydinga/",
+                "image": "https://dev2026.ru/assets/img/%D0%BA%D0%B5%D0%B9%D1%81%20%D0%B1%D0%B8%D1%80%D0%B6%D0%B0.png",
+                "author": { "@type": "Person", "name": "dev2026.ru", "url": "https://dev2026.ru/" },
+                "keywords": "разработка телеграм бота на заказ, разработка телеграмм бота под ключ, разработка ии бота, торговый бот telegram"
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Можно ли настроить Telegram-бота под мою торговую стратегию?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Да. Настраиваются таймфреймы, пороги изменения цены, фильтры по торговым парам, минимальные объемы, правила риск-менеджмента и типы уведомлений."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Какие сигналы анализирует торговый бот?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Система анализирует цену, объемы, волатильность, RSI, отклонения от средних, импульсные движения, Pin Bar и сценарии Pump & Dump."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Подходит ли такой бот для большого количества активов?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Да. Архитектура рассчитана на параллельный мониторинг сотен торговых пар в режиме реального времени с масштабированием под рост нагрузки."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+    <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+</head>
+
+<body class="case-page" data-case-id="bot7" data-collage-fit="contain">
+
+    <div class="background-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+    <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+    <div class="texture-overlay"></div>
+
+    <div class="container">
+        <nav>
+            <a href="../../" class="logo" aria-label="На главную">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span class="logo-text">dev2026.ru</span>
+            </a>
+            <div class="nav-links">
+                <a href="../../#services" class="nav-link">Услуги</a>
+                <a href="../../#portfolio" class="nav-link">Кейсы</a>
+                <a href="../../#prices" class="nav-link">Цены</a>
+                <a href="../../#about" class="nav-link">Обо мне</a>
+            </div>
+            <a href="#contact" class="cta-button">Связаться</a>
+        </nav>
+
+        <header class="case-hero section visible">
+            <div class="case-hero-copy">
+                <span class="portfolio-card-badge">Боты</span>
+                <h1>Разработка Telegram-бота для трейдинга и анализа криптовалютного рынка</h1>
+                <p class="case-hero-lead">Кейс разработки Telegram-бота на заказ для финансовых сервисов: мониторинг рынка, поиск сигналов, гибкие стратегии и уведомления в реальном времени.</p>
+                <div class="case-meta-row">
+                    <span class="case-meta-pill">Telegram + Crypto</span>
+                    <span class="case-meta-pill">AI-анализ данных</span>
+                </div>
+                <div class="case-hero-actions">
+                    <a href="#contact" class="primary-btn">Обсудить похожий проект</a>
+                    <a href="../../#portfolio" class="secondary-btn">Все кейсы</a>
+                </div>
+            </div>
+
+            <div class="case-collage" id="caseCollage" aria-label="Скриншоты проекта">
+                <button type="button" class="case-collage-item case-collage-item--hero" data-open-image="../../assets/img/кейс биржа.png">
+                    <img src="../../assets/img/кейс биржа.png" alt="Telegram-бот для трейдинга — экран проекта" loading="eager">
+                </button>
+            </div>
+        </header>
+
+        <section class="section case-highlights">
+            <div class="case-features-grid">
+                <article class="case-feature-card">
+                    <span class="about-kicker">Функции</span>
+                    <h2>Что реализовано</h2>
+                    <div class="case-feature-lines" id="caseFeatures">
+                        <span>Мониторинг сотен торговых пар</span>
+                        <span>Стратегии Pin Bar и RSI-сигналы</span>
+                        <span>Уведомления в Telegram в реальном времени</span>
+                    </div>
+                </article>
+                <article class="case-feature-card case-feature-card--muted">
+                    <span class="about-kicker">Кратко</span>
+                    <h2>О проекте</h2>
+                    <p>Проект решает задачу автоматизации мониторинга криптовалютного рынка: система непрерывно анализирует рыночную активность, отбирает события по заданным правилам и отправляет пользователю только релевантные торговые сигналы.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="task" class="section case-section">
+            <span class="about-kicker">Задача</span>
+            <h2>Автоматизировать анализ крипторынка и ускорить реакцию на рыночные события</h2>
+            <div class="case-prose">
+                <p>В рамках проекта была выполнена разработка Telegram-бота для анализа криптовалютного рынка и автоматического поиска торговых сигналов.</p>
+                <p>Система предназначена для круглосуточного мониторинга сотен торговых пар, анализа рыночной активности и уведомления пользователей о потенциальных торговых возможностях в режиме реального времени.</p>
+                <p>Решение ориентировано на финансовые сервисы, аналитические платформы и автоматизацию процессов принятия решений в условиях быстро меняющегося рынка.</p>
+            </div>
+        </section>
+
+        <section id="solution" class="section case-section">
+            <span class="about-kicker">Решение</span>
+            <h2>Telegram-бот с гибкими настройками стратегий и интеллектуальным анализом</h2>
+            <div class="case-prose">
+                <p>Основой проекта стал интеллектуальный модуль анализа рынка, который обрабатывает большой объем данных и автоматически определяет потенциально интересные торговые ситуации.</p>
+                <p>Пользователь может гибко настраивать параметры мониторинга: таймфреймы, минимальный объем торгов, уровень изменения цены, используемые стратегии, фильтрацию торговых пар, типы уведомлений и параметры риск-менеджмента.</p>
+                <div class="case-solution-points">
+                    <span>Изменение цены активов</span>
+                    <span>Объемы торгов и волатильность</span>
+                    <span>Показатели RSI</span>
+                    <span>Аномальные движения рынка</span>
+                    <span>Отклонения от средних значений</span>
+                    <span>Стратегия Pin Bar</span>
+                    <span>Сценарии Pump &amp; Dump</span>
+                    <span>Комбинированные сигнальные модели</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="result" class="section case-section">
+            <span class="about-kicker">Результат</span>
+            <h2>Масштабируемый торговый Telegram-бот для автоматизации работы трейдера</h2>
+            <div class="case-prose">
+                <p>В результате был создан Telegram-бот для трейдинга и анализа криптовалютного рынка с поддержкой нескольких стратегий, гибкой настройкой мониторинга и интеллектуальной обработкой данных.</p>
+                <p>Алгоритм учитывает статистику предыдущих сигналов, что позволяет улучшать качество фильтрации и повышать релевантность уведомлений.</p>
+                <p>Архитектура обеспечивает работу 24/7, обработку больших потоков рыночных данных и масштабирование под рост аудитории без существенной переработки платформы.</p>
+            </div>
+        </section>
+
+        <section id="faq" class="section">
+            <h2>Вопросы по разработке Telegram-бота для трейдинга</h2>
+            <div class="faq-list" id="caseFaq">
+                <details class="faq-item" open>
+                    <summary>Можно ли настроить Telegram-бота под мою торговую стратегию?</summary>
+                    <p>Да. Настраиваются таймфреймы, пороги изменения цены, фильтры по торговым парам, минимальные объемы, правила риск-менеджмента и типы уведомлений.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Какие сигналы анализирует торговый бот?</summary>
+                    <p>Система анализирует цену, объемы, волатильность, RSI, отклонения от средних, импульсные движения, Pin Bar и сценарии Pump &amp; Dump.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Подходит ли такой бот для большого количества активов?</summary>
+                    <p>Да. Архитектура рассчитана на параллельный мониторинг сотен торговых пар в режиме реального времени с масштабированием под рост нагрузки.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Можно ли реализовать самообучающийся алгоритм для фильтрации сигналов?</summary>
+                    <p>Да. В проект можно добавить адаптивный модуль, который учитывает статистику предыдущих сигналов и повышает точность отбора событий.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Сколько занимает разработка Telegram-бота для трейдинга?</summary>
+                    <p>Срок зависит от сложности стратегий, набора интеграций с биржами и требований к аналитике. После брифа формирую этапы и точную оценку по срокам и бюджету.</p>
+                </details>
+            </div>
+        </section>
+
+        <section id="contact" class="section case-contact">
+            <div class="case-contact-inner">
+                <div class="case-contact-copy">
+                    <span class="about-kicker">Связаться</span>
+                    <h2>Нужен Telegram-бот для анализа рынка?</h2>
+                    <p>Опишите задачу и набор стратегий — предложу архитектуру, этапы запуска и вилку по срокам.</p>
+                    <ul class="case-contact-points">
+                        <li>Проектирование логики сигналов и фильтров</li>
+                        <li>Интеграция с источниками рыночных данных</li>
+                        <li>Прозрачные этапы разработки под ключ</li>
+                    </ul>
+                </div>
+
+                <form id="caseContactForm" class="case-contact-form">
+                    <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                    <label class="field-label" for="caseTask">Ваша задача</label>
+                    <textarea id="caseTask" name="task" class="quiz-input" rows="4"
+                        placeholder="Нужен Telegram-бот для трейдинга с анализом рынка и торговыми сигналами..."></textarea>
+
+                    <label class="field-label" for="caseName">Имя</label>
+                    <input type="text" id="caseName" name="contactName" class="quiz-input" placeholder="Как к вам обращаться" required>
+
+                    <p class="field-hint">Предпочтительный канал</p>
+                    <div class="channel-selector">
+                        <button type="button" class="channel-btn" data-channel="telegram">Telegram</button>
+                        <button type="button" class="channel-btn" data-channel="phone">Телефон</button>
+                        <button type="button" class="channel-btn" data-channel="email">Почта</button>
+                    </div>
+                    <input type="hidden" name="channel" value="telegram">
+
+                    <div class="contact-field-wrap visible">
+                        <label class="field-label field-label--sm" for="caseContactValue">Контакт</label>
+                        <input type="text" id="caseContactValue" class="quiz-input contact-value-input"
+                            placeholder="@username или t.me/..." required>
+                    </div>
+
+                    <button type="submit" class="primary-btn case-contact-submit">Отправить заявку</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Telegram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </a>
+                </div>
+                <div style="margin-top: 48px; color: var(--text-muted); font-size: 0.8rem;">
+                    © 2026 dev2026.ru · ИНН: 4019320663 · <a href="../../" class="case-footer-link">На главную</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Полноэкранный просмотр">
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/leads.js"></script>
+    <script src="../../js/cases-data.js"></script>
+    <script src="../../js/case-collage.js"></script>
+    <script src="../../js/analytics.js"></script>
+    <script src="../../js/particles.js"></script>
+    <script src="../../js/case-page.js"></script>
+
+</body>
+
+</html>
