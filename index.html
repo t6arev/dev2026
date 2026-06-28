@@ -42,15 +42,17 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="preload" as="image" href="assets/img/ЭТО Я.jpg" fetchpriority="high">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/motion.css">
     <!-- Yandex.Metrika counter -->
     <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
 </head>
 
-<body>
+<body class="motion">
+
+    <div class="scroll-progress" aria-hidden="true"></div>
 
     <div class="background-container">
         <div class="blob blob-1"></div>
@@ -59,6 +61,7 @@
         <div class="blob blob-4"></div>
     </div>
     <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+    <canvas id="motionWebgl" class="motion-webgl" aria-hidden="true"></canvas>
     <div class="texture-overlay"></div>
 
     <div class="container">
@@ -73,97 +76,53 @@
                 <span class="logo-text">dev2026.ru</span>
             </a>
             <div class="nav-links">
-                <a href="#services" class="nav-link">Услуги</a>
                 <a href="#portfolio" class="nav-link">Кейсы</a>
-                <a href="#prices" class="nav-link">Цены</a>
+                <a href="#process" class="nav-link">Процесс</a>
                 <a href="#about" class="nav-link">Обо мне</a>
                 <a href="#faq" class="nav-link">FAQ</a>
             </div>
-            <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="cta-button">Связаться</a>
+            <span class="nav-status"><span class="dot"></span>Открыт для проектов</span>
+            <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="cta-button">Начать проект ↗</a>
+            <button class="nav-toggle" id="navToggle" aria-label="Меню" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
         </nav>
 
         <!-- Hero Section -->
-        <header class="hero">
-            <div class="hero-content">
-                <!-- Typewriter Effect -->
-                <div class="code-line-wrapper">
-                    <div class="code-line">
-                        <span class="prompt">></span>
-                        <span class="typewriter-text"></span><span class="cursor">_</span>
+        <header class="hero motion-hero" data-count="ВВЕДЕНИЕ">
+            <div class="hero-grid">
+                <div class="hero-main">
+                    <span class="kicker-mono hero-meta"><span class="dot"></span>TELEGRAM · AI · WEB · АВТОМАТИЗАЦИЯ</span>
+                    <h1 class="hero-title">Разрабатываю <span class="hero-rotator" id="heroRotator"><span class="hero-rotator-word is-visible">Telegram-ботов</span><span class="hero-rotator-word">приложения</span><span class="hero-rotator-word">Mini Apps</span><span class="hero-rotator-word">AI-ассистентов</span></span> и внедряю <span class="accent">ИИ&nbsp;в&nbsp;бизнес</span> под ключ.</h1>
+                    <p class="lead">
+                        Делаю коммерческие решения: разработка телеграм-ботов на заказ, AI-ассистенты и внедрение ИИ в бизнес-процессы для продаж, поддержки и автоматизации.
+                    </p>
+                    <div class="hero-cta-row">
+                        <button onclick="openModal()" class="primary-btn">
+                            Обсудить проект
+                        </button>
+                        <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="secondary-btn">
+                            Написать в Telegram
+                        </a>
                     </div>
                 </div>
-
-                <h1>Разрабатываю Telegram-ботов и внедряю ИИ в бизнес под ключ.</h1>
-                <p class="lead">
-                    Делаю коммерческие решения: разработка телеграм-ботов на заказ, AI-ассистенты и внедрение ИИ в бизнес-процессы для продаж, поддержки и автоматизации.
-                </p>
-                <div class="hero-cta-row">
-                    <button onclick="openModal()" class="primary-btn">
-                        Обсудить проект
-                    </button>
-                    <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="secondary-btn">
-                        Написать в Telegram
-                    </a>
-                </div>
-            </div>
-            <div class="hero-image-container">
-                <div class="hero-bg-glow"></div>
-                <div class="hero-photo-flip" tabindex="0" aria-label="Карточка с фотографией и тезисами обо мне">
-                    <div class="hero-photo-face hero-photo-front">
-                        <img src="assets/img/ЭТО Я.jpg" alt="Разработчик" class="hero-photo" loading="eager" fetchpriority="high" decoding="async" width="420" height="525">
-                    </div>
-                    <div class="hero-photo-face hero-photo-back" role="note" aria-label="Кратко обо мне">
-                        <span class="hero-about-link-label">Обо мне</span>
-                        <strong>Что вы получаете в работе со мной</strong>
-                        <ul class="hero-about-list">
-                            <li>
-                                <span class="hero-roadmap-title">Понятный план реализации</span>
-                                <span class="hero-roadmap-copy">Превращаю идею в четкую структуру, MVP и дорожную карту запуска.</span>
-                            </li>
-                            <li>
-                                <span class="hero-roadmap-title">Разработку под ключ</span>
-                                <span class="hero-roadmap-copy">Беру на себя сайт, CRM, интеграции, API и автоматизацию процессов.</span>
-                            </li>
-                            <li>
-                                <span class="hero-roadmap-title">Запуск и развитие продукта</span>
-                                <span class="hero-roadmap-copy">Довожу проект до релиза, помогаю с улучшениями и поддержкой после запуска.</span>
-                            </li>
-                        </ul>
-                        <a href="#about" class="hero-about-card-link">Подробнее</a>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="hero-ambient" data-parallax-scene>
+                        <span class="hero-light hero-light--main" data-depth="0.18"></span>
+                        <span class="hero-light hero-light--soft" data-depth="0.08"></span>
+                        <span class="hero-glass hero-glass--one" data-depth="0.12"></span>
+                        <span class="hero-glass hero-glass--two" data-depth="0.2"></span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Services Section -->
-        <section id="services" class="section">
-            <h2>Что делаю</h2>
-            <div class="services-cloud" aria-label="Список услуг">
-                <span class="cloud-tag">AI-боты</span>
-                <span class="cloud-tag">Внедрение ИИ в бизнес</span>
-                <span class="cloud-tag">Корпоративные AI-ассистенты</span>
-                <span class="cloud-tag">Чат-боты</span>
-                <span class="cloud-tag">Игровые боты</span>
-                <span class="cloud-tag">VPN-боты</span>
-                <span class="cloud-tag">Боты для продаж</span>
-                <span class="cloud-tag">Приём заявок</span>
-                <span class="cloud-tag">Боты с оплатой</span>
-                <span class="cloud-tag">Mini Apps</span>
-                <span class="cloud-tag">Для сообществ</span>
-                <span class="cloud-tag">Автоматизация</span>
-                <span class="cloud-tag">Сайты</span>
-                <span class="cloud-tag">Базы знаний</span>
-                <span class="cloud-tag">Кастомные решения</span>
-                <span class="cloud-tag">AI-ассистенты</span>
-                <span class="cloud-tag">Личные кабинеты</span>
-                <span class="cloud-tag">Подписочные сервисы</span>
-                <span class="cloud-tag">Интеграции с CRM</span>
-            </div>
-        </section>
-
         <!-- Portfolio Section -->
-        <section id="portfolio" class="section">
-            <h2>Кейсы</h2>
+        <section id="portfolio" class="section" data-count="КЕЙСЫ">
+            <div class="section-head">
+                <span class="kicker-mono"><span class="dot"></span>ИЗБРАННЫЕ ПРОЕКТЫ</span>
+                <h2 class="section-title">Кейсы</h2>
+            </div>
             <div class="portfolio-filters" id="portfolioFilters">
                 <button class="filter-btn active" data-filter="all">Все</button>
                 <button class="filter-btn" data-filter="bots">Боты</button>
@@ -173,9 +132,49 @@
             <div class="portfolio-accordion" id="portfolioGrid"></div>
         </section>
 
+        <!-- Process Section -->
+        <section id="process" class="section process" data-count="ПРОЦЕСС">
+            <div class="section-head">
+                <span class="kicker-mono"><span class="dot"></span>КАК РАБОТАЮ</span>
+                <h2 class="section-title">Как работаю</h2>
+            </div>
+            <div class="process-stage">
+                <div class="process-track" id="processTrack">
+                    <div class="process-step" data-reveal>
+                        <span class="num">01</span>
+                        <h3>Бриф</h3>
+                        <p>Разбираю задачу, цели и контекст. Слушаю, уточняю, фиксирую сценарий.</p>
+                    </div>
+                    <div class="process-step" data-reveal data-delay="1">
+                        <span class="num">02</span>
+                        <h3>Стратегия</h3>
+                        <p>Структура продукта, MVP, дорожная карта и выбор стека.</p>
+                    </div>
+                    <div class="process-step" data-reveal data-delay="2">
+                        <span class="num">03</span>
+                        <h3>Дизайн</h3>
+                        <p>Логика интерфейса и сценарии: понятно, аккуратно, под задачу.</p>
+                    </div>
+                    <div class="process-step" data-reveal data-delay="3">
+                        <span class="num">04</span>
+                        <h3>Разработка</h3>
+                        <p>Сборка, интеграции с CRM, API и платежами, тестирование.</p>
+                    </div>
+                    <div class="process-step" data-reveal data-delay="4">
+                        <span class="num">05</span>
+                        <h3>Запуск</h3>
+                        <p>Релиз, поддержка и развитие продукта после старта.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Prices Section -->
-        <section id="prices" class="section">
-            <h2>Стоимость</h2>
+        <section id="prices" class="section" data-count="СТОИМОСТЬ">
+            <div class="section-head">
+                <span class="kicker-mono"><span class="dot"></span>ПРОЗРАЧНЫЕ ЦЕНЫ</span>
+                <h2 class="section-title">Стоимость</h2>
+            </div>
             <div class="prices-grid">
                 <div class="price-card">
                     <div class="card-icon" style="margin: 0 auto 24px auto;">
@@ -251,22 +250,32 @@
         </section>
 
         <!-- About Section -->
-        <section id="about" class="section section--about">
-            <h2>Обо мне</h2>
+        <section id="about" class="section section--about" data-count="ОБО МНЕ">
+            <div class="section-head">
+                <span class="kicker-mono"><span class="dot"></span>КТО ДЕЛАЕТ</span>
+                <h2 class="section-title">Обо мне</h2>
+            </div>
+            <div class="about-lead-grid" data-reveal>
+                <figure class="about-portrait">
+                    <img src="assets/img/ЭТО Я.jpg" alt="Разработчик dev2026.ru" loading="lazy" decoding="async" width="420" height="525">
+                    <figcaption>dev2026 · разработчик</figcaption>
+                </figure>
+                <p class="lead" style="margin:0;">Разрабатываю цифровые продукты: Telegram-ботов, AI-ассистентов, веб-сервисы и автоматизацию. Помогаю бизнесу быстрее запускаться, автоматизироваться и расти.</p>
+            </div>
             <div class="about-highlights">
-                <article class="about-pill">
-                    <strong>7+ лет</strong>
+                <article class="about-pill about-stat" data-stat-target="7" data-stat-step="1">
+                    <strong><span class="stat-counter">0</span>+ лет</strong>
                     <span>в разработке</span>
                 </article>
-                <article class="about-pill">
-                    <strong>100+</strong>
+                <article class="about-pill about-stat" data-stat-target="100" data-stat-step="10">
+                    <strong><span class="stat-counter">0</span>+</strong>
                     <span>реализованных задач</span>
                 </article>
-                <article class="about-pill">
-                    <strong>c 2019</strong>
+                <article class="about-pill about-stat" data-stat-target="2019" data-stat-start="2015" data-stat-step="1">
+                    <strong>c <span class="stat-counter">2015</span></strong>
                     <span>частная практика</span>
                 </article>
-                <article class="about-pill">
+                <article class="about-pill about-stat" data-stat-type="text">
                     <strong>Под ключ</strong>
                     <span>от идеи до запуска</span>
                 </article>
@@ -301,8 +310,11 @@
             </div>
         </section>
 
-        <section id="faq" class="section">
-            <h2>FAQ</h2>
+        <section id="faq" class="section" data-count="FAQ">
+            <div class="section-head">
+                <span class="kicker-mono"><span class="dot"></span>ВОПРОСЫ И ОТВЕТЫ</span>
+                <h2 class="section-title">FAQ</h2>
+            </div>
             <div class="faq-list">
                 <details class="faq-item">
                     <summary>Сколько стоит разработка?</summary>
@@ -335,7 +347,7 @@
             </div>
         </section>
 
-        <section class="final-cta">
+        <section class="final-cta" data-reveal>
             <h3>Готов обсудить вашу задачу и предложить лучший формат</h3>
             <p>Выберите удобный вариант: пройти короткий онбординг с вопросами или сразу написать в Telegram.</p>
             <div class="cta-actions">
@@ -343,6 +355,10 @@
                 <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="secondary-btn">Написать
                     в Telegram</a>
             </div>
+        </section>
+
+        <section class="seo-keywords-footer" aria-label="SEO ключевые направления">
+            <p>AI-боты · Внедрение ИИ в бизнес · Корпоративные AI-ассистенты · Чат-боты · Игровые боты · VPN-боты · Боты для продаж · Приём заявок · Боты с оплатой · Mini Apps · Для сообществ · Автоматизация · Сайты · Базы знаний · Кастомные решения · AI-ассистенты · Личные кабинеты · Подписочные сервисы · Интеграции с CRM</p>
         </section>
 
         <!-- Footer -->
@@ -362,7 +378,16 @@
                 </div>
             </div>
         </footer>
+    </div>
 
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#portfolio"><span>01</span>Кейсы</a>
+        <a href="#process"><span>02</span>Процесс</a>
+        <a href="#prices"><span>03</span>Цены</a>
+        <a href="#about"><span>04</span>Обо мне</a>
+        <a href="#faq"><span>05</span>FAQ</a>
+        <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="mobile-cta">Написать в Telegram ↗</a>
     </div>
 
     <!-- Lightbox -->
@@ -472,6 +497,7 @@
     <script src="js/analytics.js" defer></script>
     <script src="js/particles.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/motion.js" defer></script>
 
 </body>
 

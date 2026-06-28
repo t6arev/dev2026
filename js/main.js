@@ -126,31 +126,29 @@ function renderPortfolioGrid() {
 
         return `
             <article class="portfolio-item is-open${isFeatured ? ' is-featured' : ''}${hasPage ? ' has-case-page' : ''}" data-case="${id}">
-                <div class="portfolio-summary" aria-expanded="true">
-                    <div class="portfolio-summary-main">
+                <div class="portfolio-card-layout">
+                    <header class="portfolio-card-head">
                         <h3>${d.title}</h3>
                         <p>${d.desc}</p>
-                    </div>
-                </div>
-                <div class="portfolio-panel">
-                    <div class="portfolio-panel-media">
+                    </header>
+                    <div class="portfolio-card-media">
                         ${mediaHtml}
                     </div>
-                    <div class="portfolio-panel-body">
-                        <div class="portfolio-panel-meta">
-                            <div>
-                                <h4>Задача</h4>
+                    <div class="portfolio-card-side">
+                        <div class="portfolio-story">
+                            <div class="portfolio-story-block">
+                                <span class="portfolio-story-kicker">Задача</span>
                                 <p>${d.task}</p>
                             </div>
-                            <div>
-                                <h4>Что реализовано</h4>
-                                <div class="feature-lines">
-                                    ${d.features.map((item) => `<span>${item}</span>`).join('')}
-                                </div>
+                            <div class="portfolio-story-block">
+                                <span class="portfolio-story-kicker">Что реализовано</span>
+                                <ul class="portfolio-story-list">
+                                    ${d.features.map((item) => `<li>${item}</li>`).join('')}
+                                </ul>
                             </div>
                         </div>
-                        ${pageLinkHtml}
                     </div>
+                    ${hasPage ? `<div class="portfolio-card-cta">${pageLinkHtml}</div>` : ''}
                 </div>
             </article>
         `;
