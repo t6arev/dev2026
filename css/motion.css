@@ -885,6 +885,23 @@
         gap: 20px;
     }
 
+    .motion .portfolio-card-visual {
+        min-height: clamp(200px, 52vw, 280px);
+    }
+
+    .motion .portfolio-card-media .portfolio-card-img-wrap {
+        min-height: clamp(180px, 48vw, 260px);
+    }
+
+    .motion .portfolio-item {
+        padding: 22px 20px;
+        overflow: hidden;
+    }
+
+    .motion .portfolio-card-cta {
+        padding-top: 8px;
+    }
+
     .motion .portfolio-story {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1444,14 +1461,28 @@
 }
 
 /* Unified card layout — no dead space */
+@media (min-width: 901px) {
+    .motion .portfolio-card-layout {
+        display: grid;
+        grid-template-columns: minmax(300px, 1.2fr) minmax(260px, 0.8fr);
+        grid-template-areas:
+            "head head"
+            "media side"
+            "cta cta";
+        gap: clamp(20px, 3vw, 28px) clamp(28px, 4vw, 48px);
+        align-items: start;
+    }
+}
+
 .motion .portfolio-card-layout {
     display: grid;
-    grid-template-columns: minmax(300px, 1.2fr) minmax(260px, 0.8fr);
     grid-template-areas:
-        "head head"
-        "media side"
-        "cta cta";
-    gap: clamp(20px, 3vw, 28px) clamp(28px, 4vw, 48px);
+        "head"
+        "media"
+        "side"
+        "cta";
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 28px);
     align-items: start;
 }
 
@@ -1598,6 +1629,20 @@
 .motion .portfolio-card-cta .case-page-link.primary-btn {
     padding: 14px 31px !important;
     font-size: 0.79rem !important;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+}
+
+@media (min-width: 901px) {
+    .motion .portfolio-card-cta .case-page-link.primary-btn {
+        width: auto;
+        max-width: none;
+    }
 }
 
 .motion .portfolio-card-side .case-page-link {
@@ -1768,10 +1813,16 @@
    -------------------------------------------------------------------------- */
 .motion .about-highlights {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(16px, 2.5vw, 24px);
     align-items: start;
     margin-bottom: clamp(28px, 4vw, 40px);
+}
+
+@media (min-width: 901px) {
+    .motion .about-highlights {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
 }
 
 .motion .about-stat {
@@ -1793,7 +1844,14 @@
     color: var(--text-main);
     margin-bottom: 6px;
     min-height: 1.15em;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+@media (min-width: 901px) {
+    .motion .about-stat strong {
+        white-space: nowrap;
+    }
 }
 
 .motion .about-stat > span {
