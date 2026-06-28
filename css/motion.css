@@ -401,6 +401,8 @@
    -------------------------------------------------------------------------- */
 .motion .section {
     padding: var(--section-gap) 0;
+    opacity: 1;
+    transform: none;
 }
 
 .motion .section-head {

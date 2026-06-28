@@ -88,14 +88,19 @@ function renderPortfolioGrid() {
     if (!grid) return;
 
     const slideState = getSlideState(grid);
+    const caseOrder = window.caseOrder || [];
+    const caseData = window.caseData || {};
 
-    const order = window.caseOrder.filter((id) => {
-        const page = window.caseData[id]?.page;
+    const order = caseOrder.filter((id) => {
+        const page = caseData[id]?.page;
         return Boolean(page?.hasPage && page.url);
     });
 
+    if (!order.length) return;
+
     grid.innerHTML = order.map((id) => {
-        const d = window.caseData[id];
+        const d = caseData[id];
+        if (!d) return '';
         const images = getCaseImages(id);
         const slideIndex = Math.min(slideState[id] || 0, images.length - 1);
         const currentSrc = images[slideIndex];
@@ -186,6 +191,12 @@ function initPortfolio() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.section').forEach(function (section) {
+        var rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.92) {
+            section.classList.add('visible');
+        }
+    });
     initPortfolio();
     initContactChannel(document.getElementById('quizForm'));
 });
