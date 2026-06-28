@@ -887,14 +887,6 @@
         gap: 20px;
     }
 
-    .motion .portfolio-card-visual {
-        min-height: clamp(200px, 52vw, 280px);
-    }
-
-    .motion .portfolio-card-media .portfolio-card-img-wrap {
-        min-height: clamp(180px, 48vw, 260px);
-    }
-
     .motion .portfolio-item {
         padding: 22px 20px;
         overflow: hidden;
@@ -1523,39 +1515,47 @@
 
 .motion .portfolio-card-visual {
     border: none;
-    border-radius: clamp(20px, 2.5vw, 28px);
-    background: rgba(255, 255, 255, 0.02);
-    overflow: hidden;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14);
-    aspect-ratio: auto;
-    min-height: clamp(300px, 34vw, 460px);
+    border-radius: 0;
+    background: transparent !important;
+    overflow: visible;
+    box-shadow: none;
+    aspect-ratio: unset;
+    min-height: 0;
+    height: auto;
     width: 100%;
-    transition: transform 0.55s var(--ease-motion), box-shadow 0.55s var(--ease-motion);
+    transition: transform 0.55s var(--ease-motion);
     transform-origin: center center;
-    will-change: transform;
 }
 
 .motion .portfolio-card-media .portfolio-card-img-wrap {
-    padding: clamp(8px, 1.2vw, 14px);
-    min-height: clamp(280px, 32vw, 440px);
+    padding: 0;
+    min-height: 0;
+    height: auto;
+    width: 100%;
+    overflow: visible;
 }
 
 .motion .portfolio-card-media .portfolio-card-img-wrap img {
-    object-fit: contain;
-    transform: scale(1.02);
-    transition: transform 0.65s var(--ease-motion);
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: unset;
+    object-position: center;
+    border-radius: clamp(16px, 2vw, 22px);
+    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.32));
+    transition: transform 0.65s var(--ease-motion), filter 0.55s var(--ease-motion);
+    transform: none;
 }
 
 @media (hover: hover) {
     .motion .portfolio-card-visual:hover {
-        transform: scale(1.028);
-        box-shadow:
-            0 32px 80px rgba(0, 0, 0, 0.2),
-            0 0 48px rgba(var(--neon-blue), 0.1);
+        transform: none;
+        box-shadow: none;
     }
 
     .motion .portfolio-card-visual:hover .portfolio-card-img-wrap img {
-        transform: scale(1.08);
+        transform: scale(1.02);
+        filter: drop-shadow(0 24px 56px rgba(0, 0, 0, 0.38));
     }
 }
 
@@ -1644,6 +1644,12 @@
     .motion .portfolio-card-cta .case-page-link.primary-btn {
         width: auto;
         max-width: none;
+    }
+
+    /* Коллаж как на оригинале — без рамки, чуть меньше (~12%) */
+    .motion .portfolio-card-media .portfolio-card-img-wrap img {
+        width: 88%;
+        margin-inline: auto;
     }
 }
 
