@@ -187,27 +187,35 @@
         }, 2600);
     }
 
-    function initMobileMenu() {
+    function closeMobileMenu() {
+        document.body.classList.remove('nav-open');
+        document.body.style.overflow = '';
         var toggle = document.querySelector('.nav-toggle');
-        var menu = document.getElementById('mobileMenu');
-        if (!toggle || !menu) return;
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
 
-        function close() {
-            document.body.classList.remove('nav-open');
-            document.body.style.overflow = '';
-            toggle.setAttribute('aria-expanded', 'false');
-        }
+    function initMobileMenu() {
+        if (document.body.dataset.mobileMenuBound === '1') return;
+        document.body.dataset.mobileMenuBound = '1';
 
-        toggle.addEventListener('click', function () {
-            var open = document.body.classList.toggle('nav-open');
-            document.body.style.overflow = open ? 'hidden' : '';
-            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
+        document.addEventListener('click', function (e) {
+            var toggle = e.target.closest('.nav-toggle');
+            if (toggle) {
+                e.preventDefault();
+                var open = document.body.classList.toggle('nav-open');
+                document.body.style.overflow = open ? 'hidden' : '';
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                return;
+            }
 
-        menu.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', close);
+            if (e.target.closest('#mobileMenu a')) {
+                closeMobileMenu();
+            }
         });
     }
+
+    window.initMobileMenu = initMobileMenu;
+    window.closeMobileMenu = closeMobileMenu;
 
     function runStepCounter(card, el, target, step, duration, startFrom) {
         var values = [];

@@ -204,6 +204,8 @@ document.addEventListener('DOMContentLoaded', function () {
 // Quiz modal
 function openModal() { document.getElementById('cost-modal').classList.add('active'); }
 function closeModal() { document.getElementById('cost-modal').classList.remove('active'); }
+window.openModal = openModal;
+window.closeModal = closeModal;
 
 const costModalEl = document.getElementById('cost-modal');
 if (costModalEl) {

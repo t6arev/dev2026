@@ -52,9 +52,31 @@
                 '</div>' +
                 '<span class="nav-status"><span class="dot"></span>Открыт для проектов</span>' +
                 '<a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="cta-button">Начать проект ↗</a>' +
-                '<button class="nav-toggle" id="navToggle" aria-label="Меню" aria-expanded="false">' +
+                '<button type="button" class="nav-toggle" id="navToggle" aria-label="Меню" aria-expanded="false">' +
                 '<span></span><span></span><span></span>' +
                 '</button>';
+        }
+
+        if (typeof window.initMobileMenu === 'function') {
+            window.initMobileMenu();
+        }
+    }
+
+    function initServiceCta() {
+        var cta = document.querySelector('.service-page .final-cta');
+        if (!cta) return;
+
+        cta.classList.add('is-in');
+
+        var primaryBtn = cta.querySelector('.cta-actions .primary-btn');
+        if (primaryBtn && primaryBtn.dataset.ctaBound !== '1') {
+            primaryBtn.dataset.ctaBound = '1';
+            primaryBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (typeof window.openModal === 'function') {
+                    window.openModal();
+                }
+            });
         }
     }
 
@@ -549,6 +571,7 @@
         }
 
         initLeadForm(service);
+        initServiceCta();
 
         if (typeof window.refreshMotionReveal === 'function') {
             window.refreshMotionReveal(document.querySelector('.container'));

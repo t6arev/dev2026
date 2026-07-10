@@ -743,8 +743,8 @@
         var radius = 16;
         var fs = Math.max(11, Math.min(13, w * 0.03));
         var drift = prefersReduced ? 0 : Math.sin(t * 0.45) * 2;
-        var estContentH = 300;
-        var fitScale = panelH < estContentH ? panelH / estContentH : 1;
+        var estContentH = 250;
+        var fitScale = panelH < estContentH ? Math.max(0.9, panelH / estContentH) : 1;
 
         ctx.save();
         ctx.globalAlpha = panelAlpha;
@@ -1124,8 +1124,8 @@
         var radius = 16;
         var fs = Math.max(11, Math.min(13, w * 0.03));
         var drift = prefersReduced ? 0 : Math.sin(t * 0.45) * 2;
-        var estContentH = 300;
-        var fitScale = panelH < estContentH ? panelH / estContentH : 1;
+        var estContentH = 250;
+        var fitScale = panelH < estContentH ? Math.max(0.9, panelH / estContentH) : 1;
 
         ctx.save();
         ctx.globalAlpha = panelAlpha;
