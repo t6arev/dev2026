@@ -13,6 +13,9 @@
 
     function applyServiceChrome() {
         var body = document.body;
+        var isServicePage = body.classList.contains('service-page');
+        var isHubPage = body.classList.contains('services-hub-page');
+
         if (!document.getElementById('mobileMenu')) {
             var menu = document.createElement('div');
             menu.className = 'mobile-menu';
@@ -22,34 +25,12 @@
                 '<a href="/#process"><span>02</span>Процесс</a>' +
                 '<a href="/#about"><span>03</span>Обо мне</a>' +
                 '<a href="/#faq"><span>04</span>FAQ</a>' +
-                '<a href="/services/"><span>05</span>Услуги</a>' +
+                '<a href="/#servicesHub"><span>05</span>Услуги</a>' +
                 '<a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="mobile-cta">Написать в Telegram ↗</a>';
             document.body.appendChild(menu);
         }
 
-        if (!body.classList.contains('service-page')) return;
-
-        var texture = document.querySelector('.texture-overlay');
-        if (texture && !document.getElementById('particleCanvas')) {
-            var particle = document.createElement('canvas');
-            particle.id = 'particleCanvas';
-            particle.className = 'particle-canvas';
-            particle.setAttribute('aria-hidden', 'true');
-            var webgl = document.createElement('canvas');
-            webgl.id = 'motionWebgl';
-            webgl.className = 'motion-webgl';
-            webgl.setAttribute('aria-hidden', 'true');
-            texture.parentNode.insertBefore(webgl, texture);
-            texture.parentNode.insertBefore(particle, webgl);
-        }
-
-        if (!document.querySelector('script[data-particles-loaded]')) {
-            var particles = document.createElement('script');
-            particles.src = '/js/particles.js';
-            particles.defer = true;
-            particles.setAttribute('data-particles-loaded', '1');
-            document.body.appendChild(particles);
-        }
+        if (!isServicePage && !isHubPage) return;
 
         var nav = document.querySelector('.container > nav');
         if (nav && nav.dataset.chromeSynced !== '1') {
@@ -67,7 +48,7 @@
                 '<a href="/#process" class="nav-link">Процесс</a>' +
                 '<a href="/#about" class="nav-link">Обо мне</a>' +
                 '<a href="/#faq" class="nav-link">FAQ</a>' +
-                '<a href="/services/" class="nav-link">Услуги</a>' +
+                '<a href="/#servicesHub" class="nav-link">Услуги</a>' +
                 '</div>' +
                 '<span class="nav-status"><span class="dot"></span>Открыт для проектов</span>' +
                 '<a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="cta-button">Начать проект ↗</a>' +
@@ -415,6 +396,11 @@
         var body = document.body;
         if (!body.classList.contains('service-page')) return;
 
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+            window.scrollTo(0, 0);
+        }
+
         var serviceId = body.dataset.serviceId;
         var service = window.ServicesConfig && window.ServicesConfig.getService(serviceId);
         if (!service) return;
@@ -501,14 +487,18 @@
 
         var solutions = service.solutions || {};
         var solutionItems = solutions.items;
-        if (solutionItems === undefined) solutionItems = service.subsections || [];
-        setSection(
-            'service-solutions',
-            'serviceSolutionsTitle',
-            'serviceSolutionsBody',
-            solutions.title || 'Какие решения мы разрабатываем',
-            renderSolutions(solutionItems, solutions.title || 'Решения')
-        );
+        if (solutionItems && solutionItems.length) {
+            setSection(
+                'service-solutions',
+                'serviceSolutionsTitle',
+                'serviceSolutionsBody',
+                solutions.title || 'Какие решения мы разрабатываем',
+                renderSolutions(solutionItems, solutions.title || 'Решения')
+            );
+        } else {
+            var solutionsSection = document.getElementById('service-solutions');
+            if (solutionsSection) solutionsSection.hidden = true;
+        }
 
         var steps = service.steps || {};
         setSection(

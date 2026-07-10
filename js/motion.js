@@ -943,6 +943,8 @@
     function boot() {
         document.body.classList.add('motion-ready');
         var isCasePage = document.body.classList.contains('case-page');
+        var isLightPage = document.body.classList.contains('service-page') ||
+            document.body.classList.contains('services-hub-page');
 
         if (!isCasePage) {
             processSection = document.getElementById('process') || document.getElementById('service-steps');
@@ -951,7 +953,7 @@
 
         initPointerParallax();
 
-        if (!isCasePage) {
+        if (!isCasePage && !isLightPage) {
             initWebglMotion();
             initAboutStats();
             initHeroRotator();

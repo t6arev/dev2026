@@ -25,23 +25,18 @@
     }
 
     function renderHubAccordionCard(service, index) {
-        var subsections = (service.subsections || []).map(renderSubsectionItem).join('');
         var desc = (service.homeCard && service.homeCard.desc) || (service.seo && service.seo.description) || '';
 
         return (
-            '<article class="services-card" data-service="' + escapeHtml(service.id) + '">' +
-                '<button type="button" class="services-card-toggle" aria-expanded="false" id="service-toggle-' + index + '" aria-controls="service-panel-' + index + '">' +
+            '<article class="services-card services-card--link">' +
+                '<a href="' + escapeHtml(service.route) + '" class="services-card-link">' +
                     '<span class="services-card-index">' + pad2(index + 1) + '</span>' +
                     '<span class="services-card-title-wrap">' +
                         '<span class="services-card-title">' + escapeHtml(service.title) + '</span>' +
                         '<span class="services-card-desc">' + escapeHtml(desc) + '</span>' +
                     '</span>' +
                     '<span class="services-card-icon" aria-hidden="true">↗</span>' +
-                '</button>' +
-                '<div class="services-card-panel" id="service-panel-' + index + '" role="region" aria-labelledby="service-toggle-' + index + '" hidden>' +
-                    '<ul class="services-subsection-list">' + subsections + '</ul>' +
-                    '<a href="' + escapeHtml(service.route) + '" class="services-card-cta">Открыть направление ↗</a>' +
-                '</div>' +
+                '</a>' +
             '</article>'
         );
     }
@@ -100,7 +95,6 @@
         root.innerHTML = '<div class="services-accordion">' +
             window.ServicesConfig.getOrdered().map(renderHubAccordionCard).join('') +
             '</div>';
-        initHubAccordion(root);
     }
 
     function renderHomeSticky(containerId) {

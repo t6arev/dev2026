@@ -721,6 +721,33 @@
     box-shadow: none;
 }
 
+.motion .services-card--link {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background 0.25s ease;
+}
+
+.motion .services-card--link:hover,
+.motion .services-card--link:focus-within {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.motion .services-card-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(14px, 2vw, 24px);
+    width: 100%;
+    padding: clamp(22px, 3.2vw, 38px) 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.motion .services-card-link:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 4px;
+    border-radius: 8px;
+}
+
 .motion .services-card-toggle {
     width: 100%;
     display: grid;
