@@ -32,6 +32,29 @@
 
         updateHud();
         updateProcessScrollLink();
+        updateServiceHeroParallax();
+    }
+
+    function updateServiceHeroParallax() {
+        if (prefersReduced || window.matchMedia('(max-width: 768px)').matches) return;
+        if (!document.body.classList.contains('service-page')) return;
+        var visual = document.getElementById('serviceHeroVisual');
+        if (!visual) return;
+
+        var rect = visual.getBoundingClientRect();
+        var vh = window.innerHeight;
+        if (rect.bottom < 0 || rect.top > vh) return;
+
+        var center = rect.top + rect.height * 0.5;
+        var norm = clamp((center - vh * 0.5) / vh, -1, 1);
+        var scrollY = norm * -10;
+        var mx = parseFloat(getComputedStyle(document.body).getPropertyValue('--mx')) || 0;
+        var my = parseFloat(getComputedStyle(document.body).getPropertyValue('--my')) || 0;
+        var pointerX = mx * 6;
+        var pointerY = my * 4;
+
+        visual.style.setProperty('--hero-parallax-x', pointerX.toFixed(2) + 'px');
+        visual.style.setProperty('--hero-parallax-y', (scrollY + pointerY).toFixed(2) + 'px');
     }
 
     function updateAmbientBreathe() {
@@ -68,6 +91,7 @@
                 pointerTicking = false;
                 document.body.style.setProperty('--mx', pointer.x.toFixed(3));
                 document.body.style.setProperty('--my', pointer.y.toFixed(3));
+                updateServiceHeroParallax();
             });
         }, { passive: true });
     }
@@ -126,6 +150,14 @@
 
         var rect = processSection.getBoundingClientRect();
         var vh = window.innerHeight || 1;
+        var isServiceTimeline = processTrack.classList.contains('service-process-track');
+
+        if (isServiceTimeline) {
+            var seen = clamp((vh * 0.78 - rect.top) / ((rect.height || 1) + vh * 0.35), 0, 1);
+            processTrack.style.setProperty('--process-progress', seen.toFixed(4));
+            return;
+        }
+
         var raw = clamp((vh * 0.72 - rect.top) / (rect.height || 1), 0, 1);
         var progress = clamp(raw * 1.12, 0, 1);
         var steps = Array.prototype.slice.call(processTrack.querySelectorAll('.process-step'));
@@ -292,10 +324,13 @@
     }
 
     function initFaqMotion() {
-        var root = document.querySelector('#faq');
-        if (!root) return;
+        var roots = Array.prototype.slice.call(document.querySelectorAll('#faq, #service-faq'));
+        if (!roots.length) return;
 
-        var items = root.querySelectorAll('.faq-item');
+        var items = [];
+        for (var r = 0; r < roots.length; r++) {
+            items = items.concat(Array.prototype.slice.call(roots[r].querySelectorAll('.faq-item')));
+        }
         if (!items.length) return;
 
         var fromDirs = ['right', 'left', 'right', 'left', 'right', 'left'];
@@ -338,10 +373,139 @@
         });
 
         items.forEach(function (item, index) {
+            if (item.dataset.faqMotionBound === '1') return;
+            item.dataset.faqMotionBound = '1';
             item.dataset.faqIndex = String(index);
+            var rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+                revealItem(item, index * stagger);
+                return;
+            }
             io.observe(item);
         });
     }
+
+    window.initFaqMotion = initFaqMotion;
+
+    function bindServiceProcessTimeline() {
+        processSection = document.getElementById('service-steps') || processSection;
+        processTrack = document.getElementById('serviceStepsTimeline') || processTrack;
+        updateProcessScrollLink();
+    }
+
+    window.bindServiceProcessTimeline = bindServiceProcessTimeline;
+
+    function bindServiceProcessScrollSteps() {
+        var track = document.getElementById('serviceStepsTimeline');
+        if (!track || track.dataset.scrollBound === '1') return;
+        track.dataset.scrollBound = '1';
+
+        var steps = Array.prototype.slice.call(track.querySelectorAll('.process-step'));
+        if (!steps.length) return;
+
+        if (prefersReduced) {
+            steps.forEach(function (step) { step.classList.add('is-in'); });
+            track.style.setProperty('--process-progress', '1');
+            return;
+        }
+
+        var ticking = false;
+
+        function updateSteps() {
+            ticking = false;
+            var trackRect = track.getBoundingClientRect();
+            var vh = window.innerHeight || 1;
+            var progress = clamp((vh * 0.72 - trackRect.top) / ((trackRect.height || 1) + vh * 0.25), 0, 1);
+            track.style.setProperty('--process-progress', progress.toFixed(4));
+
+            steps.forEach(function (step) {
+                var rect = step.getBoundingClientRect();
+                var marker = rect.top + rect.height * 0.35;
+                var visible = marker <= vh * 0.82;
+                step.classList.toggle('is-in', visible);
+            });
+        }
+
+        function requestStepUpdate() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(updateSteps);
+        }
+
+        updateSteps();
+        window.addEventListener('scroll', requestStepUpdate, { passive: true });
+        window.addEventListener('resize', requestStepUpdate, { passive: true });
+    }
+
+    window.bindServiceProcessScrollSteps = bindServiceProcessScrollSteps;
+
+    function initServiceAudienceRotator(pool) {
+        var root = document.querySelector('.service-audience-rotator');
+        if (!root || !pool || !pool.length || root.dataset.rotatorBound === '1') return;
+        root.dataset.rotatorBound = '1';
+
+        var slots = Array.prototype.slice.call(root.querySelectorAll('.service-audience-slot'));
+        if (!slots.length) return;
+
+        var offset = 0;
+
+        function setSlotLabel(slot, poolIndex) {
+            var label = slot.querySelector('.service-audience-label');
+            if (!label) return;
+            var next = pool[poolIndex % pool.length];
+            if (label.textContent === next) return;
+
+            label.classList.remove('is-in');
+            label.classList.add('is-out');
+            setTimeout(function () {
+                label.textContent = next;
+                label.classList.remove('is-out');
+                label.classList.add('is-in', 'is-tick');
+                setTimeout(function () { label.classList.remove('is-tick'); }, 220);
+            }, 180);
+        }
+
+        function rotate() {
+            offset = (offset + 1) % pool.length;
+            slots.forEach(function (slot, i) {
+                setSlotLabel(slot, offset + i);
+            });
+        }
+
+        if (prefersReduced) return;
+        setInterval(rotate, 3200);
+    }
+
+    window.initServiceAudienceRotator = initServiceAudienceRotator;
+
+    function initServiceCasesMotion() {
+        var section = document.getElementById('service-cases');
+        if (!section || section.dataset.casesMotionBound === '1') return;
+        section.dataset.casesMotionBound = '1';
+
+        var cards = section.querySelectorAll('.service-case-card');
+        if (!cards.length || prefersReduced) return;
+
+        section.addEventListener('mousemove', function (e) {
+            var rect = section.getBoundingClientRect();
+            var px = (e.clientX - rect.left) / (rect.width || 1) - 0.5;
+            var py = (e.clientY - rect.top) / (rect.height || 1) - 0.5;
+            cards.forEach(function (card, i) {
+                var depth = 1 + (i % 3) * 0.15;
+                card.style.setProperty('--case-tilt-x', (py * -4 * depth).toFixed(2) + 'deg');
+                card.style.setProperty('--case-tilt-y', (px * 5 * depth).toFixed(2) + 'deg');
+            });
+        });
+
+        section.addEventListener('mouseleave', function () {
+            cards.forEach(function (card) {
+                card.style.setProperty('--case-tilt-x', '0deg');
+                card.style.setProperty('--case-tilt-y', '0deg');
+            });
+        });
+    }
+
+    window.initServiceCasesMotion = initServiceCasesMotion;
 
     function initWebglMotion() {
         var canvas = document.getElementById('motionWebgl');
@@ -371,25 +535,54 @@
         var width = 1;
         var height = 1;
         var dpr = Math.min(window.devicePixelRatio || 1, 1.6);
-        var anchors = [
-            { selector: '.hero-visual', fallback: '.motion-hero', kind: 'hero' }
-        ].map(function (item) {
-            item.el = document.querySelector(item.selector);
-            item.fallbackEl = item.fallback ? document.querySelector(item.fallback) : null;
-            return item;
-        }).filter(function (item) {
-            return item.el;
-        });
+
+        function collectAnchors() {
+            var list = [];
+            var heroEl = document.querySelector('.hero-visual');
+            var heroFallback = document.querySelector('.motion-hero');
+            if (heroEl) {
+                list.push({
+                    el: heroEl,
+                    fallbackEl: heroFallback,
+                    kind: 'hero',
+                    isShowcase: false,
+                    isExpanded: false,
+                    customColor: null
+                });
+            }
+            document.querySelectorAll('.service-slide-visual[data-webgl-kind]').forEach(function (el) {
+                var colorAttr = el.getAttribute('data-webgl-color');
+                var customColor = null;
+                if (colorAttr) {
+                    var parts = colorAttr.split(',').map(Number);
+                    if (parts.length === 3 && parts.every(function (n) { return !isNaN(n); })) {
+                        customColor = parts;
+                    }
+                }
+                list.push({
+                    el: el,
+                    fallbackEl: null,
+                    kind: el.getAttribute('data-webgl-kind') || 'hero',
+                    isShowcase: true,
+                    isExpanded: false,
+                    customColor: customColor
+                });
+            });
+            return list;
+        }
 
         function isMobileLayout() {
             return (window.innerWidth || 0) <= 900;
         }
 
         function getAnchorRect(anchor) {
-            if (anchor.kind === 'hero' && isMobileLayout() && anchor.fallbackEl) {
+            if (anchor.kind === 'hero' && !anchor.isShowcase && isMobileLayout() && anchor.fallbackEl) {
                 return anchor.fallbackEl.getBoundingClientRect();
             }
-            return anchor.el.getBoundingClientRect();
+            if (anchor.el) {
+                return anchor.el.getBoundingClientRect();
+            }
+            return { top: 0, left: 0, width: 0, height: 0, bottom: 0 };
         }
 
         gl.enable(gl.BLEND);
@@ -511,37 +704,58 @@
             addLine(projected[2].x, projected[2].y, projected[0].x, projected[0].y, color, edgeAlpha * (isHero ? 0.88 : 0.74));
         }
 
+        function getShowcaseBuild(rect, isExpanded) {
+            var center = rect.top + rect.height * 0.5;
+            var dist = Math.abs(center - window.innerHeight * 0.48);
+            var vis = clamp(1 - dist / (window.innerHeight * 0.62), 0, 1);
+            var scroll = clamp((clamp((window.innerHeight - rect.top) / (window.innerHeight + rect.height * 0.5), 0, 1) - 0.08) * 1.4, 0, 1);
+            var build = Math.max(vis * 0.85, scroll);
+            return isExpanded ? Math.max(build, 0.92) : build;
+        }
+
+        function getServiceCardBuild(rect, isOpen) {
+            var vis = clamp((clamp((height - rect.top) / (height + rect.height * 0.6), 0, 1) - 0.04) * 1.55, 0, 1);
+            return isOpen ? Math.max(vis, 0.94) : vis * 0.88;
+        }
+
         function drawTessellation(anchor, time) {
             var rect = getAnchorRect(anchor);
-            if (rect.bottom < -180 || rect.top > height + 180) return;
+            if (rect.bottom < -180 || rect.top > height + 180 || rect.width < 8) return;
 
-            var isHero = anchor.kind === 'hero';
+            var isHero = anchor.kind === 'hero' && !anchor.isShowcase;
+            var isShowcase = anchor.isShowcase;
+            var meshKind = anchor.kind;
             var scroll = Number(getComputedStyle(document.body).getPropertyValue('--scroll-soft')) || 0;
-            var scrollBoost = isHero ? clamp(scroll * 1.1, 0, 1) : 0;
+            var scrollBoost = isHero ? clamp(scroll * 1.1, 0, 1) : (isShowcase ? clamp(scroll * 0.5, 0, 1) : 0);
             var build = isHero
                 ? getHeroBuild(rect, scroll)
-                : clamp((clamp((height - rect.top) / (height + rect.height), 0, 1) - 0.12) * 1.45, 0, 1);
-            var rows = isHero ? 12 : 7;
-            var cols = isHero ? 16 : 10;
+                : (isShowcase
+                    ? getShowcaseBuild(rect, anchor.isExpanded)
+                    : clamp((clamp((height - rect.top) / (height + rect.height), 0, 1) - 0.12) * 1.45, 0, 1));
+            var rows = isHero ? 12 : (isShowcase ? (anchor.isExpanded ? 12 : 10) : 7);
+            var cols = isHero ? 16 : (isShowcase ? (anchor.isExpanded ? 14 : 12) : 10);
             var blue = [0.34, 0.62, 0.96];
             var white = [0.88, 0.92, 0.98];
-            var heroColor = [0.64, 0.84, 1.0];
-            var color = isHero ? heroColor : (anchor.kind === 'brain' || anchor.kind === 'custom' ? white : blue);
-            var alpha = isHero ? 0.44 : 0.24;
+            var heroColor = anchor.customColor || [0.64, 0.84, 1.0];
+            var color = isHero
+                ? heroColor
+                : (meshKind === 'brain' || meshKind === 'custom' ? white : (anchor.customColor || blue));
+            var alpha = isHero ? 0.44 : (isShowcase ? (meshKind === 'phone' ? 0.42 : 0.32) : 0.24);
+            var drawKind = isHero ? 'hero' : meshKind;
 
             for (var y = 0; y < rows; y++) {
                 for (var x = 0; x < cols; x++) {
                     var u = x / cols;
                     var v = y / rows;
-                    var p1 = surface(anchor.kind, u, v, time);
-                    var p2 = surface(anchor.kind, (x + 1) / cols, v, time);
-                    var p3 = surface(anchor.kind, u, (y + 1) / rows, time);
-                    var p4 = surface(anchor.kind, (x + 1) / cols, (y + 1) / rows, time);
-                    var delay = (x + y) / (rows + cols) * (isHero ? 0.28 : 0.34);
-                    var local = clamp((build - delay) * (isHero ? 2.4 : 1.9), 0, 1);
+                    var p1 = surface(meshKind, u, v, time);
+                    var p2 = surface(meshKind, (x + 1) / cols, v, time);
+                    var p3 = surface(meshKind, u, (y + 1) / rows, time);
+                    var p4 = surface(meshKind, (x + 1) / cols, (y + 1) / rows, time);
+                    var delay = (x + y) / (rows + cols) * (isHero || isShowcase ? 0.28 : 0.34);
+                    var local = clamp((build - delay) * (isHero || isShowcase ? 2.4 : 1.9), 0, 1);
                     if (local > 0) {
-                        drawTriangleEdge(rect, anchor.kind, [p1, p2, p3], local, time, color, alpha, scrollBoost, build);
-                        drawTriangleEdge(rect, anchor.kind, [p2, p4, p3], local, time, color, alpha * (isHero ? 0.92 : 0.85), scrollBoost, build);
+                        drawTriangleEdge(rect, drawKind, [p1, p2, p3], local, time, color, alpha, scrollBoost, build);
+                        drawTriangleEdge(rect, drawKind, [p2, p4, p3], local, time, color, alpha * (isHero || isShowcase ? 0.92 : 0.85), scrollBoost, build);
                     }
                 }
             }
@@ -553,7 +767,7 @@
             gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT);
 
-            anchors.forEach(function (anchor) {
+            collectAnchors().forEach(function (anchor) {
                 drawTessellation(anchor, time);
             });
 
@@ -572,13 +786,167 @@
         requestAnimationFrame(render);
     }
 
+    function initServicesSlideMotion() {
+        var items = document.querySelectorAll('.service-slide');
+        if (!items.length) return;
+
+        var ticking = false;
+        function update() {
+            ticking = false;
+            var vh = window.innerHeight;
+            items.forEach(function (item) {
+                var rect = item.getBoundingClientRect();
+                var raw = clamp((vh - rect.top) / (vh * 1.15), 0, 1);
+                var p = raw * raw * (3 - 2 * raw);
+                item.style.setProperty('--p', p.toFixed(4));
+            });
+        }
+
+        function requestUpdate() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate, { passive: true });
+        document.addEventListener('services:home-rendered', function () {
+            items = document.querySelectorAll('.service-slide');
+            update();
+        });
+        update();
+    }
+
+    function initServicesSlideReveal() {
+        var root = document.querySelector('#services');
+        if (!root) return;
+
+        var isMobile = window.matchMedia('(max-width: 768px)').matches;
+        var stagger = isMobile ? 40 : 60;
+        var io = null;
+
+        function bindSlides() {
+            var slides = root.querySelectorAll('.service-slide');
+            if (!slides.length) return;
+
+            function revealSlide(slide, delay) {
+                setTimeout(function () {
+                    slide.classList.add('is-in');
+                }, delay);
+            }
+
+            if (prefersReduced || !('IntersectionObserver' in window)) {
+                slides.forEach(function (slide) { slide.classList.add('is-in'); });
+                return;
+            }
+
+            if (io) io.disconnect();
+            io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    var slide = entry.target;
+                    var idx = Number(slide.dataset.index || 0);
+                    revealSlide(slide, idx * stagger);
+                    io.unobserve(slide);
+                });
+            }, {
+                threshold: isMobile ? 0.2 : 0.14,
+                rootMargin: '0px 0px 8% 0px'
+            });
+
+            slides.forEach(function (slide) {
+                if (!slide.classList.contains('is-in')) io.observe(slide);
+            });
+        }
+
+        bindSlides();
+        document.addEventListener('services:home-rendered', bindSlides);
+    }
+
+    function initServicePageLists() {
+        if (!document.body.classList.contains('service-page')) return;
+
+        var isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+        function revealNode(node, delay) {
+            setTimeout(function () {
+                node.classList.add('is-in');
+            }, delay);
+        }
+
+        function bindRows(selector, stagger, options) {
+            options = options || {};
+            var nodes = document.querySelectorAll(selector);
+            if (!nodes.length || nodes[0].dataset.motionBound === '1') return;
+
+            nodes.forEach(function (node) {
+                node.dataset.motionBound = '1';
+            });
+
+            if (prefersReduced || !('IntersectionObserver' in window)) {
+                nodes.forEach(function (node) { node.classList.add('is-in'); });
+                return;
+            }
+
+            var root = nodes[0].closest('.service-block');
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    var node = entry.target;
+                    var idx = Number(node.getAttribute(options.indexAttr || 'data-type-index') || 0);
+                    revealNode(node, idx * stagger);
+                    io.unobserve(node);
+                });
+            }, {
+                threshold: isMobile ? 0.16 : 0.1,
+                rootMargin: '0px 0px 8% 0px'
+            });
+
+            nodes.forEach(function (node) {
+                var nodeRect = node.getBoundingClientRect();
+                if (nodeRect.top < window.innerHeight * 0.92 && nodeRect.bottom > 0) {
+                    var idx = Number(node.getAttribute(options.indexAttr || 'data-type-index') || 0);
+                    revealNode(node, idx * stagger);
+                    return;
+                }
+                io.observe(node);
+            });
+        }
+
+        bindRows('.service-type-row', isMobile ? 55 : 75, { indexAttr: 'data-type-index' });
+        bindRows('.service-problem-item', isMobile ? 40 : 60, { indexAttr: 'data-problem-index' });
+        bindRows('.service-case-card', isMobile ? 50 : 80, { indexAttr: 'data-case-index' });
+    }
+
+    window.initServicePageLists = initServicePageLists;
+
+    function refreshMotionReveal(root) {
+        var scope = root || document;
+        var els = scope.querySelectorAll('[data-reveal]:not(.is-in)');
+        if (!els.length) return;
+
+        if (prefersReduced || !('IntersectionObserver' in window)) {
+            els.forEach(function (el) { el.classList.add('is-in'); });
+            return;
+        }
+
+        els.forEach(function (el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.94) {
+                el.classList.add('is-in');
+            }
+        });
+    }
+
+    window.refreshMotionReveal = refreshMotionReveal;
+
     function boot() {
         document.body.classList.add('motion-ready');
         var isCasePage = document.body.classList.contains('case-page');
 
         if (!isCasePage) {
-            processSection = document.getElementById('process');
-            processTrack = document.getElementById('processTrack');
+            processSection = document.getElementById('process') || document.getElementById('service-steps');
+            processTrack = document.getElementById('processTrack') || document.getElementById('serviceStepsTimeline');
         }
 
         initPointerParallax();
@@ -587,10 +955,16 @@
             initWebglMotion();
             initAboutStats();
             initHeroRotator();
+            initServicesSlideMotion();
+            initServicesSlideReveal();
         }
 
         initReveal();
         initFaqMotion();
+        initServicePageLists();
+        if (document.body.classList.contains('service-page') && typeof bindServiceProcessScrollSteps === 'function') {
+            bindServiceProcessScrollSteps();
+        }
         initMobileMenu();
         updatePageMotion();
         startAmbientBreathe();
@@ -599,9 +973,9 @@
         window.addEventListener('resize', requestScrollUpdate, { passive: true });
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', boot);
-    } else {
+    if (document.readyState === 'complete') {
         boot();
+    } else {
+        document.addEventListener('DOMContentLoaded', boot, { once: true });
     }
 })();

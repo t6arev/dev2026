@@ -21,11 +21,20 @@
 - Цель Метрики `lead_submit` теперь срабатывает на квиз и «заказать звонок»
 - Добавлена обработка ошибок отправки с fallback на Telegram
 
-### Заметки на потом
-
-- Файл `design-8df7df36-....html` — черновик дизайна, не трогали
-
 ---
+
+## 2026-06-28 — Раздел «Услуги» (infra)
+
+- Ветка `feat/services-infrastructure`
+- ТЗ №1–3 декомпозировано → `roadmap/workflow/07-services-section.md`
+- Трек ветки → `roadmap/services-branch-plan.md`
+- `js/services-data.js` — 5 услуг, подразделы, связи с кейсами
+- `js/services-render.js` — аккордеон hub + секция на главной
+- `js/service-page.js` — универсальный шаблон (empty state)
+- `css/services.css`, `services/index.html`, 5 routes, `services/_template.html`
+- Секция `#services` на главной между Hero и Кейсами
+- **Не деплоилось** — только локально
+
 
 ## 2026-06-18 (вечер) — Профессиональный редизайн и ремонт форм
 
@@ -75,3 +84,121 @@
 - Обновлён `roadmap/README.md` — текущий фокус: главная, затем этап 5
 - Этап 4 (`04-performance-and-seo.md`) — отмечено что базовое SEO уже на сайте
 - План: посадочные, блог, вебмастера, ссылки, KPI, помесячный график
+
+---
+
+## 2026-06-28 — Раздел «Услуги» (infra)
+
+- Ветка `feat/services-infrastructure`
+- ТЗ №1–3 → `roadmap/workflow/07-services-section.md`, трек → `roadmap/services-branch-plan.md`
+- Конфиг + рендер + hub + 5 shells; контент не наполняли
+- Секция `#services` на главной; маршруты `/services/*`
+- Локально только, без деплоя
+
+---
+
+## 2026-07-02 — Услуги: эталон страницы + SEO-блок на главной
+
+### Главная
+- Убран sticky `#services` с Canvas/WebGL (отказ от motion на карточках)
+- Добавлен `#servicesHub` после FAQ — аккордеон 5 направлений
+- Nav: «Услуги» последним; убран `seo-keywords-footer`
+- Убран ротатор «ключевые направления» (баг с текстом)
+
+### Шаблон страницы услуги
+- `services/_template.html` — единый HTML
+- `js/service-page.js` — 9 блоков, JSON-LD, форма
+- `css/services.css` — hero, glass-карточки, timeline, FAQ, форма
+- Эталон: `services/telegram-bots/` — первая полная страница
+
+### SEO-контент telegram-bots
+- Текст переписан под кластер из `вебмастер.md` (не общие фразы)
+- FAQ под хвосты: стоимость, под ключ, Mini App, CRM, сроки
+
+### Фиксы после ревью
+- Breadcrumbs ломали шапку → скрыты, schema в JSON-LD
+- UTF-8 в `telegram-bots/index.html`
+- FAQ opacity:0 от motion → override для service-page
+- Форма: scoped final-cta
+- Cache-bust на CSS/JS
+
+### План дальше (зафиксирован в roadmap)
+1. Дизайн эталона → 2. Текст → 3. Главная доработки → 4. ~10 страниц → 5. SEO+деплой → 6. Индексация
+
+### Документация
+- `roadmap/chat-summary-cursor.md` — саммари чата
+- `roadmap/next-chat-prompt.md` — промпт для следующего чата
+- `roadmap/services-branch-plan.md` — обновлён мастер-план
+
+**Деплой не делали. Коммит не делали.**
+
+---
+
+## 2026-07-10 — P0: Фаза F0 (подготовка к деплою)
+
+**Workflow:** `roadmap/workflow/09-p0-case-reindex.md`  
+**Трекер:** `cur/p0-tracker.md`
+
+### Сделано
+- `js/services-data.js` — hero, description, steps, FAQ (×4) для shells
+- 4 shell HTML пересобраны из эталона `telegram-bots` (fix UTF-8)
+- `services/index.html` — статические crawlable-ссылки на 5 L2
+- `index.html` — ссылка «Все услуги» + `<noscript>` fallback в `#servicesHub`
+
+### Ждём от заказчика
+- Локальная проверка 7 URL услуг + блок на главной (см. `cur/p0-tracker.md`)
+- OK → переходим к F1 (nav) и F2 (crawlable кейсы)
+
+---
+
+## 2026-07-10 (день) — F0 ревью: hub-ссылки + hero-анимации
+
+### Запрос заказчика
+1. На `/services/` первая ссылка в шапке выглядела иначе (подчёркивание vs glow на последней)
+2. `/services/ai-assistants/` — та же анимация что у AI-ассистента; нужен цикл кастомной разработки
+3. Аналогичные тематические анимации для `ai-agents` и `web-development`
+
+### Сделано
+- `css/services.css` — единый chip-стиль для `.services-hub-static`
+- `js/motion-scenes.js` — сцены `custom`, `agents`, `web` с фазовым циклом
+- `js/services-data.js` — `ai-assistants` → `sceneId: 'custom'`
+- Cache bump `motion-scenes.js?v=service-page-28`
+
+---
+
+## 2026-07-10 (вечер) — F0 sign-off + F1/F2 + commit/deploy
+
+**Workflow:** `roadmap/workflow/09-p0-case-reindex.md`  
+**Трекер:** `cur/p0-tracker.md`
+
+### Заказчик
+- F0: «в целом всё ок» по страницам услуг
+- Запрос: коммит + деплой + фиксация в `cur/`
+
+### F1 Nav
+- Главная: «Услуги» → `/services/` (desktop + mobile)
+- `js/service-page.js`: nav на L2 → `/services/`
+- 6 кейсов: пункт «Услуги» → `/services/`
+
+### F2 Crawlable
+- Главная `#portfolio`: `.portfolio-crawlable` — 6 ссылок на кейсы в HTML
+- Услуги: `.service-cases-crawlable` в source (не затирается JS)
+- Bing: `msvalidate.01` в `<head>` главной
+
+### UX/анимации (в пакете)
+- Hero-сцены: ai-assistants (шестерёнки), ai-agents (чат), web-dev (UI), ai-implementation (mecha)
+- ai-bots: fix `data-service-id`, UTF-8 пересборка shell HTML из `_template.html`
+- Акценты услуг, крошки, превью кейсов, mobile menu на service pages
+
+### Деплой
+- **GitHub Pages** (`CNAME` dev2026.ru) — push в `main` = prod
+- `deploy_new_vps.py` в `.gitignore` (секреты SSH + bot token)
+
+### Дальше по ТЗ
+- F7 post-deploy чеклист
+- F1b Bing verify
+- F3 кейсы (услуга + похожие + крошки)
+- F4 sitemap
+- F5 контент bot6/bot2
+- F8 переобход Вебмастер
+

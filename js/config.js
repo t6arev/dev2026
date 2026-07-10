@@ -1,6 +1,6 @@
 window.SITE_CONFIG = {
     siteUrl: 'https://dev2026.ru',
-    imgBase: 'assets/img/',
+    imgBase: '/assets/img/',
     // Основное лого для favicon/brand-сигналов в поиске.
     brandLogo: 'assets/brand/logo.jpg',
     brandLogoFallback: 'assets/brand/logo.jpg',

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="canonical" href="">
+    <link rel="icon" href="/assets/brand/logo.jpg" type="image/jpeg">
+    <title>Услуга — dev2026.ru</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/motion.css">
+    <link rel="stylesheet" href="../../css/services.css?v=service-page-38">
+</head>
+<body class="motion service-page" data-service-id="ai-implementation">
+
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="background-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+    </div>
+    <div class="texture-overlay"></div>
+
+    <div class="container">
+        <nav>
+            <a href="../../" class="logo" aria-label="На главную">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span class="logo-text">dev2026.ru</span>
+            </a>
+            <div class="nav-links">
+                <a href="/services/" class="nav-link">Услуги</a>
+                <a href="../../#portfolio" class="nav-link">Кейсы</a>
+                <a href="../../#process" class="nav-link">Процесс</a>
+                <a href="../../#about" class="nav-link">Обо мне</a>
+                <a href="../../#faq" class="nav-link">FAQ</a>
+            </div>
+            <span class="nav-status"><span class="dot"></span>Открыт для проектов</span>
+            <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="cta-button">Начать проект ↗</a>
+        </nav>
+
+        <div class="service-breadcrumbs" aria-label="Хлебные крошки">
+            <a href="../../">Главная</a>
+            <span aria-hidden="true">/</span>
+            <a href="/services/">Услуги</a>
+            <span aria-hidden="true">/</span>
+            <span id="serviceBreadcrumbCurrent">Направление</span>
+        </div>
+
+        <header class="section service-hero">
+            <div class="service-hero-copy">
+                <span class="kicker-mono" id="serviceHeroKicker">УСЛУГА</span>
+                <h1 class="service-hero-title" id="serviceHeroTitle"></h1>
+                <p class="service-hero-lead" id="serviceHeroLead"></p>
+                <div class="service-hero-actions">
+                    <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="primary-btn">Обсудить проект</a>
+                    <a href="/services/" class="secondary-btn">Все услуги</a>
+                </div>
+            </div>
+            <div class="service-hero-visual" id="serviceHeroVisual" aria-hidden="true">
+                <canvas class="service-scene-canvas" data-scene="integration"></canvas>
+            </div>
+        </header>
+
+        <section class="section service-block service-copy-block" id="service-description" data-reveal>
+            <h2 class="service-block-title" id="serviceDescTitle">О направлении</h2>
+            <div id="serviceDescBody"></div>
+        </section>
+
+        <section class="section service-block service-block--audience" id="service-audience">
+            <div class="service-section-head" data-reveal>
+                <span class="kicker-mono" id="serviceAudienceKicker"></span>
+                <h2 class="service-block-title" id="serviceAudienceTitle">Кому подойдёт разработка Telegram-бота</h2>
+            </div>
+            <div id="serviceAudienceBody"></div>
+        </section>
+
+        <section class="section service-block service-block--problems" id="service-problems">
+            <div class="service-section-head service-section-head--split" data-reveal>
+                <span class="kicker-mono" id="serviceProblemsKicker"></span>
+                <h2 class="service-block-title service-block-title--left" id="serviceProblemsTitle">Какие задачи решает Telegram-бот</h2>
+            </div>
+            <div id="serviceProblemsBody"></div>
+        </section>
+
+        <section class="section service-block service-block--types" id="service-tasks">
+            <div class="service-section-head service-section-head--editorial" data-reveal>
+                <span class="kicker-mono" id="serviceTasksKicker"></span>
+                <h2 class="service-block-title service-block-title--left" id="serviceTasksTitle">Какие решения мы разрабатываем</h2>
+            </div>
+            <div id="serviceTasksBody"></div>
+        </section>
+
+        <section class="section service-block service-block--steps" id="service-steps" data-reveal>
+            <div class="service-section-head">
+                <span class="kicker-mono" id="serviceStepsKicker"></span>
+                <h2 class="service-block-title service-block-title--center" id="serviceStepsTitle">Процесс разработки</h2>
+            </div>
+            <div id="serviceStepsBody"></div>
+        </section>
+
+        <section class="section service-block" id="service-solutions" data-reveal hidden>
+            <h2 class="service-block-title" id="serviceSolutionsTitle">Какие решения мы разрабатываем</h2>
+            <div id="serviceSolutionsBody"></div>
+        </section>
+
+        <section class="section service-block" id="service-why" data-reveal hidden>
+            <h2 class="service-block-title" id="serviceWhyTitle">Почему Telegram-боты</h2>
+            <div id="serviceWhyBody"></div>
+        </section>
+
+        <section class="section service-block service-block--cases" id="service-cases" data-reveal>
+            <div class="service-section-head">
+                <span class="kicker-mono" id="serviceCasesKicker"></span>
+                <h2 class="service-block-title" id="serviceCasesTitle">Реализованные проекты</h2>
+            </div>
+            <nav class="service-cases-crawlable" aria-label="????? ? HTML">
+                <a href="/cases/ii-v-prodazhi-b2b-rassylki/">????????? ?? ? ??????? ? B2B-????????</a>
+                <a href="/cases/ai-assistant-business/">AI-????????? ??? ???????</a>
+            </nav>
+            <div id="serviceCasesBody"></div>
+        </section>
+
+        <section class="section service-block service-block--faq" id="service-faq" data-reveal>
+            <div class="service-section-head">
+                <span class="kicker-mono" id="serviceFaqKicker"></span>
+                <h2 class="service-block-title" id="serviceFaqTitle">FAQ</h2>
+            </div>
+            <div id="serviceFaqBody"></div>
+        </section>
+
+        <section class="final-cta" id="contact" data-reveal>
+            <h3>Готов обсудить вашу задачу и предложить лучший формат</h3>
+            <p>Выберите удобный вариант: пройти короткий онбординг с вопросами или сразу написать в Telegram.</p>
+            <div class="cta-actions">
+                <button type="button" onclick="openModal()" class="primary-btn">Обсудить проект</button>
+                <a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="secondary-btn">Написать в Telegram</a>
+            </div>
+        </section>
+    </div>
+
+    <div id="cost-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()" aria-label="Закрыть">&times;</button>
+            <div class="modal-header">
+                <h3>Обсудить проект</h3>
+                <p class="modal-subtitle">Короткий бриф — и я подготовлю понятную вилку по срокам и бюджету.</p>
+            </div>
+            <form id="quizForm">
+                <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <div class="quiz-step active" id="step1">
+                    <label class="field-label" for="taskInput">Что требуется создать?</label>
+                    <p class="field-hint">Опишите задачу тезисно</p>
+                    <textarea name="task" id="taskInput" class="quiz-input" rows="4" placeholder="Нужен Telegram-бот для автоматизации заявок и продаж."></textarea>
+                    <button type="button" class="primary-btn modal-btn" onclick="quizNextStep(2)">Далее →</button>
+                </div>
+                <div class="quiz-step" id="step2">
+                    <label class="field-label">Есть техническое задание?</label>
+                    <label class="quiz-option"><input type="radio" name="tz" value="Да" onclick="quizNextStep(3)"> Да</label>
+                    <label class="quiz-option"><input type="radio" name="tz" value="Нет" onclick="quizNextStep(3)"> Нет</label>
+                </div>
+                <div class="quiz-step" id="step3">
+                    <label class="field-label" for="contactName">Как с вами связаться?</label>
+                    <input type="text" name="contactName" id="contactName" class="quiz-input" placeholder="Ваше имя" required>
+                    <p class="field-hint">Предпочтительный канал</p>
+                    <div class="channel-selector">
+                        <button type="button" class="channel-btn" data-channel="telegram">Telegram</button>
+                        <button type="button" class="channel-btn" data-channel="phone">Телефон</button>
+                        <button type="button" class="channel-btn" data-channel="email">Почта</button>
+                    </div>
+                    <input type="hidden" name="channel" value="telegram">
+                    <div class="contact-field-wrap visible">
+                        <label class="field-label field-label--sm" for="quizContact">Контакт</label>
+                        <input type="text" id="quizContact" class="quiz-input contact-value-input" placeholder="@username или t.me/..." required>
+                    </div>
+                    <button type="submit" class="primary-btn modal-btn">Отправить заявку</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../js/config.js" defer></script>
+    <script src="../../js/leads.js" defer></script>
+    <script src="../../js/cases-data.js" defer></script>
+    <script src="../../js/services-data.js?v=service-page-31" defer></script>
+    <script src="../../js/service-page.js?v=service-page-32" defer></script>
+    <script src="../../js/main.js" defer></script>
+    <script src="../../js/motion-scenes.js?v=service-page-37" defer></script>
+    <script src="../../js/motion.js?v=service-page-31" defer></script>
+</body>
+</html>

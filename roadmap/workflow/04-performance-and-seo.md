@@ -10,14 +10,14 @@
 - [x] Open Graph + Twitter Card
 - [x] Canonical URL
 - [x] Favicon / apple-touch-icon → `assets/brand/logo.png`
-- [x] JSON-LD Person
+- [x] JSON-LD Person (главная) + CreativeWork/FAQPage/BreadcrumbList (кейсы)
 - [x] robots.txt + sitemap.xml + site.webmanifest
+- [x] Деплой на dev2026.ru (VPS `/var/www/dev2026`)
+- [x] Google Search Console — verification + sitemap отправлен
+- [x] Яндекс.Вебмастер — sitemap OK
 - [ ] `assets/brand/logo.png` — положить лого (512×512)
-- [ ] Деплой на dev2026.ru
-- [ ] После деплоя проверить favicon / logo / OG на живом домене
-- [ ] Проверить страницы кейсов на проде
+- [ ] FAQPage JSON-LD на главной
 - [ ] Обновить Яндекс.Метрику под актуальные цели заявок
-- [ ] Подключить Яндекс.Вебмастер + Google Search Console (→ этап 5)
 - [ ] Lighthouse mobile score > 80
 
 ## Проверка
