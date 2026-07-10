@@ -192,6 +192,8 @@
 
 ### Деплой
 - **GitHub Pages** (`CNAME` dev2026.ru) — push в `main` = prod
+- Commit `166db8d`, merge `feat/services-infrastructure` → `main`, push 2026-07-10
+- Prod: 7/7 `/services/*` → HTTP 200
 - `deploy_new_vps.py` в `.gitignore` (секреты SSH + bot token)
 
 ### Дальше по ТЗ

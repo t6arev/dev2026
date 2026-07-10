@@ -12,12 +12,12 @@
 | F0 | Подготовка (shells + hub) | ✅ OK заказчика | 2026-07-10 |
 | F1 | Nav → `/services/` | ✅ | 2026-07-10 |
 | F2 | Crawlable-ссылки (главная + услуги) | ✅ | 2026-07-10 |
-| F6 | Деплой на prod (GitHub Pages) | 🔄 commit+push | 2026-07-10 |
-| F1b | Bing Webmaster верификация | ⬜ после F7 | |
-| F3 | Кейсы: услуга + похожие + крошки | ⬜ **следующий** | |
+| F6 | Деплой на prod (GitHub Pages) | ✅ `166db8d` | 2026-07-10 |
+| F7 | Post-deploy чеклист | ✅ частично | 2026-07-10 |
+| F1b | Bing Webmaster верификация | ⬜ **ручной** | |
+| F3 | Кейсы: услуга + похожие + крошки | ⬜ **следующий код** | |
 | F4 | Sitemap (7 услуг + кейсы) | ⬜ | |
 | F5 | Контент bot6 + bot2 | ⬜ | |
-| F7 | Post-deploy чеклист | ⬜ после F6 | |
 | F8 | Переобход Вебмастер (ручной) | ⬜ после F7 | |
 
 ---
@@ -178,9 +178,13 @@ View Source на `/services/` и `/#servicesHub` — должны быть `<a h
 ## F6 — деплой (2026-07-10)
 
 - Платформа: **GitHub Pages** (`CNAME` → dev2026.ru), не VPS
-- Действие: merge `feat/services-infrastructure` → `main`, `git push origin main`
+- Commit: `166db8d` на `main`, push `origin/main` 2026-07-10
 - До деплоя: `/services/` → 404 на prod
-- После: проверить F7 (7 URL услуг → 200)
+- После деплоя: **7/7** `/services/*` → HTTP 200 (2026-07-10)
+- 4 целевых кейса → 200
+- `/sitemap.xml` → 200 (пока **без** 7 услуг — ждёт F4)
+- View Source: `.portfolio-crawlable` на главной ✅, `.service-cases-crawlable` на услугах ✅
+- Кейсы: блок услуги / похожие / крошки → `/services/` — **ещё нет (F3)**
 
 `deploy_new_vps.py` **не в git** — содержит пароль SSH и bot token.
 
