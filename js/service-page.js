@@ -25,7 +25,7 @@
                 '<a href="/#process"><span>02</span>Процесс</a>' +
                 '<a href="/#about"><span>03</span>Обо мне</a>' +
                 '<a href="/#faq"><span>04</span>FAQ</a>' +
-                '<a href="/#servicesHub"><span>05</span>Услуги</a>' +
+                '<a href="/services/"><span>05</span>Услуги</a>' +
                 '<a href="https://t.me/t6arev" target="_blank" rel="noopener noreferrer" class="mobile-cta">Написать в Telegram ↗</a>';
             document.body.appendChild(menu);
         }
@@ -416,6 +416,10 @@
         applyServiceChrome();
 
         var body = document.body;
+        if (body.classList.contains('service-page')) {
+            initServiceCta();
+        }
+
         if (!body.classList.contains('service-page')) return;
 
         if (window.location.hash) {

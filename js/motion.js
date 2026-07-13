@@ -208,8 +208,32 @@
                 return;
             }
 
-            if (e.target.closest('#mobileMenu a')) {
-                closeMobileMenu();
+            var menuLink = e.target.closest('#mobileMenu a');
+            if (!menuLink) return;
+
+            var href = menuLink.getAttribute('href') || '';
+            closeMobileMenu();
+
+            if (href.indexOf('#') === -1) return;
+
+            var hashIndex = href.indexOf('#');
+            var path = href.slice(0, hashIndex) || window.location.pathname;
+            var hash = href.slice(hashIndex);
+            var samePage = !path || path === window.location.pathname || path === '/' + window.location.pathname.replace(/^\//, '');
+
+            if (!samePage) return;
+
+            if (hash.length > 1) {
+                e.preventDefault();
+                if (window.location.hash !== hash) {
+                    history.pushState(null, '', hash);
+                }
+                requestAnimationFrame(function () {
+                    var target = document.querySelector(hash);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
             }
         });
     }

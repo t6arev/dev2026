@@ -213,6 +213,10 @@
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.03);
     cursor: pointer;
+    position: relative;
+    z-index: 1310;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .motion .nav-toggle span {
@@ -231,7 +235,7 @@
 .motion .mobile-menu {
     position: fixed;
     inset: 0;
-    z-index: 90;
+    z-index: 1300;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -249,6 +253,12 @@
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
+}
+
+.motion.nav-open .float-widget {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none !important;
 }
 
 .motion .mobile-menu a {

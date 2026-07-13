@@ -1,11 +1,33 @@
-// Smooth Scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
+function scrollToHashTarget(hash, behavior) {
+    if (!hash || hash === '#') return false;
+    var target = document.querySelector(hash);
+    if (!target) return false;
+    target.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+    return true;
+}
+
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        if (anchor.closest('#mobileMenu')) return;
+
+        anchor.addEventListener('click', function (e) {
+            var hash = this.getAttribute('href');
+            if (!hash || hash === '#') return;
+            var target = document.querySelector(hash);
+            if (!target) return;
+
+            e.preventDefault();
+            if (document.body.classList.contains('nav-open') && typeof window.closeMobileMenu === 'function') {
+                window.closeMobileMenu();
+            }
+            requestAnimationFrame(function () {
+                scrollToHashTarget(hash, 'smooth');
+            });
+        });
     });
-});
+}
+
+initSmoothScroll();
 
 // Scroll Reveal
 const observer = new IntersectionObserver((entries) => {

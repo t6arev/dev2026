@@ -1954,6 +1954,9 @@
     align-items: center;
     position: relative;
     z-index: 4;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
 }
 
 .motion.service-page .final-cta h3,
@@ -2072,7 +2075,7 @@
     }
 
     .motion.service-page .final-cta {
-        padding: 32px 20px;
+        padding: 32px 20px 88px;
     }
 
     .motion.service-page .service-hero-actions,
