@@ -316,18 +316,44 @@
         }).join('') + '</div>';
     }
 
+    function upsertMeta(attr, key, value) {
+        if (!value) return;
+        var el = document.querySelector('meta[' + attr + '="' + key + '"]');
+        if (!el) {
+            el = document.createElement('meta');
+            el.setAttribute(attr, key);
+            document.head.appendChild(el);
+        }
+        el.setAttribute('content', value);
+    }
+
     function applySeo(service) {
         if (!service.seo) return;
-        document.title = service.seo.title || service.title;
+        var base = (window.SITE_CONFIG && window.SITE_CONFIG.siteUrl) || 'https://dev2026.ru';
+        var title = service.seo.title || service.title;
+        var description = service.seo.description || '';
+        var pageUrl = base + service.route;
+        var image = (service.seo && service.seo.image) || (base + '/assets/brand/logo.jpg');
+
+        document.title = title;
         var desc = document.querySelector('meta[name="description"]');
-        if (desc && service.seo.description) desc.setAttribute('content', service.seo.description);
+        if (desc && description) desc.setAttribute('content', description);
         var keys = document.querySelector('meta[name="keywords"]');
         if (keys && service.seo.keywords) keys.setAttribute('content', service.seo.keywords);
         var canonical = document.querySelector('link[rel="canonical"]');
-        if (canonical) {
-            var base = (window.SITE_CONFIG && window.SITE_CONFIG.siteUrl) || 'https://dev2026.ru';
-            canonical.setAttribute('href', base + service.route);
-        }
+        if (canonical) canonical.setAttribute('href', pageUrl);
+
+        // Keep social tags in sync with source meta (also present statically in HTML).
+        upsertMeta('property', 'og:type', 'website');
+        upsertMeta('property', 'og:locale', 'ru_RU');
+        upsertMeta('property', 'og:url', pageUrl);
+        upsertMeta('property', 'og:title', title);
+        upsertMeta('property', 'og:description', description);
+        upsertMeta('property', 'og:image', image);
+        upsertMeta('name', 'twitter:card', 'summary_large_image');
+        upsertMeta('name', 'twitter:title', title);
+        upsertMeta('name', 'twitter:description', description);
+        upsertMeta('name', 'twitter:image', image);
     }
 
     function injectJsonLd(service) {
@@ -505,7 +531,7 @@
             'service-tasks',
             'serviceTasksTitle',
             'serviceTasksBody',
-            tasks.title || 'Какие решения мы разрабатываем',
+            tasks.title || 'Какие решения разрабатываю',
             renderTypeRows(tasks.items, tasks.title || 'Решения'),
             'serviceTasksKicker',
             tasks.kicker
@@ -518,7 +544,7 @@
                 'service-solutions',
                 'serviceSolutionsTitle',
                 'serviceSolutionsBody',
-                solutions.title || 'Какие решения мы разрабатываем',
+                solutions.title || 'Какие решения разрабатываю',
                 renderSolutions(solutionItems, solutions.title || 'Решения')
             );
         } else {

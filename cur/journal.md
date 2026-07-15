@@ -220,3 +220,32 @@
 ### Деплой
 - Commit + push в `main` → GitHub Pages
 
+---
+
+## 2026-07-15 — SEO rewrite услуг (старт) + P0 static meta
+
+### Фиксация в `cur/`
+- [`chat-handoff-2026-07-15.md`](chat-handoff-2026-07-15.md)
+- [`seo-services-rewrite-plan.md`](seo-services-rewrite-plan.md) — дерево веток + мини-задачи
+- [`seo-new-pages-intent-report.md`](seo-new-pages-intent-report.md) — **вариант B** (web + saas + mini-apps; без broad custom-hub)
+- [`services-content-export-2026-07-15.md`](services-content-export-2026-07-15.md)
+
+### Ветка `seo/p0-static-meta` (локально, от `main`)
+- Причина: Яндекс видел `<title>Услуга — dev2026.ru</title>` на 6 URL (JS-only meta)
+- Сделано: Title/Description/OG/Twitter/H1/lead в исходном HTML; sync `services-data.js` + `applySeo` OG
+- Отчёт: [`reports/seo-p0-static-meta.md`](reports/seo-p0-static-meta.md) — **ALL_OK**
+- UI polish: stash `wip-ui-polish-before-seo-meta` (ветка `ui/polish-2026-07-13` не трогать)
+- **Не мержить в prod** без ОК владельца; следующие ветки — тексты по страницам
+
+---
+
+## 2026-07-15 (продолжение) — полный SEO rewrite + деплой
+
+- Переписаны все 6 L2 в `js/services-data.js` (голос «я», развод интентов, FAQ)
+- Description + FAQ зашиты в исходный HTML каждой услуги
+- Отчёт: [`reports/seo-services-full-rewrite.md`](reports/seo-services-full-rewrite.md)
+- Новые URL (Mini Apps / SaaS) **не создавались** — вариант B в intent-report
+- Деплой: merge → `main` → GitHub Pages
+
+
+
