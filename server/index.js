@@ -1,5 +1,6 @@
-require('dotenv').config();
+const fs = require('fs');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const https = require('https');
 const express = require('express');
 const cors = require('cors');
@@ -12,7 +13,16 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 app.use(cors());
 app.use(express.json({ limit: '32kb' }));
-app.use(express.static(path.join(__dirname, '..')));
+
+// Serve static site only when explicitly configured or when website root is present.
+const staticRoot = process.env.STATIC_ROOT || path.join(__dirname, '..');
+if (fs.existsSync(path.join(staticRoot, 'index.html'))) {
+    app.use(express.static(staticRoot));
+}
+
+app.get('/api/health', (_req, res) => {
+    res.json({ ok: true, service: 'dev2026-leads' });
+});
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,

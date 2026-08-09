@@ -4,9 +4,9 @@ window.SITE_CONFIG = {
     // Основное лого для favicon/brand-сигналов в поиске.
     brandLogo: 'assets/brand/logo.jpg',
     brandLogoFallback: 'assets/brand/logo.jpg',
-    apiUrl: 'https://91.219.23.137.sslip.io/api/leads',
+    apiUrl: 'https://153-80-242-53.sslip.io/api/leads',
     telegramLeadUsername: 't6arev',
-    telegramTargetChatId: '-5488894002',
+    telegramTargetChatId: '8519277765',
     allowTelegramFallback: true,
     metrikaId: 106920579,
     background: {

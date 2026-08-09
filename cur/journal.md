@@ -247,5 +247,19 @@
 - Новые URL (Mini Apps / SaaS) **не создавались** — вариант B в intent-report
 - Деплой: merge → `main` → GitHub Pages
 
+---
+
+## 2026-08-09 — перенос API заявок на новый VPS
+
+- Старый VPS удалён (`91.219.23.137`)
+- Новый: `153.80.242.53` (`v97935qocbx.servera.info`)
+- API изолирован в `/opt/dev2026-leads` (PM2 `dev2026-leads`, Caddy HTTPS)
+- **Не трогали** `/opt/snovi-bot` (Docker на `:8080`)
+- Endpoint: `https://153-80-242-53.sslip.io/api/leads`
+- Health: `https://153-80-242-53.sslip.io/api/health`
+- Нужно: написать `/start` боту `@t6busdevbot`, иначе Telegram `chat not found`
+- Fallback формы на `@t6arev` остаётся включённым
+
+
 
 

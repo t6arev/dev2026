@@ -2,3 +2,6 @@ server/.env
 server/node_modules/
 node_modules/
 deploy_new_vps.py
+scripts/deploy_leads_vps.py
+scripts/_inspect_vps.py
+scripts/_diag_leads_vps.py
