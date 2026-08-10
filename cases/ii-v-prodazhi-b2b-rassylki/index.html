@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 
 <head>
@@ -81,13 +81,13 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/motion.css">
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css?v=redesign-8">
+    <link rel="stylesheet" href="../../css/motion.css?v=redesign-8">
     <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </head>
 
-<body class="motion case-page" data-case-id="site2" data-collage-fit="contain">
+<body class="motion case-page" data-case-id="site2">
 
     <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -100,7 +100,7 @@
     <div class="texture-overlay"></div>
 
     <div class="container">
-        <nav>
+        <nav class="site-nav">
             <a href="../../" class="logo" aria-label="На главную">
                 <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -120,22 +120,28 @@
             <a href="#contact" class="cta-button">Начать проект ↗</a>
         </nav>
 
+        <div class="case-breadcrumbs" role="navigation" aria-label="Хлебные крошки">
+            <a href="/">Главная</a>
+            <span aria-hidden="true">/</span>
+            <a href="/services/">Услуги</a>
+            <span aria-hidden="true">/</span>
+            <a href="/services/ai-implementation/">Внедрение ИИ</a>
+            <span aria-hidden="true">/</span>
+            <span>ИИ в продажи B2B</span>
+        </div>
+
         <header class="case-hero section visible">
             <div class="case-hero-copy">
                 <span class="portfolio-card-badge">Кастом</span>
                 <h1>Внедрение ИИ в отдел продаж и автоматизация B2B-рассылок</h1>
                 <p class="case-hero-lead">Кейс внедрения ИИ в бизнес-процессы продаж: автоматизация B2B-коммуникаций, холодных рассылок и обработки клиентской базы.</p>
-                <div class="case-meta-row">
-                    <span class="case-meta-pill">B2B + AI</span>
-                    <span class="case-meta-pill">CRM + SMTP</span>
-                </div>
                 <div class="case-hero-actions">
                     <a href="#contact" class="primary-btn">Обсудить похожий проект</a>
                     <a href="../../#portfolio" class="secondary-btn">Все кейсы</a>
                 </div>
             </div>
 
-            <div class="case-collage" id="caseCollage" aria-label="Скриншоты проекта">
+            <div class="case-collage" id="caseCollage" aria-label="Превью проекта">
                 <button type="button" class="case-collage-item case-collage-item--hero" data-open-image="../../assets/img/КЕЙС ЕМАЙЛ.png">
                     <img src="../../assets/img/КЕЙС ЕМАЙЛ.png" alt="Автоматизация B2B-рассылок — экран платформы" loading="eager">
                 </button>
@@ -227,6 +233,26 @@
             </div>
         </section>
 
+
+        <section class="section case-related-service" aria-label="Связанная услуга">
+            <span class="kicker-mono"><span class="dot"></span>УСЛУГА</span>
+            <h2 class="section-title case-related-heading">Услуга по этому направлению</h2>
+            <a href="/services/ai-implementation/" class="case-related-service-card">
+                <span class="case-related-service-name">Внедрение ИИ в бизнес</span>
+                <span class="case-related-service-desc">Встраиваю ИИ в продажи, поддержку и внутренние процессы компании.</span>
+                <span class="case-related-service-cta">Открыть направление ↗</span>
+            </a>
+        </section>
+
+        <section class="section case-related-cases" aria-label="Похожие проекты">
+            <span class="kicker-mono"><span class="dot"></span>КЕЙСЫ</span>
+            <h2 class="section-title case-related-heading">Похожие проекты</h2>
+            <div class="case-related-cases-grid">
+                <a href="/cases/ai-assistant-business/" class="case-related-case-card"><span class="wipe-stack"><span class="wipe-line">AI-ассистент для бизнеса <span aria-hidden="true">↗</span></span><span class="wipe-line wipe-line--alt">Открыть проект <span aria-hidden="true">↗</span></span></span></a>
+                <a href="/cases/razrabotka-ii-agentov-ai-platforma/" class="case-related-case-card"><span class="wipe-stack"><span class="wipe-line">ИИ-агенты и AI-платформа <span aria-hidden="true">↗</span></span><span class="wipe-line wipe-line--alt">Открыть проект <span aria-hidden="true">↗</span></span></span></a>
+            </div>
+        </section>
+
         <section id="contact" class="section case-contact">
             <div class="case-contact-inner">
                 <div class="case-contact-copy">
@@ -293,12 +319,12 @@
     </div>
 
     <script src="../../js/config.js"></script>
-    <script src="../../js/leads.js"></script>
+    <script src="../../js/leads.js?v=redesign-7"></script>
     <script src="../../js/cases-data.js"></script>
-    <script src="../../js/case-collage.js"></script>
+    <script src="../../js/case-collage.js?v=redesign-8"></script>
     <script src="../../js/analytics.js"></script>
     <script src="../../js/motion.js"></script>
-    <script src="../../js/case-page.js"></script>
+    <script src="../../js/case-page.js?v=redesign-8"></script>
 
 </body>
 

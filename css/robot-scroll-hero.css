@@ -1,0 +1,663 @@
+/* ==========================================================================
+   RobotScrollHero — full-page scroll video backdrop (local prototype)
+   ========================================================================== */
+
+.robot-scroll-hero {
+    --robot-obj-x: 50%;
+    --robot-obj-y: 45%;
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    min-height: 100svh;
+    height: auto;
+    padding: 0;
+    display: block;
+    overflow: visible;
+    gap: 0;
+    z-index: 1;
+}
+
+.motion .robot-scroll-hero.motion-hero {
+    display: block;
+    overflow: visible;
+    padding: 0;
+    min-height: 100svh;
+    height: auto;
+    gap: 0;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.motion .robot-scroll-hero.motion-hero::before,
+.motion .robot-scroll-hero.motion-hero::after {
+    content: none;
+    display: none;
+}
+
+.motion .robot-scroll-hero .hero-main {
+    transform: none;
+}
+
+@media (max-width: 768px) {
+    .robot-scroll-hero {
+        --robot-obj-x: 62%;
+        --robot-obj-y: 42%;
+    }
+}
+
+/* Fixed cinematic layer for the whole homepage */
+.robot-scroll-sticky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    height: 100svh;
+    width: 100%;
+    overflow: hidden;
+    isolation: isolate;
+    pointer-events: none;
+}
+
+.robot-scroll-hero.is-reduced .robot-scroll-sticky {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+}
+
+.robot-scroll-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* use poster as a base background so the page shows the first frame while the video loads */
+    background: #05070c;
+    /* use root-absolute path so CSS resolves correctly from /css/ */
+    background-image: url('/assets/motion/robot-poster.webp');
+    background-size: cover;
+    background-position: var(--robot-obj-x) var(--robot-obj-y);
+    transition: background-image 0.4s ease;
+}
+
+/* Avoid stacking poster + video + final frame once media is ready */
+.robot-scroll-hero.is-ready .robot-scroll-stage {
+    background-image: none;
+}
+
+.robot-scroll-media {
+    position: absolute;
+    inset: 0;
+    transform-origin: center center;
+    will-change: transform, filter;
+}
+
+.robot-scroll-video,
+.robot-scroll-final,
+.robot-scroll-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--robot-obj-x) var(--robot-obj-y);
+    display: block;
+}
+
+.robot-scroll-poster {
+    z-index: 1;
+    transition: opacity 0.35s ease;
+}
+
+.robot-scroll-hero.is-ready .robot-scroll-poster {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.robot-scroll-video {
+    z-index: 2;
+    opacity: 1;
+}
+
+.robot-scroll-final {
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.robot-scroll-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: rgba(3, 5, 10, 0);
+    pointer-events: none;
+    /* no backdrop blur — keeps the video sharp */
+}
+
+.robot-scroll-visor-glow {
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(closest-side, rgba(220, 40, 40, 0.45), rgba(180, 20, 20, 0.14) 55%, transparent 78%);
+    mix-blend-mode: screen;
+    transform: translate(-50%, -50%);
+}
+
+.robot-scroll-reveal {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0;
+    /* Soft veil only — keep robot visible behind page content */
+    background:
+        linear-gradient(180deg, rgba(5, 8, 14, 0.18) 0%, rgba(5, 8, 14, 0.42) 45%, rgba(5, 8, 14, 0.62) 100%);
+}
+
+.robot-scroll-reveal-fill {
+    display: none;
+}
+
+.robot-scroll-readability {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(5, 8, 14, 0.72) 0%, rgba(5, 8, 14, 0.42) 34%, rgba(5, 8, 14, 0.08) 58%, transparent 72%),
+        linear-gradient(180deg, rgba(5, 8, 14, 0.45) 0%, transparent 22%, transparent 78%, rgba(5, 8, 14, 0.35) 100%);
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .robot-scroll-readability {
+        background:
+            linear-gradient(180deg, rgba(5, 8, 14, 0.55) 0%, rgba(5, 8, 14, 0.28) 28%, rgba(5, 8, 14, 0.55) 100%),
+            linear-gradient(90deg, rgba(5, 8, 14, 0.5) 0%, transparent 55%);
+    }
+}
+
+.robot-scroll-copy {
+    position: relative;
+    z-index: 2;
+    min-height: 100svh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: calc(58px + 18px) 40px 40px;
+    display: flex;
+    align-items: flex-start;
+    padding-top: clamp(96px, 14vh, 132px);
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.robot-scroll-copy .hero-main {
+    max-width: min(560px, 92vw);
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+    will-change: opacity, transform;
+}
+
+.motion .robot-scroll-hero .hero-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+}
+
+.robot-scroll-hero .hero-grid {
+    grid-template-columns: 1fr;
+}
+
+.robot-scroll-hero .hero-visual {
+    display: none;
+}
+
+.robot-scroll-hero .hero-title,
+.robot-scroll-hero .lead {
+    text-shadow: 0 2px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* Page content above fixed video */
+body.has-robot-hero .container > .section,
+body.has-robot-hero .container > .final-cta,
+body.has-robot-hero .container > footer,
+body.has-robot-hero .floating-contact,
+body.has-robot-hero .site-footer {
+    position: relative;
+    z-index: 2;
+}
+
+body.has-robot-hero .background-container,
+body.has-robot-hero .particle-canvas,
+body.has-robot-hero .motion-webgl,
+body.has-robot-hero .texture-overlay,
+body.has-robot-hero .scroll-progress {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Let sections sit on the video instead of solid panels */
+body.has-robot-hero .container > .section {
+    background: transparent;
+}
+
+body.has-robot-hero .motion .section,
+body.has-robot-hero.motion .section {
+    background: transparent;
+}
+
+/* ---------- Cases accordion (collapsed by default) ---------- */
+body.has-robot-hero .portfolio-filters {
+    display: none;
+}
+
+body.has-robot-hero .portfolio-accordion {
+    gap: 16px;
+}
+
+body.has-robot-hero .portfolio-item,
+body.has-robot-hero .portfolio-item:last-child {
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 16px;
+    background: rgba(8, 12, 20, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: none;
+    transform: none;
+    overflow: hidden;
+    min-height: 0 !important;
+    height: auto;
+}
+
+body.has-robot-hero .portfolio-item:last-child {
+    padding-bottom: 0 !important;
+}
+
+body.has-robot-hero .portfolio-item:not(.is-open) .portfolio-panel {
+    display: none !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body.has-robot-hero .portfolio-summary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    min-height: 0;
+    height: auto;
+    box-sizing: border-box;
+}
+
+body.has-robot-hero .portfolio-summary-thumb {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 11px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+body.has-robot-hero .portfolio-summary-main h3 {
+    margin: 0 0 6px;
+    font-size: clamp(0.98rem, 1.8vw, 1.12rem);
+    line-height: 1.3;
+    color: var(--text-main);
+}
+
+body.has-robot-hero .portfolio-summary-main p {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+body.has-robot-hero .portfolio-item:hover {
+    transform: none;
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: none;
+}
+
+body.has-robot-hero .portfolio-item.is-open {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(8, 12, 20, 0.58);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+}
+
+body.has-robot-hero .portfolio-summary:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+body.has-robot-hero .portfolio-summary-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+body.has-robot-hero .portfolio-summary-main {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+body.has-robot-hero .portfolio-chevron {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 0;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(226, 232, 240, 0.8);
+    background: transparent;
+    box-shadow: none;
+    transition: transform 0.28s cubic-bezier(.2, .8, .2, 1), color 0.2s ease, opacity 0.2s ease;
+}
+
+body.has-robot-hero .portfolio-chevron svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+body.has-robot-hero .portfolio-item.is-open .portfolio-chevron {
+    transform: rotate(180deg);
+    color: #fff;
+    border-color: transparent;
+}
+
+/* Digital soft-glow CTA buttons (hero + bottom) */
+body.has-robot-hero .hero-cta-row,
+body.has-robot-hero .final-cta .cta-actions {
+    gap: 12px;
+}
+
+/* B-B Arrow orb — do not override with old glass pills */
+body.has-robot-hero .hero-cta-row .primary-btn,
+body.has-robot-hero .final-cta .primary-btn {
+    position: relative;
+    isolation: isolate;
+    border-radius: 0 !important;
+    letter-spacing: 0 !important;
+    font-size: 1rem !important;
+    padding: 4px 4px 4px 2px !important;
+    overflow: visible !important;
+    background: transparent !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+body.has-robot-hero .hero-cta-row .primary-btn::before,
+body.has-robot-hero .final-cta .primary-btn::before {
+    content: none !important;
+    display: none !important;
+}
+
+body.has-robot-hero .hero-cta-row .secondary-btn,
+body.has-robot-hero .final-cta .secondary-btn {
+    border-radius: 0 !important;
+    letter-spacing: 0 !important;
+    font-size: 0.95rem !important;
+    padding: 12px 2px !important;
+    background: transparent !important;
+    color: #cbd5e1 !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+}
+
+body.has-robot-hero .hero-cta-row .primary-btn:hover,
+body.has-robot-hero .final-cta .primary-btn:hover {
+    transform: none;
+    box-shadow: none !important;
+}
+
+body.has-robot-hero .hero-cta-row .secondary-btn:hover,
+body.has-robot-hero .final-cta .secondary-btn:hover {
+    border-bottom-color: #fff !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+body.has-robot-hero .final-cta {
+    margin-top: 48px;
+    margin-bottom: 24px;
+    padding: clamp(28px, 4vw, 44px);
+    border-radius: 24px;
+    background: rgba(8, 12, 20, 0.48);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.has-robot-hero .final-cta::before,
+body.has-robot-hero .final-cta::after {
+    opacity: 0.35;
+}
+
+body.has-robot-hero .robot-scroll-video,
+body.has-robot-hero .robot-scroll-final,
+body.has-robot-hero .robot-scroll-poster {
+    /* Avoid browser softening on large covers */
+    image-rendering: auto;
+    filter: contrast(1.04) saturate(1.05);
+}
+
+body.has-robot-hero .portfolio-panel {
+    /* Accordion panel: animate open/close via max-height and opacity for smoothness */
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px 0;
+    opacity: 0;
+    transition: max-height 360ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease, padding 260ms ease;
+}
+
+body.has-robot-hero .portfolio-item.is-open .portfolio-panel {
+    padding: 12px 20px 20px;
+    opacity: 1;
+    /* large enough to cover the expanded content; will smoothly adapt */
+    max-height: 1200px;
+}
+
+.portfolio-summary {
+    transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease;
+    will-change: transform, box-shadow;
+}
+.portfolio-summary:active {
+    transform: translateY(-6px);
+}
+
+.portfolio-summary.glass-highlight {
+    position: relative;
+    overflow: visible;
+}
+.portfolio-summary .glass-gleam {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(700px 80px at 10% 20%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 20%, transparent 50%);
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity 300ms ease, transform 300ms ease;
+    transform: translateY(-6px);
+    border-radius: 12px;
+}
+.portfolio-summary:focus .glass-gleam,
+.portfolio-summary:hover .glass-gleam,
+.portfolio-summary:active .glass-gleam {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.feature-badge {
+    display: inline-block;
+    font-size: 0.9rem;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #cbd5e1;
+    border: none;
+    box-shadow: none;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.feature-badge::before {
+    content: '— ';
+    color: #64748b;
+}
+
+/* mobile object-position tuning */
+@media (max-width: 768px) {
+    .robot-scroll-hero { --robot-obj-x: 62%; --robot-obj-y: 42%; }
+    .robot-scroll-copy { padding: calc(48px + 32px) 20px 32px; }
+}
+
+body.has-robot-hero .portfolio-card-layout {
+    display: grid;
+    gap: 20px;
+}
+
+@media (min-width: 901px) {
+    body.has-robot-hero .portfolio-item.is-open .portfolio-card-layout {
+        grid-template-columns: minmax(280px, 1.1fr) minmax(240px, 0.9fr);
+        grid-template-areas:
+            "media side"
+            "cta cta";
+    }
+
+    body.has-robot-hero .portfolio-card-head {
+        display: none;
+    }
+}
+
+/* Debug overlay */
+.robot-debug {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 4000;
+    width: min(320px, calc(100vw - 24px));
+    padding: 14px 14px 12px;
+    border-radius: 14px;
+    background: rgba(8, 12, 20, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e2e8f0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.robot-debug h4 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.robot-debug .robot-debug-stats {
+    margin-bottom: 10px;
+    color: #cbd5e1;
+    white-space: pre-line;
+}
+
+.robot-debug label {
+    display: grid;
+    grid-template-columns: 62px 1fr 42px;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.robot-debug input[type="range"] {
+    width: 100%;
+}
+
+.robot-debug button {
+    width: 100%;
+    margin-top: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(86, 157, 243, 0.18);
+    color: #f8fafc;
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.robot-debug-outline {
+    position: absolute;
+    z-index: 9;
+    border: 1px solid rgba(255, 70, 70, 0.95);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+@media (max-width: 640px) {
+    .robot-scroll-copy {
+        padding: calc(72px + 18px) 20px 24px;
+        align-items: flex-start;
+    }
+
+    .robot-scroll-copy .hero-main {
+        max-width: 100%;
+    }
+
+    .motion .robot-scroll-hero .hero-title {
+        font-size: clamp(1.55rem, 7.2vw, 2.1rem);
+        line-height: 1.05;
+        margin-bottom: 14px;
+    }
+
+    .motion .robot-scroll-hero .lead {
+        font-size: 0.98rem;
+        margin-bottom: 18px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .motion .robot-scroll-hero .hero-meta {
+        margin-bottom: 14px;
+    }
+}

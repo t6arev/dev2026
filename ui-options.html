@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Options — выбор стиля | dev2026.ru</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Jost:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07090f;
+            --panel: rgba(14, 20, 32, 0.72);
+            --line: rgba(255,255,255,0.1);
+            --text: #f4f7fb;
+            --muted: #94a3b8;
+            --accent: #60a5fa;
+            --accent-2: #ef4444;
+            --font: "Manrope", system-ui, sans-serif;
+            --display: "Space Grotesk", "Manrope", sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: var(--font);
+            color: var(--text);
+            background:
+                radial-gradient(900px 500px at 80% -10%, rgba(59,130,246,0.14), transparent 55%),
+                radial-gradient(700px 420px at 10% 20%, rgba(239,68,68,0.08), transparent 50%),
+                var(--bg);
+            line-height: 1.5;
+        }
+
+        a { color: inherit; }
+
+        .page {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 40px 0 100px;
+        }
+
+        .hero {
+            margin-bottom: 48px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .hero-kicker span {
+            color: var(--accent);
+            font-family: var(--display);
+            letter-spacing: 0.08em;
+        }
+
+        h1 {
+            font-family: var(--display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: -0.04em;
+            margin: 0 0 12px;
+            max-width: 18ch;
+        }
+
+        .hero p {
+            max-width: 62ch;
+            color: var(--muted);
+            margin: 0 0 18px;
+        }
+
+        .note {
+            display: inline-block;
+            padding: 10px 14px;
+            border-left: 2px solid var(--accent);
+            background: rgba(96,165,250,0.08);
+            color: #dbeafe;
+            font-size: 0.92rem;
+        }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 28px 0 0;
+        }
+
+        .toc a {
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.85rem;
+            transition: color .25s, border-color .25s, background .25s;
+        }
+
+        .toc a:hover {
+            color: #fff;
+            border-color: rgba(96,165,250,0.45);
+            background: rgba(96,165,250,0.08);
+        }
+
+        section {
+            margin-top: 56px;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 22px;
+        }
+
+        .section-head h2 {
+            font-family: var(--display);
+            font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+            letter-spacing: -0.03em;
+            margin: 0;
+        }
+
+        .section-head p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+            max-width: 42ch;
+            text-align: right;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+            .section-head { flex-direction: column; align-items: start; }
+            .section-head p { text-align: left; }
+        }
+
+        .card {
+            position: relative;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            padding: 18px;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .card-label strong {
+            color: var(--accent);
+            font-family: var(--display);
+            letter-spacing: 0.08em;
+        }
+
+        .preview {
+            flex: 1;
+            display: grid;
+            place-items: center;
+            padding: 20px 12px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.02), transparent),
+                rgba(0,0,0,0.28);
+            border: 1px dashed rgba(255,255,255,0.08);
+            min-height: 140px;
+        }
+
+        .preview.wide {
+            place-items: stretch;
+            align-content: center;
+        }
+
+        .desc {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .pick {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: auto;
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .pick input { accent-color: var(--accent); }
+
+        /* ===== HEADER PREVIEWS ===== */
+        .hdr {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            font-size: 0.72rem;
+        }
+
+        .hdr .logo { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; }
+        .hdr .links { display: flex; gap: 14px; color: var(--muted); }
+        .hdr .cta { white-space: nowrap; }
+
+        .hdr-a {
+            border-radius: 999px;
+            background: rgba(10,14,22,0.55);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
+        }
+        .hdr-a .cta {
+            background: #fff;
+            color: #0b1220;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .hdr-b {
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+        }
+        .hdr-b .links { gap: 18px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.68rem; }
+        .hdr-b .cta {
+            border-bottom: 1px solid rgba(255,255,255,0.45);
+            padding-bottom: 2px;
+        }
+
+        .hdr-c {
+            background: rgba(8,12,20,0.28);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            backdrop-filter: blur(8px);
+        }
+        .hdr-c .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+        }
+        .hdr-c .cta::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-2);
+            box-shadow: 0 0 10px rgba(239,68,68,0.7);
+        }
+
+        /* ===== BUTTON PREVIEWS ===== */
+        .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+        .btn-a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border: 1px solid rgba(255,255,255,0.55);
+            background: transparent;
+            color: #fff;
+            font: 600 0.9rem var(--display);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: background .25s, color .25s, transform .25s;
+        }
+        .btn-a:hover { background: #fff; color: #0b1220; transform: translateY(-2px); }
+
+        .btn-b {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 4px 4px 16px;
+            background: transparent;
+            color: #fff;
+            font: 600 0.95rem var(--font);
+            border: none;
+        }
+        .btn-b .orb {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,0.55);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            transition: transform .3s, background .3s, color .3s;
+        }
+        .btn-b:hover .orb { transform: translateX(4px); background: #fff; color: #0b1220; }
+
+        .btn-c {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 20px;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            font: 700 0.92rem var(--display);
+            border: none;
+            box-shadow: 0 10px 28px rgba(37,99,235,0.28);
+            transition: transform .25s, filter .25s;
+        }
+        .btn-c:hover { transform: translateY(-2px); filter: brightness(1.08); }
+
+        .btn-d {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 0;
+            background: none;
+            border: none;
+            border-bottom: 1px solid rgba(96,165,250,0.55);
+            color: #93c5fd;
+            font: 600 0.95rem var(--font);
+            transition: letter-spacing .25s, color .25s, border-color .25s;
+        }
+        .btn-d:hover { letter-spacing: 0.03em; color: #fff; border-color: #fff; }
+
+        /* ===== FORM PREVIEWS ===== */
+        .form {
+            width: 100%;
+            display: grid;
+            gap: 10px;
+        }
+
+        .form label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .form input,
+        .form textarea {
+            width: 100%;
+            font: 500 0.9rem var(--font);
+            color: #fff;
+            outline: none;
+        }
+
+        .form-a {
+            padding: 16px;
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .form-a input,
+        .form-a textarea {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 11px 12px;
+        }
+        .form-a button {
+            margin-top: 4px;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            background: #fff;
+            color: #0b1220;
+            font-weight: 700;
+        }
+
+        .form-b {
+            padding: 8px 0;
+            border: none;
+            background: transparent;
+        }
+        .form-b input,
+        .form-b textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+            border-radius: 0;
+            padding: 10px 0;
+        }
+        .form-b input:focus,
+        .form-b textarea:focus { border-bottom-color: var(--accent); }
+        .form-b button {
+            justify-self: start;
+            margin-top: 8px;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #fff;
+            padding: 10px 16px;
+            font-weight: 600;
+        }
+
+        .form-c {
+            padding: 14px;
+            background: linear-gradient(180deg, rgba(59,130,246,0.08), rgba(0,0,0,0.2));
+            border-left: 2px solid var(--accent);
+        }
+        .form-c input,
+        .form-c textarea {
+            background: rgba(8,12,20,0.55);
+            border: 1px solid rgba(96,165,250,0.18);
+            padding: 11px 12px;
+            border-radius: 0;
+        }
+        .form-c button {
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+            border: none;
+            background: #2563eb;
+            color: #fff;
+            padding: 12px 14px;
+            font-weight: 700;
+        }
+
+        /* ===== RELATED / LABELS ===== */
+        .label-row { width: 100%; display: grid; gap: 18px; }
+
+        .lab-a .k {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .lab-a h3 { margin: 0; font-family: var(--display); font-size: 1.35rem; }
+
+        .lab-b .k {
+            display: flex;
+            gap: 10px;
+            align-items: baseline;
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .lab-b .k b { color: var(--accent); font-family: var(--display); }
+        .lab-b h3 { margin: 0; font-family: var(--display); font-size: 1.35rem; }
+
+        .lab-c .k {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #dbeafe;
+            background: rgba(37,99,235,0.18);
+            padding: 4px 8px;
+            margin-bottom: 10px;
+        }
+        .lab-c h3 { margin: 0; font-family: var(--display); font-size: 1.35rem; }
+
+        .rel {
+            width: 100%;
+            display: grid;
+            gap: 8px;
+        }
+        .rel a {
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 2px;
+            transition: transform .25s, color .25s;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+        .rel a:hover { transform: translateX(6px); color: #fff; }
+        .rel a span { color: var(--accent); }
+
+        .rel-soft a {
+            padding: 14px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .rel-soft a:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+        .rel-index a::before {
+            content: attr(data-i);
+            color: var(--muted);
+            font-family: var(--display);
+            font-size: 0.78rem;
+            margin-right: 8px;
+        }
+
+        .choice-bar {
+            position: sticky;
+            bottom: 16px;
+            margin-top: 48px;
+            padding: 16px 18px;
+            border: 1px solid rgba(96,165,250,0.28);
+            background: rgba(8,12,20,0.88);
+            backdrop-filter: blur(14px);
+            display: grid;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .choice-bar h3 {
+            margin: 0;
+            font-family: var(--display);
+            font-size: 1rem;
+        }
+
+        .choice-bar pre {
+            margin: 0;
+            white-space: pre-wrap;
+            color: #bfdbfe;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.82rem;
+            line-height: 1.55;
+        }
+
+        .choice-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .choice-actions button {
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            padding: 8px 12px;
+            cursor: pointer;
+            font: 600 0.85rem var(--font);
+        }
+
+        .choice-actions button.primary {
+            background: #fff;
+            color: #0b1220;
+            border-color: #fff;
+        }
+
+        .foot {
+            margin-top: 28px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .foot a { color: #93c5fd; }
+
+        /* ===== FONT PREVIEWS ===== */
+        .font-sample {
+            width: 100%;
+            display: grid;
+            gap: 8px;
+        }
+        .font-sample .fs-kicker {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .font-sample .fs-h {
+            margin: 0;
+            font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            font-weight: 700;
+        }
+        .font-sample .fs-p {
+            margin: 0;
+            font-size: 0.92rem;
+            color: #cbd5e1;
+            line-height: 1.55;
+            max-width: 36ch;
+        }
+        .font-sample .fs-btn {
+            justify-self: start;
+            margin-top: 4px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #93c5fd;
+            border-bottom: 1px solid rgba(147,197,253,0.45);
+            padding-bottom: 2px;
+        }
+        .font-meta {
+            font-size: 0.78rem;
+            color: #64748b;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        .locked {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 7px;
+            border: 1px solid rgba(96,165,250,0.35);
+            color: #93c5fd;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* ===== FLOAT ICONS (non-banal) ===== */
+        .fi-stage {
+            width: 100%;
+            min-height: 120px;
+            display: grid;
+            place-items: center;
+            position: relative;
+        }
+        .fi-radar {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            position: relative;
+            display: grid; place-items: center;
+            background: rgba(8,12,20,0.7);
+            border: 1px solid rgba(96,165,250,0.35);
+        }
+        .fi-radar::before, .fi-radar::after {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(96,165,250,0.45);
+            animation: radar 2.2s ease-out infinite;
+        }
+        .fi-radar::after { animation-delay: 1.1s; }
+        .fi-radar span {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #60a5fa;
+            box-shadow: 0 0 12px #60a5fa;
+        }
+        @keyframes radar {
+            0% { transform: scale(0.55); opacity: 0.9; }
+            100% { transform: scale(1.55); opacity: 0; }
+        }
+
+        .fi-dock {
+            display: flex; align-items: stretch;
+            height: 52px;
+            background: rgba(8,12,20,0.75);
+            border: 1px solid rgba(255,255,255,0.14);
+            overflow: hidden;
+            transition: width .35s cubic-bezier(.2,.8,.2,1);
+            width: 52px;
+        }
+        .fi-dock:hover { width: 148px; }
+        .fi-dock .mark {
+            width: 52px; display: grid; place-items: center;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            color: #93c5fd; font-weight: 700;
+        }
+        .fi-dock .mark i {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34,197,94,.8);
+            animation: blink-dot 1.6s ease-in-out infinite;
+        }
+        .fi-dock .label {
+            display: flex; align-items: center;
+            padding: 0 14px;
+            white-space: nowrap;
+            font-size: 0.82rem; font-weight: 600;
+            opacity: 0; transform: translateX(-6px);
+            transition: opacity .3s ease .05s, transform .3s ease .05s;
+        }
+        .fi-dock:hover .label { opacity: 1; transform: none; }
+        @keyframes blink-dot {
+            0%,100% { opacity: 1; } 50% { opacity: .35; }
+        }
+
+        .fi-bracket {
+            width: 64px; height: 64px;
+            display: grid; place-items: center;
+            font-family: var(--display);
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.06em;
+            color: #e2e8f0;
+            position: relative;
+        }
+        .fi-bracket b { color: #60a5fa; transition: transform .35s cubic-bezier(.2,.8,.2,1); display: inline-block; }
+        .fi-bracket:hover b:first-child { transform: translateX(-4px); }
+        .fi-bracket:hover b:last-child { transform: translateX(4px); }
+        .fi-bracket em {
+            position: absolute; bottom: 8px;
+            font-style: normal; font-size: 0.62rem;
+            letter-spacing: 0.18em; color: #64748b;
+            opacity: 0; transition: opacity .3s;
+        }
+        .fi-bracket:hover em { opacity: 1; }
+
+        .fi-magnet {
+            height: 48px;
+            min-width: 48px;
+            padding: 0 14px;
+            display: inline-flex; align-items: center; gap: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: padding .35s cubic-bezier(.2,.8,.2,1), background .3s, border-color .3s;
+        }
+        .fi-magnet .arr {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.5);
+            display: grid; place-items: center;
+            transition: transform .35s, background .3s, color .3s;
+        }
+        .fi-magnet .txt {
+            max-width: 0; overflow: hidden; opacity: 0;
+            white-space: nowrap;
+            transition: max-width .4s cubic-bezier(.2,.8,.2,1), opacity .25s;
+        }
+        .fi-magnet:hover { padding: 0 16px 0 12px; background: rgba(255,255,255,0.08); border-color: #fff; }
+        .fi-magnet:hover .txt { max-width: 110px; opacity: 1; }
+        .fi-magnet:hover .arr { background: #fff; color: #0b1220; transform: translateX(3px); }
+
+        .fi-terminal {
+            width: 72px; height: 56px;
+            background: #070b12;
+            border: 1px solid rgba(96,165,250,0.35);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+            padding: 8px 10px;
+            font-family: ui-monospace, Consolas, monospace;
+            font-size: 0.72rem;
+            color: #93c5fd;
+            position: relative;
+        }
+        .fi-terminal::before {
+            content: 'contact';
+            display: block; color: #64748b; margin-bottom: 4px;
+            letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.58rem;
+        }
+        .fi-terminal .cur {
+            display: inline-block; width: 7px; height: 12px;
+            background: #60a5fa; margin-left: 2px;
+            animation: caret 1s step-end infinite;
+            vertical-align: -1px;
+        }
+        @keyframes caret { 50% { opacity: 0; } }
+
+        /* ===== SCROLL / PAGE MOTION DEMOS ===== */
+        .anim-demo {
+            width: 100%;
+            min-height: 120px;
+            display: grid;
+            place-items: center;
+            gap: 8px;
+        }
+        .scrub-stack {
+            width: 78%;
+            height: 54px;
+            position: relative;
+        }
+        .scrub-stack .layer {
+            position: absolute; left: 0; right: 0; height: 10px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+        }
+        .scrub-stack .layer:nth-child(1) { top: 4px; }
+        .scrub-stack .layer:nth-child(2) { top: 22px; opacity: .7; }
+        .scrub-stack .layer:nth-child(3) { top: 40px; opacity: .45; }
+        .scrub-stack .layer > i {
+            display: block; height: 100%; width: 28%;
+            background: linear-gradient(90deg, #60a5fa, #38bdf8);
+        }
+        .m-lock .layer > i { animation: lock-scrub 1.5s linear infinite; }
+        .m-parallax .layer:nth-child(1) > i { animation: lock-scrub 1.5s linear infinite; }
+        .m-parallax .layer:nth-child(2) > i { animation: lock-scrub 2.1s linear infinite; }
+        .m-parallax .layer:nth-child(3) > i { animation: lock-scrub 2.8s linear infinite; }
+        .m-magnet .layer > i { animation: magnet-scrub 2.4s cubic-bezier(.7,0,.2,1) infinite; }
+        .m-rubber .layer > i { animation: rubber-scrub 2s cubic-bezier(.34,1.4,.64,1) infinite; }
+        @keyframes lock-scrub {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(250%); }
+        }
+        @keyframes magnet-scrub {
+            0%,10% { transform: translateX(0); }
+            35%,45% { transform: translateX(90%); }
+            70%,80% { transform: translateX(200%); }
+            100% { transform: translateX(250%); }
+        }
+        @keyframes rubber-scrub {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(270%); }
+            55% { transform: translateX(230%); }
+            100% { transform: translateX(250%); }
+        }
+
+        /* ===== CARD HOVER ===== */
+        .hover-card {
+            width: 100%;
+            padding: 16px 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #e2e8f0;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: color .3s;
+        }
+        .hov-edge::before {
+            content: '';
+            position: absolute; left: 0; top: 18%; bottom: 18%;
+            width: 2px; background: #60a5fa;
+            transform: scaleY(0); transform-origin: center;
+            transition: transform .35s cubic-bezier(.2,.8,.2,1);
+        }
+        .hov-edge:hover::before { transform: scaleY(1); }
+        .hov-edge:hover { padding-left: 22px; transition: padding .35s cubic-bezier(.2,.8,.2,1); }
+
+        .hov-wipe span {
+            display: inline-block;
+            transition: transform .4s cubic-bezier(.2,.8,.2,1);
+        }
+        .hov-wipe::after {
+            content: attr(data-next);
+            position: absolute; left: 18px; top: 16px;
+            transform: translateY(120%);
+            color: #93c5fd;
+            transition: transform .4s cubic-bezier(.2,.8,.2,1);
+        }
+        .hov-wipe:hover span { transform: translateY(-120%); }
+        .hov-wipe:hover::after { transform: translateY(0); }
+
+        .hov-tick .num {
+            font-family: var(--display);
+            color: #64748b;
+            margin-right: 10px;
+            display: inline-block;
+            transition: color .3s, transform .35s;
+        }
+        .hov-tick:hover .num {
+            color: #60a5fa;
+            transform: translateY(-2px);
+            animation: tick-flip .45s steps(2) 1;
+        }
+        @keyframes tick-flip {
+            0% { content: '01'; filter: blur(2px); }
+            100% { filter: blur(0); }
+        }
+
+        /* ===== BUTTON MOTIONS ===== */
+        .btnm-stage {
+            width: 100%;
+            min-height: 100px;
+            display: grid;
+            place-items: center;
+        }
+        .btnm {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: none; border: none; color: #fff;
+            font: 600 0.95rem var(--font);
+            cursor: pointer; position: relative;
+        }
+        .btnm .orb {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.55);
+            display: grid; place-items: center;
+            overflow: hidden; position: relative;
+            transition: color .35s, border-color .35s;
+        }
+        .btnm-fill .orb::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: #fff;
+            transform: scale(0); border-radius: 50%;
+            transition: transform .4s cubic-bezier(.2,.8,.2,1);
+        }
+        .btnm-fill .orb span { position: relative; z-index: 1; transition: color .3s, transform .35s; }
+        .btnm-fill:hover .orb::before { transform: scale(1); }
+        .btnm-fill:hover .orb span { color: #0b1220; transform: rotate(-35deg) translateX(2px); }
+
+        .btnm-draw { padding-bottom: 6px; }
+        .btnm-draw::after {
+            content: '';
+            position: absolute; left: 0; bottom: 0; height: 1px;
+            width: 0; background: #fff;
+            transition: width .45s cubic-bezier(.2,.8,.2,1);
+        }
+        .btnm-draw:hover::after { width: 100%; }
+        .btnm-draw .orb { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+        .btnm-draw:hover .orb { transform: translateX(6px); }
+
+        .btnm-split { overflow: hidden; height: 44px; }
+        .btnm-split .stack {
+            display: grid; transition: transform .4s cubic-bezier(.2,.8,.2,1);
+        }
+        .btnm-split .stack span { height: 44px; display: flex; align-items: center; }
+        .btnm-split .stack span:last-child { color: #93c5fd; }
+        .btnm-split:hover .stack { transform: translateY(-44px); }
+
+        .btnm-scan {
+            padding: 12px 18px;
+            border: 1px solid rgba(255,255,255,0.35);
+            overflow: hidden;
+        }
+        .btnm-scan::before {
+            content: '';
+            position: absolute; inset: 0 auto 0 -40%;
+            width: 40%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+            transform: translateX(0);
+        }
+        .btnm-scan:hover::before { animation: scan-x .7s ease forwards; }
+        @keyframes scan-x {
+            from { transform: translateX(0); }
+            to { transform: translateX(320%); }
+        }
+
+        .btnm-magnetic .orb {
+            transition: transform .2s ease-out, background .3s, color .3s;
+        }
+        .btnm-magnetic:hover .orb {
+            background: #fff; color: #0b1220;
+            animation: magnet-nudge .7s ease-in-out infinite;
+        }
+        @keyframes magnet-nudge {
+            0%,100% { transform: translate(0,0); }
+            25% { transform: translate(2px,-2px); }
+            50% { transform: translate(-1px,1px); }
+            75% { transform: translate(2px,1px); }
+        }
+
+        .form-d {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(10,14,22,0.72);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
+        }
+        .form-d .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .form-d .tabs span {
+            text-align: center;
+            padding: 8px;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+        .form-d .tabs span.on {
+            color: #fff;
+            border-bottom: 2px solid #60a5fa;
+        }
+        .form-d input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+            border-radius: 0;
+            padding: 10px 0;
+            color: #fff;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .form-d button {
+            width: 100%;
+            margin-top: 6px;
+            border: 1px solid rgba(255,255,255,0.4);
+            background: transparent;
+            color: #fff;
+            padding: 11px;
+            font-weight: 700;
+        }
+
+        .form-e {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 14px;
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.25);
+        }
+        .form-e .side {
+            border-right: 1px solid rgba(255,255,255,0.08);
+            padding-right: 10px;
+        }
+        .form-e .side h4 {
+            margin: 0 0 8px;
+            font-family: var(--display);
+            font-size: 1rem;
+        }
+        .form-e .side p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+        .form-e input, .form-e textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+            color: #fff;
+            padding: 10px 0;
+            margin-bottom: 8px;
+            font: 500 0.88rem var(--font);
+        }
+        .form-e button {
+            margin-top: 6px;
+            border: none;
+            background: #fff;
+            color: #0b1220;
+            padding: 11px 14px;
+            font-weight: 700;
+        }
+        @media (max-width: 700px) {
+            .form-e { grid-template-columns: 1fr; }
+            .form-e .side { border: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <div class="hero-kicker"><span>UI LAB</span> выбор стиля подачи</div>
+            <h1>Идеи для UI: формы, значок, анимации</h1>
+            <p>
+                Уже на сайте: T-B · H-A · B-B · F-B · L-B · R-A.
+                Ниже — новые варианты формы заявки, плавающего значка и анимаций. Отметь и пришли коды.
+            </p>
+            <div class="note">Свежий выбор: значок (7), скролл/видео (8), анимации кнопок (9). Наводи на превью.</div>
+            <nav class="toc" aria-label="Разделы">
+                <a href="#float-icon">Значок ←</a>
+                <a href="#motion">Скролл/видео ←</a>
+                <a href="#btn-motion">Анимации кнопок ←</a>
+                <a href="#forms-extra">Формы заявки</a>
+                <a href="#fonts">Шрифты</a>
+                <a href="#headers">Шапка</a>
+            </nav>
+        </header>
+
+        <section id="fonts">
+            <div class="section-head">
+                <h2>0. Шрифты</h2>
+                <p>Пара: заголовок + текст. Все варианты с кириллицей. Сейчас на сайте: Jost + Inter.</p>
+            </div>
+            <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                <article class="card">
+                    <div class="card-label"><strong>T-A</strong> Space Grotesk + Manrope</div>
+                    <div class="preview wide">
+                        <div class="font-sample" style="--h:'Space Grotesk',sans-serif;--b:'Manrope',sans-serif">
+                            <div class="fs-kicker" style="font-family:var(--b)">05 Услуга</div>
+                            <h3 class="fs-h" style="font-family:var(--h)">Услуга по этому направлению</h3>
+                            <p class="fs-p" style="font-family:var(--b)">Многофункциональный Telegram-бот объединяет нейросети в одном интерфейсе: чат, изображения, видео.</p>
+                            <div class="fs-btn" style="font-family:var(--b)">Обсудить проект →</div>
+                        </div>
+                    </div>
+                    <p class="desc">Геометричный digital. Заголовки «тех», текст спокойный. Хорошо ложится на H-A + B-B.</p>
+                    <p class="font-meta">display: Space Grotesk · body: Manrope</p>
+                    <label class="pick"><input type="radio" name="font" value="T-A Space Grotesk + Manrope"> Выбрать T-A</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>T-B</strong> Unbounded + Onest</div>
+                    <div class="preview wide">
+                        <div class="font-sample">
+                            <div class="fs-kicker" style="font-family:'Onest',sans-serif">05 Услуга</div>
+                            <h3 class="fs-h" style="font-family:'Unbounded',sans-serif">Услуга по этому направлению</h3>
+                            <p class="fs-p" style="font-family:'Onest',sans-serif">Многофункциональный Telegram-бот объединяет нейросети в одном интерфейсе: чат, изображения, видео.</p>
+                            <div class="fs-btn" style="font-family:'Onest',sans-serif">Обсудить проект →</div>
+                        </div>
+                    </div>
+                    <p class="desc">Сильный бренд в заголовках (как «FUTURE» на референсах). Onest читается в длинных текстах.</p>
+                    <p class="font-meta">display: Unbounded · body: Onest</p>
+                    <label class="pick"><input type="radio" name="font" value="T-B Unbounded + Onest" checked> Выбрать T-B</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>T-C</strong> IBM Plex Sans</div>
+                    <div class="preview wide">
+                        <div class="font-sample">
+                            <div class="fs-kicker" style="font-family:'IBM Plex Sans',sans-serif">05 Услуга</div>
+                            <h3 class="fs-h" style="font-family:'IBM Plex Sans',sans-serif;font-weight:700">Услуга по этому направлению</h3>
+                            <p class="fs-p" style="font-family:'IBM Plex Sans',sans-serif">Многофункциональный Telegram-бот объединяет нейросети в одном интерфейсе: чат, изображения, видео.</p>
+                            <div class="fs-btn" style="font-family:'IBM Plex Sans',sans-serif">Обсудить проект →</div>
+                        </div>
+                    </div>
+                    <p class="desc">Один системный шрифт на всё — «продуктовый» tech без декора. Очень digital/UI.</p>
+                    <p class="font-meta">display + body: IBM Plex Sans</p>
+                    <label class="pick"><input type="radio" name="font" value="T-C IBM Plex Sans"> Выбрать T-C</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>T-D</strong> Jost + Manrope</div>
+                    <div class="preview wide">
+                        <div class="font-sample">
+                            <div class="fs-kicker" style="font-family:'Manrope',sans-serif">05 Услуга</div>
+                            <h3 class="fs-h" style="font-family:'Jost',sans-serif">Услуга по этому направлению</h3>
+                            <p class="fs-p" style="font-family:'Manrope',sans-serif">Многофункциональный Telegram-бот объединяет нейросети в одном интерфейсе: чат, изображения, видео.</p>
+                            <div class="fs-btn" style="font-family:'Manrope',sans-serif">Обсудить проект →</div>
+                        </div>
+                    </div>
+                    <p class="desc">Близко к текущему сайту, но Inter убираем. Мягкий апгрейд без смены характера.</p>
+                    <p class="font-meta">display: Jost · body: Manrope <span class="locked">near current</span></p>
+                    <label class="pick"><input type="radio" name="font" value="T-D Jost + Manrope"> Выбрать T-D</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>T-E</strong> Onest + Space Grotesk UI</div>
+                    <div class="preview wide">
+                        <div class="font-sample">
+                            <div class="fs-kicker" style="font-family:'Space Grotesk',sans-serif">05 Услуга</div>
+                            <h3 class="fs-h" style="font-family:'Onest',sans-serif;font-weight:800">Услуга по этому направлению</h3>
+                            <p class="fs-p" style="font-family:'Onest',sans-serif">Многофункциональный Telegram-бот объединяет нейросети в одном интерфейсе: чат, изображения, видео.</p>
+                            <div class="fs-btn" style="font-family:'Space Grotesk',sans-serif">Обсудить проект →</div>
+                        </div>
+                    </div>
+                    <p class="desc">Onest в заголовках/тексте, Space Grotesk для UI-меток и кнопок. Современный продуктовый вид.</p>
+                    <p class="font-meta">display/body: Onest · ui: Space Grotesk</p>
+                    <label class="pick"><input type="radio" name="font" value="T-E Onest + Space Grotesk UI"> Выбрать T-E</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="headers">
+            <div class="section-head">
+                <h2>1. Шапка <span class="locked">выбрано H-A</span></h2>
+                <p>Сейчас шапка слишком «таблетка». Ниже — три digital-варианта без тяжёлого каркаса.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>H-A</strong> Soft glass pill</div>
+                    <div class="preview wide">
+                        <div class="hdr hdr-a">
+                            <div class="logo">dev2026.ru</div>
+                            <div class="links"><span>Кейсы</span><span>Процесс</span><span>Услуги</span></div>
+                            <div class="cta">Начать проект</div>
+                        </div>
+                    </div>
+                    <p class="desc">Как на pricing-скрине: плавающая полупрозрачная полоса, CTA белый. Мягче текущего, но всё ещё «контейнер».</p>
+                    <label class="pick"><input type="radio" name="header" value="H-A Soft glass pill" checked> Выбрать H-A</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>H-B</strong> Ghost text nav</div>
+                    <div class="preview wide">
+                        <div class="hdr hdr-b">
+                            <div class="logo">dev2026.ru</div>
+                            <div class="links"><span>Кейсы</span><span>Процесс</span><span>Услуги</span></div>
+                            <div class="cta">Начать проект ↗</div>
+                        </div>
+                    </div>
+                    <p class="desc">Почти невидимая шапка: только текст, без фона и рамки. Максимально «воздушно», бренд не давит.</p>
+                    <label class="pick"><input type="radio" name="header" value="H-B Ghost text nav"> Выбрать H-B</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>H-C</strong> Status bar digital</div>
+                    <div class="preview wide">
+                        <div class="hdr hdr-c">
+                            <div class="logo">dev2026.ru</div>
+                            <div class="links"><span>Кейсы</span><span>Процесс</span><span>Услуги</span></div>
+                            <div class="cta">Открыт к проектам</div>
+                        </div>
+                    </div>
+                    <p class="desc">Тонкая прозрачная полоса + статус-точка (как live-system). Digital, без pill-кнопки.</p>
+                    <label class="pick"><input type="radio" name="header" value="H-C Status bar digital"> Выбрать H-C</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="buttons">
+            <div class="section-head">
+                <h2>2. Кнопки / CTA <span class="locked">выбрано B-B</span></h2>
+                <p>Для «Обсудить проект», «Начать проект», secondary Telegram.</p>
+            </div>
+            <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                <article class="card">
+                    <div class="card-label"><strong>B-A</strong> Rect outline</div>
+                    <div class="preview">
+                        <div class="btn-row">
+                            <button class="btn-a" type="button">Обсудить проект</button>
+                            <button class="btn-a" type="button" style="border-color:rgba(255,255,255,.25);opacity:.85">Telegram</button>
+                        </div>
+                    </div>
+                    <p class="desc">Прямоугольник без скруглений (как LET’S GO на скрине 5). Hover заливает белым.</p>
+                    <label class="pick"><input type="radio" name="button" value="B-A Rect outline"> Выбрать B-A</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>B-B</strong> Arrow orb</div>
+                    <div class="preview">
+                        <button class="btn-b" type="button">See More / Обсудить <span class="orb">→</span></button>
+                    </div>
+                    <p class="desc">Как на скрине 6: текст + круг со стрелкой. Меньше «кнопка», больше жест перехода.</p>
+                    <label class="pick"><input type="radio" name="button" value="B-B Arrow orb" checked> Выбрать B-B</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>B-C</strong> Cut corner fill</div>
+                    <div class="preview">
+                        <button class="btn-c" type="button">Обсудить проект ↗</button>
+                    </div>
+                    <p class="desc">Срезанный угол, синяя заливка — tech/UI акцент без pill.</p>
+                    <label class="pick"><input type="radio" name="button" value="B-C Cut corner fill"> Выбрать B-C</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>B-D</strong> Text underline</div>
+                    <div class="preview">
+                        <button class="btn-d" type="button">Открыть направление ↗</button>
+                    </div>
+                    <p class="desc">Для вторичных действий и ссылок в кейсах: без рамки, только линия и стрелка.</p>
+                    <label class="pick"><input type="radio" name="button" value="B-D Text underline"> Выбрать B-D</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="forms">
+            <div class="section-head">
+                <h2>3. Форма «Обсудить проект» <span class="locked">выбрано F-B</span></h2>
+                <p>Те же поля (задача / ТЗ / контакт), другая оболочка.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>F-A</strong> Soft panel</div>
+                    <div class="preview wide">
+                        <form class="form form-a" onsubmit="return false">
+                            <label>Задача</label>
+                            <textarea rows="2" placeholder="Нужен AI-бот для Telegram…"></textarea>
+                            <label>Контакт</label>
+                            <input type="text" placeholder="@username">
+                            <button type="button">Отправить заявку</button>
+                        </form>
+                    </div>
+                    <p class="desc">Лёгкая панель со скруглением — ближе к текущему модалу, но чище.</p>
+                    <label class="pick"><input type="radio" name="form" value="F-A Soft panel"> Выбрать F-A</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>F-B</strong> Underline fields</div>
+                    <div class="preview wide">
+                        <form class="form form-b" onsubmit="return false">
+                            <label>Задача</label>
+                            <textarea rows="2" placeholder="Нужен AI-бот для Telegram…"></textarea>
+                            <label>Контакт</label>
+                            <input type="text" placeholder="@username">
+                            <button type="button">Отправить →</button>
+                        </form>
+                    </div>
+                    <p class="desc">Без коробок у инпутов: только нижняя линия. Максимально editorial / digital.</p>
+                    <label class="pick"><input type="radio" name="form" value="F-B Underline fields" checked> Выбрать F-B</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>F-C</strong> Signal strip</div>
+                    <div class="preview wide">
+                        <form class="form form-c" onsubmit="return false">
+                            <label>Задача</label>
+                            <textarea rows="2" placeholder="Нужен AI-бот для Telegram…"></textarea>
+                            <label>Контакт</label>
+                            <input type="text" placeholder="@username">
+                            <button type="button">Отправить заявку</button>
+                        </form>
+                    </div>
+                    <p class="desc">Акцентная полоса слева + срезанная CTA. Ощущение «системной» формы.</p>
+                    <label class="pick"><input type="radio" name="form" value="F-C Signal strip"> Выбрать F-C</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="labels">
+            <div class="section-head">
+                <h2>4. Кикеры секций <span class="locked">выбрано L-B</span></h2>
+                <p>Вместо длинных линий у «ФУНКЦИИ / 05 УСЛУГА».</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>L-A</strong> Plain label</div>
+                    <div class="preview wide">
+                        <div class="label-row lab-a">
+                            <div class="k">Функции</div>
+                            <h3>Что реализовано</h3>
+                        </div>
+                    </div>
+                    <p class="desc">Только слово-кикер, без линии и номера. Минимум декора.</p>
+                    <label class="pick"><input type="radio" name="label" value="L-A Plain label"> Выбрать L-A</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>L-B</strong> Index + label</div>
+                    <div class="preview wide">
+                        <div class="label-row lab-b">
+                            <div class="k"><b>05</b> Услуга</div>
+                            <h3>Услуга по этому направлению</h3>
+                        </div>
+                    </div>
+                    <p class="desc">Номер + текст (как сейчас), но без горизонтальной линии. Рекомендую оставить.</p>
+                    <label class="pick"><input type="radio" name="label" value="L-B Index + label" checked> Выбрать L-B</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>L-C</strong> Signal chip</div>
+                    <div class="preview wide">
+                        <div class="label-row lab-c">
+                            <div class="k">Here and now</div>
+                            <h3>О проекте</h3>
+                        </div>
+                    </div>
+                    <p class="desc">Маленький цветной маркер-чип (как «HERE AND NOW» на скрине 5). Акцентнее.</p>
+                    <label class="pick"><input type="radio" name="label" value="L-C Signal chip"> Выбрать L-C</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="related">
+            <div class="section-head">
+                <h2>5. Похожие проекты <span class="locked">выбрано R-A</span></h2>
+                <p>Рамки уже сняты. Выберите ритм списка.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>R-A</strong> Ghost rows</div>
+                    <div class="preview wide">
+                        <div class="rel">
+                            <a href="#">Telegram-бот для трейдинга <span>↗</span></a>
+                            <a href="#">VPN-бот для Telegram <span>↗</span></a>
+                        </div>
+                    </div>
+                    <p class="desc">Только текст и стрелка, hover сдвигает вправо. Уже близко к текущему фиксу.</p>
+                    <label class="pick"><input type="radio" name="related" value="R-A Ghost rows" checked> Выбрать R-A</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>R-B</strong> Rule separators</div>
+                    <div class="preview wide">
+                        <div class="rel rel-soft">
+                            <a href="#">Telegram-бот для трейдинга <span>↗</span></a>
+                            <a href="#">VPN-бот для Telegram <span>↗</span></a>
+                        </div>
+                    </div>
+                    <p class="desc">Без рамок карточек, но с тонкими разделителями между строками.</p>
+                    <label class="pick"><input type="radio" name="related" value="R-B Rule separators"> Выбрать R-B</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>R-C</strong> Indexed list</div>
+                    <div class="preview wide">
+                        <div class="rel rel-index">
+                            <a href="#" data-i="01">Telegram-бот для трейдинга <span>↗</span></a>
+                            <a href="#" data-i="02">VPN-бот для Telegram <span>↗</span></a>
+                        </div>
+                    </div>
+                    <p class="desc">Нумерация слева — digital-каталог без коробок.</p>
+                    <label class="pick"><input type="radio" name="related" value="R-C Indexed list"> Выбрать R-C</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="forms-extra">
+            <div class="section-head">
+                <h2>6. Форма заявки (новые варианты)</h2>
+                <p>Помимо F-A/B/C — варианты именно для виджета «Заявка» и модала «Обсудить проект».</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>F-D</strong> Float glass tabs</div>
+                    <div class="preview wide">
+                        <form class="form form-d" onsubmit="return false">
+                            <div class="tabs"><span>Написать в ТГ</span><span class="on">Заявка</span></div>
+                            <input type="text" placeholder="Ваше имя">
+                            <input type="text" placeholder="@username или t.me/...">
+                            <button type="button">Отправить заявку</button>
+                        </form>
+                    </div>
+                    <p class="desc">Как сейчас у float-виджета, но чище: glass + underline + outline CTA. Близко к скрину 3.</p>
+                    <label class="pick"><input type="radio" name="formx" value="F-D Float glass tabs" checked> Выбрать F-D</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>F-E</strong> Split brief</div>
+                    <div class="preview wide">
+                        <form class="form form-e" onsubmit="return false">
+                            <div class="side">
+                                <h4>Обсудить проект</h4>
+                                <p>Короткий бриф — вилка по срокам и бюджету.</p>
+                            </div>
+                            <div>
+                                <textarea rows="2" placeholder="Задача…"></textarea>
+                                <input type="text" placeholder="Контакт">
+                                <button type="button">Отправить →</button>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="desc">Двухколоночный модал: слева смысл, справа поля. Более «продуктово».</p>
+                    <label class="pick"><input type="radio" name="formx" value="F-E Split brief"> Выбрать F-E</label>
+                </article>
+
+                <article class="card">
+                    <div class="card-label"><strong>F-B+</strong> Underline steppers</div>
+                    <div class="preview wide">
+                        <form class="form form-b" onsubmit="return false">
+                            <label>Шаг 1 из 3 · Задача</label>
+                            <textarea rows="2" placeholder="Нужен AI-бот…"></textarea>
+                            <button type="button">Далее →</button>
+                        </form>
+                    </div>
+                    <p class="desc">Текущий F-B, но с явным шагом «1/3» и стрелочным CTA. Минимум изменений.</p>
+                    <label class="pick"><input type="radio" name="formx" value="F-B+ Underline steppers"> Выбрать F-B+</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="float-icon">
+            <div class="section-head">
+                <h2>7. Плавающий значок</h2>
+                <p>Не «синий чат», а digital-объект. Наведи на превью.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>I-A</strong> Radar signal</div>
+                    <div class="preview"><div class="fi-stage"><div class="fi-radar"><span></span></div></div></div>
+                    <p class="desc">Пульс «на связи»: кольца расходятся от точки. Живой статус, не иконка мессенджера.</p>
+                    <label class="pick"><input type="radio" name="icon" value="I-A Radar signal" checked> Выбрать I-A</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>I-B</strong> Status dock</div>
+                    <div class="preview"><div class="fi-stage"><div class="fi-dock"><div class="mark"><i></i></div><div class="label">Написать ↗</div></div></div></div>
+                    <p class="desc">Компактный док: зелёная точка → при hover раскрывается подпись. Как system tray.</p>
+                    <label class="pick"><input type="radio" name="icon" value="I-B Status dock"> Выбрать I-B</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>I-C</strong> Code brackets</div>
+                    <div class="preview"><div class="fi-stage"><div class="fi-bracket"><b>&lt;</b>/<b>&gt;</b><em>PING</em></div></div></div>
+                    <p class="desc">Скобки бренда как кнопка. На hover разъезжаются, появляется PING.</p>
+                    <label class="pick"><input type="radio" name="icon" value="I-C Code brackets"> Выбрать I-C</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>I-D</strong> Magnet expand</div>
+                    <div class="preview"><div class="fi-stage"><div class="fi-magnet"><span class="arr">↗</span><span class="txt">Обсудить</span></div></div></div>
+                    <p class="desc">Сначала только orb со стрелкой, при наведении — выезжает слово. Жест «открой контакт».</p>
+                    <label class="pick"><input type="radio" name="icon" value="I-D Magnet expand"> Выбрать I-D</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>I-E</strong> Mini terminal</div>
+                    <div class="preview"><div class="fi-stage"><div class="fi-terminal">&gt;_<span class="cur"></span></div></div></div>
+                    <p class="desc">Мини-терминал с курсором. Атмосфера «разработчик на связи», без шаблонного чата.</p>
+                    <label class="pick"><input type="radio" name="icon" value="I-E Mini terminal"> Выбрать I-E</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="motion">
+            <div class="section-head">
+                <h2>8. Скролл ↔ видео и hover секций</h2>
+                <p>Как робот реагирует на скролл + как ведут себя блоки при наведении.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>M-A</strong> Frame lock</div>
+                    <div class="preview"><div class="anim-demo"><div class="scrub-stack m-lock"><div class="layer"><i></i></div><div class="layer"><i></i></div><div class="layer"><i></i></div></div><span style="color:#94a3b8;font-size:.8rem">кадр = позиция скролла</span></div></div>
+                    <p class="desc">Жёсткая связь скролл→кадр. Максимальный контроль, почти без инерции.</p>
+                    <label class="pick"><input type="radio" name="motion" value="M-A Frame lock" checked> Выбрать M-A</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>M-B</strong> Layer parallax</div>
+                    <div class="preview"><div class="anim-demo"><div class="scrub-stack m-parallax"><div class="layer"><i></i></div><div class="layer"><i></i></div><div class="layer"><i></i></div></div><span style="color:#94a3b8;font-size:.8rem">видео / veil / glow — разные скорости</span></div></div>
+                    <p class="desc">Слои едут с разной скоростью: глубина без «лага» основного кадра.</p>
+                    <label class="pick"><input type="radio" name="motion" value="M-B Layer parallax"> Выбрать M-B</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>M-C</strong> Section magnets</div>
+                    <div class="preview"><div class="anim-demo"><div class="scrub-stack m-magnet"><div class="layer"><i></i></div><div class="layer"><i></i></div><div class="layer"><i></i></div></div><span style="color:#94a3b8;font-size:.8rem">якоря: герой → кейсы → FAQ</span></div></div>
+                    <p class="desc">Прогресс «липнет» к ключевым секциям — ощущение глав, а не бесконечной ленты.</p>
+                    <label class="pick"><input type="radio" name="motion" value="M-C Section magnets"> Выбрать M-C</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>M-D</strong> Rubber settle</div>
+                    <div class="preview"><div class="anim-demo"><div class="scrub-stack m-rubber"><div class="layer"><i></i></div><div class="layer"><i></i></div><div class="layer"><i></i></div></div><span style="color:#94a3b8;font-size:.8rem">лёгкий overshoot и усадка</span></div></div>
+                    <p class="desc">Чуть перелетает цель и мягко садится. Живее, чем линейный scrub.</p>
+                    <label class="pick"><input type="radio" name="motion" value="M-D Rubber settle"> Выбрать M-D</label>
+                </article>
+            </div>
+            <div class="grid" style="margin-top:16px">
+                <article class="card">
+                    <div class="card-label"><strong>Hov-A</strong> Edge reveal</div>
+                    <div class="preview"><div class="hover-card hov-edge">Наведи · кейс / услуга</div></div>
+                    <p class="desc">Слева вырастает сигнальная полоска, текст чуть сдвигается. Без «прыжка» карточки.</p>
+                    <label class="pick"><input type="radio" name="hover" value="Hov-A Edge reveal" checked> Выбрать Hov-A</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>Hov-B</strong> Text wipe</div>
+                    <div class="preview"><div class="hover-card hov-wipe" data-next="Открыть проект ↗"><span>Похожий кейс</span></div></div>
+                    <p class="desc">Текст уезжает вверх, снизу въезжает действие. Сильный digital-жест.</p>
+                    <label class="pick"><input type="radio" name="hover" value="Hov-B Text wipe"> Выбрать Hov-B</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>Hov-C</strong> Index tick</div>
+                    <div class="preview"><div class="hover-card hov-tick"><span class="num">06</span>Похожие проекты</div></div>
+                    <p class="desc">Номер секции «щёлкает» и подсвечивается — ощущение каталога/системы.</p>
+                    <label class="pick"><input type="radio" name="hover" value="Hov-C Index tick"> Выбрать Hov-C</label>
+                </article>
+            </div>
+        </section>
+
+        <section id="btn-motion">
+            <div class="section-head">
+                <h2>9. Анимации кнопок</h2>
+                <p>Для «Обсудить проект» / orb-кнопок. Наведи на каждый вариант.</p>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-label"><strong>Btn-A</strong> Orb fill + twist</div>
+                    <div class="preview"><div class="btnm-stage"><button class="btnm btnm-fill" type="button">Обсудить проект <span class="orb"><span>→</span></span></button></div></div>
+                    <p class="desc">Круг заливается белым, стрелка чуть поворачивается. База под B-B, но с характером.</p>
+                    <label class="pick"><input type="radio" name="btnmotion" value="Btn-A Orb fill + twist" checked> Выбрать Btn-A</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>Btn-B</strong> Underline draw</div>
+                    <div class="preview"><div class="btnm-stage"><button class="btnm btnm-draw" type="button">Обсудить проект <span class="orb">→</span></button></div></div>
+                    <p class="desc">Линия прорисовывается под текстом, orb уезжает вправо. Editorial / digital.</p>
+                    <label class="pick"><input type="radio" name="btnmotion" value="Btn-B Underline draw"> Выбрать Btn-B</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>Btn-C</strong> Label swap</div>
+                    <div class="preview"><div class="btnm-stage"><button class="btnm btnm-split" type="button"><span class="stack"><span>Обсудить проект →</span><span>Открыть бриф ↗</span></span></button></div></div>
+                    <p class="desc">Два состояния текста: основное → при hover второе. Без смены формы кнопки.</p>
+                    <label class="pick"><input type="radio" name="btnmotion" value="Btn-C Label swap"> Выбрать Btn-C</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>Btn-D</strong> Scan sweep</div>
+                    <div class="preview"><div class="btnm-stage"><button class="btnm btnm-scan" type="button">Отправить заявку</button></div></div>
+                    <p class="desc">Горизонтальный «скан» по кнопке — для submit в формах.</p>
+                    <label class="pick"><input type="radio" name="btnmotion" value="Btn-D Scan sweep"> Выбрать Btn-D</label>
+                </article>
+                <article class="card">
+                    <div class="card-label"><strong>Btn-E</strong> Magnetic nudge</div>
+                    <div class="preview"><div class="btnm-stage"><button class="btnm btnm-magnetic" type="button">Начать проект <span class="orb">↗</span></button></div></div>
+                    <p class="desc">Orb чуть «дрожит» к курсору. Живой акцент в шапке / CTA.</p>
+                    <label class="pick"><input type="radio" name="btnmotion" value="Btn-E Magnetic nudge"> Выбрать Btn-E</label>
+                </article>
+            </div>
+        </section>
+
+        <div class="choice-bar" id="choiceBar">
+            <h3>Ваш выбор</h3>
+            <pre id="choiceOut">…</pre>
+            <div class="choice-actions">
+                <button type="button" class="primary" id="copyBtn">Скопировать выбор</button>
+                <button type="button" id="resetBtn">Сбросить к рекомендованным</button>
+            </div>
+        </div>
+
+        <p class="foot">
+            Откройте: <a href="/ui-options.html#float-icon">/ui-options.html#float-icon</a> ·
+            Пришлите коды значка / скролла / кнопок — внедрю.
+        </p>
+    </div>
+
+    <script>
+        const groups = ['font', 'header', 'button', 'form', 'formx', 'icon', 'motion', 'hover', 'btnmotion', 'label', 'related'];
+        const defaults = {
+            font: 'T-B Unbounded + Onest',
+            header: 'H-A Soft glass pill',
+            button: 'B-B Arrow orb',
+            form: 'F-B Underline fields',
+            formx: 'F-D Float glass tabs',
+            icon: 'I-A Radar signal',
+            motion: 'M-A Frame lock',
+            hover: 'Hov-A Edge reveal',
+            btnmotion: 'Btn-A Orb fill + twist',
+            label: 'L-B Index + label',
+            related: 'R-A Ghost rows'
+        };
+
+        function readChoice() {
+            const out = {};
+            groups.forEach((g) => {
+                const el = document.querySelector(`input[name="${g}"]:checked`);
+                out[g] = el ? el.value : defaults[g];
+            });
+            return out;
+        }
+
+        function render() {
+            const c = readChoice();
+            const text =
+`Шрифт:        ${c.font}
+Шапка:         ${c.header}
+Кнопки:        ${c.button}
+Форма база:    ${c.form}
+Форма заявка:  ${c.formx}
+Значок:        ${c.icon}
+Скролл/видео:  ${c.motion}
+Hover секций:  ${c.hover}
+Аним. кнопок:  ${c.btnmotion}
+Кикеры:        ${c.label}
+Похожие:       ${c.related}
+
+Коротко: ${c.icon.slice(0,3)} + ${c.motion.slice(0,3)} + ${c.hover.slice(0,5)} + ${c.btnmotion.slice(0,5)}`;
+            document.getElementById('choiceOut').textContent = text;
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach((el) => {
+            el.addEventListener('change', render);
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', async () => {
+            const text = document.getElementById('choiceOut').textContent;
+            try {
+                await navigator.clipboard.writeText(text);
+                document.getElementById('copyBtn').textContent = 'Скопировано';
+                setTimeout(() => { document.getElementById('copyBtn').textContent = 'Скопировать выбор'; }, 1400);
+            } catch (_) {
+                alert('Скопируйте вручную из блока ниже');
+            }
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            groups.forEach((g) => {
+                const el = document.querySelector(`input[name="${g}"][value="${defaults[g]}"]`);
+                if (el) el.checked = true;
+            });
+            render();
+        });
+
+        render();
+    </script>
+</body>
+</html>

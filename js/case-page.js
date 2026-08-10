@@ -5,8 +5,12 @@ function escapeAttr(value) {
 function initCaseCollage(caseId, container, basePath) {
     if (!container || !window.caseData[caseId] || !window.CaseCollage) return;
     const data = window.caseData[caseId];
-    const images = data.images && data.images.length ? data.images : [data.img];
-    container.innerHTML = window.CaseCollage.render(images, data.title, basePath);
+    const images = (data.images && data.images.length) ? data.images : (data.img ? [data.img] : []);
+    if (!images.length) return;
+
+    container.classList.remove('case-collage--robot');
+    container.innerHTML = window.CaseCollage.render(images, data.title || 'Проект', basePath || '');
+    container.setAttribute('aria-label', 'Превью проекта');
 
     container.querySelectorAll('[data-open-image]').forEach((btn) => {
         btn.addEventListener('click', () => openLightbox(btn.getAttribute('data-open-image')));

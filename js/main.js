@@ -152,30 +152,46 @@ function renderPortfolioGrid() {
             : '';
 
         return `
-            <article class="portfolio-item is-open${isFeatured ? ' is-featured' : ''}${hasPage ? ' has-case-page' : ''}" data-case="${id}">
-                <div class="portfolio-card-layout">
-                    <header class="portfolio-card-head">
+            <article class="portfolio-item${isFeatured ? ' is-featured' : ''}${hasPage ? ' has-case-page' : ''}" data-case="${id}">
+                <button type="button" class="portfolio-summary" aria-expanded="false">
+                    <span class="portfolio-summary-thumb" aria-hidden="true">
+                        <img src="${currentSrc}" alt="" loading="lazy" width="52" height="52">
+                    </span>
+                    <div class="portfolio-summary-main">
                         <h3>${d.title}</h3>
                         <p>${d.desc}</p>
-                    </header>
-                    <div class="portfolio-card-media">
-                        ${mediaHtml}
                     </div>
-                    <div class="portfolio-card-side">
-                        <div class="portfolio-story">
-                            <div class="portfolio-story-block">
-                                <span class="portfolio-story-kicker">Задача</span>
-                                <p>${d.task}</p>
-                            </div>
-                            <div class="portfolio-story-block">
-                                <span class="portfolio-story-kicker">Что реализовано</span>
-                                <ul class="portfolio-story-list">
-                                    ${d.features.map((item) => `<li>${item}</li>`).join('')}
-                                </ul>
+                    <span class="portfolio-chevron" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                </button>
+                <div class="portfolio-panel" aria-hidden="true">
+                    <div class="portfolio-card-layout">
+                        <header class="portfolio-card-head">
+                            <h3>${d.title}</h3>
+                            <p>${d.desc}</p>
+                        </header>
+                        <div class="portfolio-card-media">
+                            ${mediaHtml}
+                        </div>
+                        <div class="portfolio-card-side">
+                            <div class="portfolio-story">
+                                <div class="portfolio-story-block">
+                                    <span class="portfolio-story-kicker">Задача</span>
+                                    <p>${d.task}</p>
+                                </div>
+                                <div class="portfolio-story-block">
+                                    <span class="portfolio-story-kicker">Что реализовано</span>
+                                <div class="portfolio-feature-badges" aria-hidden="false">
+                                        ${d.features.map((item) => `<span class="feature-badge" title="${item}">${item}</span>`).join('')}
+                                </div>
+                                </div>
                             </div>
                         </div>
+                        ${hasPage ? `<div class="portfolio-card-cta">${pageLinkHtml}</div>` : ''}
                     </div>
-                    ${hasPage ? `<div class="portfolio-card-cta">${pageLinkHtml}</div>` : ''}
                 </div>
             </article>
         `;
@@ -188,6 +204,31 @@ function initPortfolio() {
     renderPortfolioGrid();
 
     grid.addEventListener('click', (e) => {
+        // Toggle accordion summary
+        const summary = e.target.closest('.portfolio-summary');
+        if (summary) {
+            e.preventDefault();
+            e.stopPropagation();
+            const item = summary.closest('.portfolio-item');
+            if (!item) return;
+            const willOpen = !item.classList.contains('is-open');
+            // close other open items
+            grid.querySelectorAll('.portfolio-item.is-open').forEach((openItem) => {
+                if (openItem !== item) {
+                    openItem.classList.remove('is-open');
+                    const panel = openItem.querySelector('.portfolio-panel');
+                    if (panel) panel.setAttribute('aria-hidden', 'true');
+                    const s = openItem.querySelector('.portfolio-summary');
+                    if (s) s.setAttribute('aria-expanded', 'false');
+                }
+            });
+            item.classList.toggle('is-open', willOpen);
+            const panel = item.querySelector('.portfolio-panel');
+            if (panel) panel.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
+            summary.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            return;
+        }
+
         const thumb = e.target.closest('.portfolio-thumb');
         if (thumb) {
             e.preventDefault();
@@ -209,6 +250,42 @@ function initPortfolio() {
             e.stopPropagation();
             openLightbox(imageBtn.getAttribute('data-open-image'));
         }
+    });
+
+    // Prefetch images on hover and add light parallax on thumbs
+    grid.querySelectorAll('.portfolio-item').forEach((item) => {
+        const summary = item.querySelector('.portfolio-summary');
+        const thumbImg = item.querySelector('.portfolio-summary-thumb img');
+        const caseId = item.dataset.case;
+        if (!summary) return;
+
+        summary.addEventListener('mouseenter', () => {
+            // prefetch gallery images
+            try {
+                const imgs = getCaseImages(caseId);
+                imgs.forEach((src) => {
+                    const i = new Image();
+                    i.src = src;
+                });
+            } catch (e) { /* ignore */ }
+        }, { passive: true });
+
+        // tiny parallax on mousemove over summary
+        summary.addEventListener('mousemove', (ev) => {
+            if (!thumbImg) return;
+            const r = summary.getBoundingClientRect();
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            const dx = (ev.clientX - cx) / r.width; // -0.5..0.5
+            const dy = (ev.clientY - cy) / r.height;
+            const tx = dx * 8; // up to ~8px
+            const ty = dy * 6;
+            thumbImg.style.transform = `translate(${tx}px, ${ty}px) scale(1.02)`;
+        });
+
+        summary.addEventListener('mouseleave', () => {
+            if (thumbImg) thumbImg.style.transform = '';
+        });
     });
 }
 

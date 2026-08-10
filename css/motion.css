@@ -14,7 +14,7 @@
     --motion-orange-rgb: 102, 173, 255;
     --motion-accent-soft: rgba(86, 157, 243, 0.16);
     --motion-orange-soft: rgba(102, 173, 255, 0.2);
-    --display-3xl: clamp(2.55rem, 7.2vw, 6.4rem);
+    --display-3xl: clamp(2.15rem, 5vw, 4.25rem);
     --display-2xl: clamp(2.4rem, 6.5vw, 5.5rem);
     --display-xl: clamp(2rem, 5vw, 4rem);
     --ease-motion: cubic-bezier(0.22, 1, 0.36, 1);
@@ -25,7 +25,9 @@
    -------------------------------------------------------------------------- */
 .motion {
     --section-gap: clamp(88px, 12vh, 148px);
-    --font-ui: 'Space Grotesk', 'Inter', sans-serif;
+    --font-display: 'Unbounded', 'Onest', system-ui, sans-serif;
+    --font-main: 'Onest', system-ui, sans-serif;
+    --font-ui: 'Onest', system-ui, sans-serif;
     --bg-breathe: 0.5;
     --neon-blue: 102, 173, 255;
     --neon-violet: 167, 139, 250;
@@ -130,23 +132,64 @@
 /* --------------------------------------------------------------------------
    Navigation
    -------------------------------------------------------------------------- */
-.motion nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    margin-left: 0;
-    height: 72px;
+.motion nav.site-nav,
+.motion .site-nav {
+    position: sticky;
+    top: 14px;
+    left: auto;
+    right: auto;
+    width: min(1080px, calc(100vw - 28px));
+    max-width: min(1080px, calc(100vw - 28px));
+    margin: 14px auto 0;
+    margin-left: auto;
+    height: auto;
+    min-height: 58px;
     z-index: 120;
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    background: rgba(8, 11, 18, 0.34);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: none;
-    gap: 18px;
-    padding-left: clamp(20px, 4vw, 56px);
-    padding-right: clamp(20px, 4vw, 56px);
+    border-radius: 999px;
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    background: rgba(10, 14, 22, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+    gap: 14px;
+    padding: 10px 12px 10px 18px;
+}
+
+/* Never style breadcrumbs as a second fixed header */
+.motion nav.case-breadcrumbs,
+.motion .case-breadcrumbs {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 18px 0 28px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: auto !important;
+}
+
+/* SEO crawl links must stay visually hidden (were broken by nav reset) */
+.motion nav.portfolio-crawlable,
+.motion nav.service-cases-crawlable,
+.motion nav.services-hub-noscript {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
 }
 
 .motion .nav-links {
@@ -348,19 +391,20 @@
 
 .motion .hero-main { position: relative; z-index: 3; }
 
-.motion .hero-meta { margin-bottom: 26px; }
+.motion .hero-meta { margin-bottom: 14px; }
 
 .motion .hero-title {
-    font-family: var(--font-main);
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--display-3xl);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    margin: 0 0 28px;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin: 0 0 18px;
     color: var(--text-main);
     background: none;
     -webkit-text-fill-color: currentColor;
     text-wrap: balance;
+    max-width: 16ch;
 }
 
 .motion .hero-title .accent {
@@ -1057,7 +1101,8 @@
     z-index: 3;
 }
 
-.motion nav {
+.motion nav.site-nav,
+.motion .site-nav {
     z-index: 120;
 }
 
@@ -1639,14 +1684,14 @@
 }
 
 .motion .portfolio-card-cta .case-page-link.primary-btn {
-    padding: 14px 31px !important;
-    font-size: 0.79rem !important;
-    width: 100%;
+    padding: 4px 4px 4px 2px !important;
+    font-size: 0.95rem !important;
+    width: auto;
     max-width: 100%;
     min-width: 0 !important;
     box-sizing: border-box;
-    justify-content: center;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
     white-space: normal;
 }
 
@@ -1684,45 +1729,92 @@
 }
 
 /* --------------------------------------------------------------------------
-   Buttons — same language as «Начать проект»
+   Buttons — B-B Arrow orb + underline secondary
    -------------------------------------------------------------------------- */
 .motion .primary-btn,
-.motion .modal-btn,
-.motion .float-submit,
 .motion .case-page-link.primary-btn {
-    border-radius: 999px !important;
-    padding: 13px 28px !important;
-    font-family: var(--font-mono) !important;
-    font-size: 0.72rem !important;
+    border-radius: 0 !important;
+    padding: 4px 4px 4px 2px !important;
+    font-family: var(--font-ui) !important;
+    font-size: 1rem !important;
     font-weight: 600 !important;
-    letter-spacing: 0.14em !important;
-    text-transform: uppercase !important;
-    background: var(--text-main) !important;
-    color: #04070d !important;
-    border: 1px solid var(--text-main) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    background: transparent !important;
+    color: #fff !important;
+    border: none !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     filter: none !important;
-    transition: transform 0.35s var(--ease-motion), box-shadow 0.35s var(--ease-motion), background 0.35s var(--ease-motion), border-color 0.35s var(--ease-motion) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    transition: color 0.3s var(--ease-motion) !important;
+}
+
+.motion .primary-btn::after,
+.motion .case-page-link.primary-btn::after {
+    content: '→' !important;
+    position: static !important;
+    inset: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    transform: none !important;
+    animation: none !important;
+    font-size: 1.05rem !important;
+    line-height: 1 !important;
+    transition: transform 0.3s var(--ease-motion), background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
 .motion .secondary-btn {
-    border-radius: 999px !important;
-    padding: 13px 24px !important;
-    font-family: var(--font-mono) !important;
-    font-size: 0.72rem !important;
+    border-radius: 0 !important;
+    padding: 12px 2px !important;
+    font-family: var(--font-ui) !important;
+    font-size: 0.95rem !important;
     font-weight: 600 !important;
-    letter-spacing: 0.12em !important;
-    text-transform: uppercase !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-    color: var(--text-main) !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    background: transparent !important;
+    color: #cbd5e1 !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     filter: none !important;
-    transition: transform 0.35s var(--ease-motion), box-shadow 0.35s var(--ease-motion), background 0.35s var(--ease-motion), border-color 0.35s var(--ease-motion) !important;
+    transition: color 0.3s var(--ease-motion), border-color 0.3s ease !important;
+}
+
+.motion .modal-btn,
+.motion .float-submit,
+.motion .primary-btn.modal-btn,
+.motion .primary-btn.case-contact-submit {
+    border-radius: 0 !important;
+    padding: 12px 18px !important;
+    font-family: var(--font-ui) !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    background: transparent !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: none !important;
+}
+
+.motion .modal-btn::after,
+.motion .float-submit::after,
+.motion .primary-btn.modal-btn::after,
+.motion .primary-btn.case-contact-submit::after {
+    content: none !important;
+    display: none !important;
 }
 
 .motion .filter-btn,
@@ -1751,22 +1843,51 @@
 }
 
 .motion .primary-btn:hover,
-.motion .modal-btn:hover,
-.motion .float-submit:hover,
 .motion .case-page-link.primary-btn:hover {
-    background: var(--motion-accent) !important;
-    border-color: var(--motion-accent) !important;
-    color: #04070d !important;
-    box-shadow: 0 10px 30px rgba(86, 157, 243, 0.35) !important;
-    transform: translateY(-2px);
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    transform: none;
+}
+
+.motion .primary-btn:hover::after,
+.motion .case-page-link.primary-btn:hover::after {
+    background: #fff !important;
+    color: #0b1220 !important;
+    border-color: #fff !important;
+    /* Btn-E Magnetic nudge */
+    animation: magnet-nudge 0.7s ease-in-out infinite !important;
+}
+
+@keyframes magnet-nudge {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(2px, -2px); }
+    50% { transform: translate(-1px, 1px); }
+    75% { transform: translate(2px, 1px); }
+}
+
+.motion .cta-button:hover {
+    animation: magnet-nudge 0.7s ease-in-out infinite;
 }
 
 .motion .secondary-btn:hover {
-    background: rgba(86, 157, 243, 0.12) !important;
-    border-color: var(--motion-accent) !important;
-    color: var(--text-main) !important;
-    box-shadow: 0 10px 28px rgba(86, 157, 243, 0.22) !important;
-    transform: translateY(-2px);
+    background: transparent !important;
+    border-bottom-color: #fff !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    transform: none;
+}
+
+.motion .modal-btn:hover,
+.motion .float-submit:hover,
+.motion .primary-btn.modal-btn:hover,
+.motion .primary-btn.case-contact-submit:hover {
+    background: #fff !important;
+    border-color: #fff !important;
+    color: #0b1220 !important;
+    box-shadow: none !important;
+    transform: none;
 }
 
 .motion .filter-btn:hover {
@@ -2049,43 +2170,49 @@
 
 .motion .final-cta .primary-btn {
     position: relative;
-    overflow: hidden;
-    animation: final-cta-btn-glow 3.2s ease-in-out infinite;
-    transition: transform 0.35s var(--ease-motion), box-shadow 0.35s var(--ease-motion) !important;
+    overflow: visible;
+    animation: none;
 }
 
 .motion .final-cta .secondary-btn {
-    transition: transform 0.35s var(--ease-motion), box-shadow 0.35s var(--ease-motion), border-color 0.35s ease !important;
+    transition: color 0.3s var(--ease-motion), border-color 0.3s ease !important;
 }
 
 .motion .final-cta .primary-btn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        105deg,
-        transparent 35%,
-        rgba(255, 255, 255, 0.45) 50%,
-        transparent 65%
-    );
-    transform: translateX(-130%);
-    animation: final-cta-shimmer 4.5s ease-in-out infinite;
+    content: '→' !important;
+    position: static !important;
+    inset: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    transform: none !important;
+    animation: none !important;
     pointer-events: none;
 }
 
 @media (hover: hover) {
     .motion .final-cta .primary-btn:hover {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow:
-            0 0 0 1px rgba(var(--neon-blue), 0.35),
-            0 16px 40px rgba(var(--neon-blue), 0.35),
-            0 0 48px rgba(var(--neon-blue), 0.2) !important;
+        transform: none;
+        box-shadow: none !important;
+    }
+
+    .motion .final-cta .primary-btn:hover::after {
+        background: #fff !important;
+        color: #0b1220 !important;
+        border-color: #fff !important;
+        animation: magnet-nudge 0.7s ease-in-out infinite !important;
     }
 
     .motion .final-cta .secondary-btn:hover {
-        border-color: rgba(var(--neon-blue), 0.45) !important;
-        box-shadow: 0 0 24px rgba(var(--neon-blue), 0.12);
-        transform: translateY(-1px);
+        border-bottom-color: #fff !important;
+        box-shadow: none;
+        transform: none;
+        color: #fff !important;
     }
 }
 
@@ -2206,7 +2333,7 @@
 }
 
 .motion.case-page .case-hero h1 {
-    font-family: var(--font-main);
+    font-family: var(--font-display);
     font-weight: 800;
     font-size: clamp(2rem, 4.2vw, 3rem);
     letter-spacing: -0.025em;
@@ -2222,32 +2349,32 @@
 }
 
 .motion.case-page .about-kicker {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--motion-orange);
+    color: #94a3b8;
 }
 
 .motion.case-page .portfolio-card-badge {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: rgba(var(--neon-blue), 0.12);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
     color: #93c5fd;
-    border: 1px solid rgba(var(--neon-blue), 0.2);
+    border: none;
 }
 
 .motion.case-page .case-meta-pill {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    letter-spacing: 0;
+    text-transform: none;
+    background: transparent;
+    border: none;
 }
 
 .motion.case-page .case-hero-actions {
@@ -2261,33 +2388,36 @@
 .motion.case-page .case-hero-actions .secondary-btn {
     width: auto;
     min-height: auto;
-    padding: 13px 28px !important;
-    border-radius: 999px !important;
-    font-family: var(--font-mono) !important;
-    font-size: 0.72rem !important;
+    padding: 4px 4px 4px 2px !important;
+    border-radius: 0 !important;
+    font-family: var(--font-ui) !important;
+    font-size: 1rem !important;
     font-weight: 600 !important;
-    letter-spacing: 0.14em !important;
-    text-transform: uppercase !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
 }
 
 .motion.case-page .case-hero-actions .secondary-btn {
     background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    color: var(--text-main) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important;
+    color: #cbd5e1 !important;
+    padding: 12px 2px !important;
 }
 
 .motion.case-page .case-feature-card {
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
 }
 
 .motion.case-page .case-section h2,
 .motion.case-page #faq .section-title {
-    font-family: var(--font-main);
+    font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.025em;
 }

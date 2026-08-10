@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Варианты визуала услуг — живые анимации | dev2026.ru</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07090f;
+            --panel: rgba(10, 14, 22, 0.72);
+            --line: rgba(255, 255, 255, 0.1);
+            --text: #f4f7fb;
+            --muted: #94a3b8;
+            --accent: #60a5fa;
+            --font: "Onest", system-ui, sans-serif;
+            --display: "Unbounded", "Onest", sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: var(--font);
+            color: var(--text);
+            min-height: 100vh;
+            background:
+                linear-gradient(90deg, rgba(5, 8, 14, 0.78) 0%, rgba(5, 8, 14, 0.45) 42%, rgba(5, 8, 14, 0.28) 100%),
+                #05070c url("assets/motion/robot-poster.webp") 72% 42% / cover no-repeat fixed;
+            line-height: 1.5;
+        }
+
+        a { color: inherit; }
+
+        .page {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 40px 0 100px;
+        }
+
+        .hero {
+            margin-bottom: 36px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .hero-kicker {
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: var(--display);
+            font-size: clamp(1.55rem, 3.4vw, 2.3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0 0 12px;
+        }
+
+        .hero p {
+            max-width: 68ch;
+            color: var(--muted);
+            margin: 0 0 16px;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 22px;
+            font-size: 0.95rem;
+        }
+
+        .links a {
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+            padding-bottom: 2px;
+        }
+
+        .section { margin-top: 44px; }
+
+        .section h2 {
+            font-family: var(--display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .section > p {
+            color: var(--muted);
+            margin: 0 0 20px;
+            max-width: 70ch;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            padding: 14px 14px 16px;
+            display: grid;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .card-id {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-family: var(--display);
+            font-size: 0.98rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .preview {
+            position: relative;
+            min-height: 240px;
+            background: rgba(5, 8, 14, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+        }
+
+        .preview--live {
+            min-height: 280px;
+            contain: layout paint;
+        }
+
+        .preview .service-scene-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute !important;
+            inset: 0 !important;
+            left: 0 !important;
+            top: 0 !important;
+        }
+
+        .now {
+            display: inline-block;
+            color: #86efac;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .bad {
+            display: inline-block;
+            color: #fca5a5;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* Animated option previews */
+        .v-poster {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            background:
+                linear-gradient(90deg, rgba(7, 9, 15, 0.55), rgba(7, 9, 15, 0.15) 50%, rgba(7, 9, 15, 0.5)),
+                url("assets/motion/robot-poster.webp") center/cover no-repeat;
+            animation: poster-drift 8s ease-in-out infinite alternate;
+            filter: saturate(0.8) brightness(0.78);
+        }
+
+        @keyframes poster-drift {
+            from { background-position: 68% 40%; transform: scale(1); }
+            to { background-position: 74% 46%; transform: scale(1.04); }
+        }
+
+        .v-mesh {
+            width: 100%;
+            height: 220px;
+            background-image:
+                linear-gradient(rgba(96, 165, 250, 0.14) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(96, 165, 250, 0.14) 1px, transparent 1px);
+            background-size: 28px 28px;
+            animation: mesh-move 10s linear infinite;
+            position: relative;
+        }
+
+        .v-mesh::after {
+            content: "";
+            position: absolute;
+            inset: 28% 18%;
+            border: 1px solid rgba(96, 165, 250, 0.5);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.18);
+            animation: mesh-pulse 2.8s ease-in-out infinite;
+        }
+
+        @keyframes mesh-move {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 28px 28px, 28px 28px; }
+        }
+
+        @keyframes mesh-pulse {
+            0%, 100% { opacity: 0.55; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .v-process {
+            width: min(100%, 260px);
+            display: grid;
+            gap: 12px;
+        }
+
+        .v-process .row {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 10px;
+            opacity: 0.35;
+            transform: translateY(6px);
+            animation: row-in 2.4s ease-in-out infinite;
+        }
+
+        .v-process .row:nth-child(2) { animation-delay: 0.35s; }
+        .v-process .row:nth-child(3) { animation-delay: 0.7s; }
+
+        .v-process .n {
+            font-family: var(--display);
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+        }
+
+        @keyframes row-in {
+            0%, 100% { opacity: 0.35; transform: translateY(6px); }
+            30%, 70% { opacity: 1; transform: translateY(0); }
+        }
+
+        .v-term {
+            width: min(100%, 280px);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.78rem;
+            color: #a7f3d0;
+            line-height: 1.55;
+        }
+
+        .v-term .line {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            animation: type 4.5s steps(28, end) infinite;
+        }
+
+        .v-term .line:nth-child(2) { animation-delay: 0.6s; color: #93c5fd; }
+        .v-term .line:nth-child(3) { animation-delay: 1.2s; }
+        .v-term .line:nth-child(4) { animation-delay: 1.8s; color: #93c5fd; }
+
+        @keyframes type {
+            0% { width: 0; }
+            20%, 80% { width: 100%; }
+            100% { width: 100%; }
+        }
+
+        .v-docs {
+            width: 170px;
+            height: 150px;
+            position: relative;
+        }
+
+        .v-docs span {
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(15, 23, 42, 0.7);
+            animation: docs-float 3.2s ease-in-out infinite;
+        }
+
+        .v-docs span:nth-child(1) { transform: translate(0, 18px) rotate(-4deg); animation-delay: 0s; }
+        .v-docs span:nth-child(2) { transform: translate(10px, 8px) rotate(2deg); animation-delay: 0.2s; }
+        .v-docs span:nth-child(3) {
+            transform: translate(22px, 0);
+            display: grid;
+            gap: 8px;
+            padding: 18px 16px;
+            animation-delay: 0.4s;
+        }
+
+        .v-docs span:nth-child(3)::before,
+        .v-docs span:nth-child(3)::after {
+            content: "";
+            height: 2px;
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        @keyframes docs-float {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 0 -6px; }
+        }
+
+        .v-type {
+            font-family: var(--display);
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            text-align: center;
+            animation: type-glow 2.8s ease-in-out infinite;
+        }
+
+        .v-type small {
+            display: block;
+            margin-top: 8px;
+            font-family: var(--font);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        @keyframes type-glow {
+            0%, 100% { color: rgba(255, 255, 255, 0.72); text-shadow: none; }
+            50% { color: #fff; text-shadow: 0 0 28px rgba(96, 165, 250, 0.35); }
+        }
+
+        .a-knowledge {
+            width: min(100%, 260px);
+            display: grid;
+            gap: 10px;
+        }
+
+        .a-knowledge i {
+            display: block;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.22);
+            transform-origin: left center;
+            animation: line-scan 2.2s ease-in-out infinite;
+        }
+
+        .a-knowledge i:nth-child(1) { width: 92%; }
+        .a-knowledge i:nth-child(2) { width: 74%; animation-delay: 0.15s; }
+        .a-knowledge i:nth-child(3) { width: 86%; animation-delay: 0.3s; }
+        .a-knowledge i:nth-child(4) { width: 58%; background: rgba(96, 165, 250, 0.7); animation-delay: 0.45s; }
+        .a-knowledge i:nth-child(5) { width: 80%; animation-delay: 0.6s; }
+
+        @keyframes line-scan {
+            0%, 100% { transform: scaleX(0.55); opacity: 0.4; }
+            50% { transform: scaleX(1); opacity: 1; }
+        }
+
+        .a-chat {
+            width: min(100%, 250px);
+            display: grid;
+            gap: 10px;
+        }
+
+        .a-chat b {
+            display: block;
+            max-width: 78%;
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-weight: 500;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            animation: chat-pop 2.8s ease-in-out infinite;
+        }
+
+        .a-chat b:nth-child(even) {
+            margin-left: auto;
+            border-color: rgba(96, 165, 250, 0.35);
+            color: #dbeafe;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes chat-pop {
+            0%, 100% { opacity: 0.45; transform: translateY(4px); }
+            40%, 70% { opacity: 1; transform: translateY(0); }
+        }
+
+        .a-roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            max-width: 260px;
+        }
+
+        .a-roles span {
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+            padding-bottom: 2px;
+            animation: role-blink 2.4s ease-in-out infinite;
+        }
+
+        .a-roles span:nth-child(2) { animation-delay: 0.2s; }
+        .a-roles span:nth-child(3) { animation-delay: 0.4s; }
+        .a-roles span:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes role-blink {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; border-bottom-color: #60a5fa; }
+        }
+
+        .a-search {
+            width: min(100%, 260px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 10px 0;
+            color: #64748b;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .a-search em {
+            font-style: normal;
+            color: #e2e8f0;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #60a5fa;
+            animation: caret 3.2s steps(16) infinite;
+            max-width: 0;
+        }
+
+        @keyframes caret {
+            0% { max-width: 0; }
+            40%, 70% { max-width: 180px; }
+            100% { max-width: 180px; }
+        }
+
+        .pick {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <div class="hero-kicker">Локальный выбор · фон = robot-poster</div>
+            <h1>Живые варианты визуала услуг</h1>
+            <p>
+                Сверху — <strong>текущие canvas-анимации</strong> (тот самый wire-робот и шестерёнки), чтобы сравнить.
+                Ниже — новые варианты с движением. Фон страницы уже robot-poster, как на услугах/кейсах.
+                Напиши код: <strong>V-*</strong> и/или <strong>A-*</strong>.
+            </p>
+            <div class="links">
+                <a href="/services/ai-implementation/">Внедрение ИИ (пилот)</a>
+                <a href="/services/ai-assistants/">AI-ассистенты</a>
+                <a href="/cases/ai-bot-telegram/">Кейс TG-бота</a>
+                <a href="/">На главную</a>
+            </div>
+        </header>
+
+        <section class="section" id="current">
+            <h2>Сейчас на услугах (чтобы увидеть анимацию)</h2>
+            <p>Это реальные сцены из <code>motion-scenes.js</code> — крутятся live.</p>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-id">CURRENT · integration</div>
+                    <h3>Wire / mecha robot</h3>
+                    <div class="preview preview--live" aria-hidden="true">
+                        <canvas class="service-scene-canvas" data-scene="integration"></canvas>
+                    </div>
+                    <p>Стоит на «Внедрение ИИ». Тот визуал, который не нравится.</p>
+                    <span class="bad">Заменяем</span>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">CURRENT · custom</div>
+                    <h3>Шестерёнки</h3>
+                    <div class="preview preview--live" aria-hidden="true">
+                        <canvas class="service-scene-canvas" data-scene="custom"></canvas>
+                    </div>
+                    <p>Стоит на «AI-ассистенты». Баанальные gears.</p>
+                    <span class="bad">Заменяем</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="implementation">
+            <h2>Новые варианты — Внедрение ИИ</h2>
+            <p>На пилот-странице сейчас стоит V-C. Выбери замену (фон робота остаётся).</p>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-id">V-A</div>
+                    <h3>Atmosphere poster</h3>
+                    <div class="preview"><div class="v-poster" aria-hidden="true"></div></div>
+                    <p>Тот же poster, лёгкий drift — без wire-анимации.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">V-B</div>
+                    <h3>Signal mesh</h3>
+                    <div class="preview"><div class="v-mesh" aria-hidden="true"></div></div>
+                    <p>Движущаяся сетка + пульс рамки. Абстрактная система.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">V-C</div>
+                    <h3>Process index</h3>
+                    <div class="preview">
+                        <div class="v-process" aria-hidden="true">
+                            <div class="row"><span class="n">01</span><span>Процесс</span></div>
+                            <div class="row"><span class="n">02</span><span>Данные</span></div>
+                            <div class="row"><span class="n">03</span><span>Пилот</span></div>
+                        </div>
+                    </div>
+                    <p>Индекс шагов с поочерёдным появлением.</p>
+                    <span class="now">Сейчас на пилоте</span>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">V-D</div>
+                    <h3>Terminal strip</h3>
+                    <div class="preview">
+                        <div class="v-term" aria-hidden="true">
+                            <div class="line">$ audit --process sales</div>
+                            <div class="line">ok sources: crm, docs</div>
+                            <div class="line">$ pilot --kpi first_reply</div>
+                            <div class="line">ready week 1 contour</div>
+                        </div>
+                    </div>
+                    <p>Печатающийся лог внедрения.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">V-E</div>
+                    <h3>Document stack</h3>
+                    <div class="preview">
+                        <div class="v-docs" aria-hidden="true"><span></span><span></span><span></span></div>
+                    </div>
+                    <p>Стопка документов с лёгким float.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">V-F</div>
+                    <h3>Typography only</h3>
+                    <div class="preview">
+                        <div class="v-type" aria-hidden="true">ИИ<span><small>в процессы</small></span></div>
+                    </div>
+                    <p>Только типографика + мягкое свечение.</p>
+                </article>
+            </div>
+            <p class="pick">Напиши: <strong>V-A … V-F</strong></p>
+        </section>
+
+        <section class="section" id="assistants">
+            <h2>Новые варианты — AI-ассистенты (вместо шестерёнок)</h2>
+            <div class="grid">
+                <article class="card">
+                    <div class="card-id">A-A</div>
+                    <h3>Knowledge lines</h3>
+                    <div class="preview">
+                        <div class="a-knowledge" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                    </div>
+                    <p>Сканирующие строки базы знаний.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">A-B</div>
+                    <h3>Chat transcript</h3>
+                    <div class="preview">
+                        <div class="a-chat" aria-hidden="true">
+                            <b>Где регламент по возвратам?</b>
+                            <b>Раздел 4.2 · отдел поддержки</b>
+                        </div>
+                    </div>
+                    <p>Пульсирующий диалог.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">A-C</div>
+                    <h3>Role labels</h3>
+                    <div class="preview">
+                        <div class="a-roles" aria-hidden="true">
+                            <span>sales</span><span>support</span><span>hr</span><span>legal</span>
+                        </div>
+                    </div>
+                    <p>Роли без иконок, с поочерёдной подсветкой.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">A-D</div>
+                    <h3>Search field</h3>
+                    <div class="preview">
+                        <div class="a-search" aria-hidden="true"><em>найти в базе…</em><span>↵</span></div>
+                    </div>
+                    <p>Печать запроса в поиске по знаниям.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">A-E</div>
+                    <h3>Typography mark</h3>
+                    <div class="preview">
+                        <div class="v-type" aria-hidden="true">AI<span><small>ассистент</small></span></div>
+                    </div>
+                    <p>Только типографика.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-id">A-F</div>
+                    <h3>Process index</h3>
+                    <div class="preview">
+                        <div class="v-process" aria-hidden="true">
+                            <div class="row"><span class="n">01</span><span>Роли</span></div>
+                            <div class="row"><span class="n">02</span><span>Знания</span></div>
+                            <div class="row"><span class="n">03</span><span>Ответы</span></div>
+                        </div>
+                    </div>
+                    <p>Тот же язык, что V-C.</p>
+                </article>
+            </div>
+            <p class="pick">Напиши: <strong>A-A … A-F</strong></p>
+        </section>
+    </div>
+
+    <script src="js/motion-scenes.js?v=visuals-lab-1"></script>
+</body>
+</html>

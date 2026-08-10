@@ -44,10 +44,11 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/motion.css?v=service-page-43">
-    <link rel="stylesheet" href="css/services.css?v=service-page-43">
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css?v=redesign-8">
+    <link rel="stylesheet" href="css/motion.css?v=redesign-8">
+    <link rel="stylesheet" href="css/services.css?v=redesign-7">
+    <link rel="stylesheet" href="css/robot-scroll-hero.css?v=redesign-7">
     <!-- Yandex.Metrika counter -->
     <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
@@ -69,7 +70,7 @@
 
     <div class="container">
         <!-- Navigation -->
-        <nav>
+        <nav class="site-nav">
             <a href="#" class="logo">
                 <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -92,11 +93,31 @@
             </button>
         </nav>
 
-        <!-- Hero Section -->
-        <header class="hero motion-hero" data-count="ВВЕДЕНИЕ">
-            <div class="hero-grid">
+        <!-- Hero Section (Robot scroll hero) -->
+        <header class="hero motion-hero robot-scroll-hero" id="robotScrollHero" data-count="ВВЕДЕНИЕ">
+            <div class="robot-scroll-sticky" aria-hidden="true">
+                <div class="robot-scroll-stage">
+                    <div class="robot-scroll-media">
+                        <img class="robot-scroll-poster" src="assets/motion/robot-poster.webp?v=hq4" alt="" width="1280" height="720" decoding="async">
+                        <video class="robot-scroll-video"
+                            data-src-webm="assets/motion/robot-scroll-1080.webm"
+                            data-src-hq="/assets/motion/robot-source-hq.mp4"
+                            data-src-lite="assets/motion/robot-scroll-lite-720.mp4"
+                            poster="assets/motion/robot-poster.webp?v=hq4"
+                            muted playsinline preload="metadata"
+                            disablepictureinpicture></video>
+                        <img class="robot-scroll-final" src="assets/motion/robot-final.webp?v=hq4" alt="" width="1280" height="720" decoding="async">
+                        <div class="robot-scroll-dim"></div>
+                        <div class="robot-scroll-visor-glow"></div>
+                        <div class="robot-scroll-reveal">
+                            <div class="robot-scroll-reveal-fill"></div>
+                        </div>
+                    </div>
+                    <div class="robot-scroll-readability"></div>
+                </div>
+            </div>
+            <div class="hero-grid robot-scroll-copy">
                 <div class="hero-main">
-                    <span class="kicker-mono hero-meta"><span class="dot"></span>TELEGRAM · AI · WEB · АВТОМАТИЗАЦИЯ</span>
                     <h1 class="hero-title">Разрабатываю <span class="hero-rotator" id="heroRotator"><span class="hero-rotator-word is-visible">Telegram-ботов</span><span class="hero-rotator-word">приложения</span><span class="hero-rotator-word">Mini Apps</span><span class="hero-rotator-word">AI-ассистентов</span></span> и внедряю <span class="accent">ИИ&nbsp;в&nbsp;бизнес</span> под ключ.</h1>
                     <p class="lead">
                         Делаю коммерческие решения: разработка телеграм-ботов на заказ, AI-ассистенты и внедрение ИИ в бизнес-процессы для продаж, поддержки и автоматизации.
@@ -516,22 +537,50 @@
                 </form>
             </div>
         </div>
-        <button class="float-toggle" id="floatToggle" aria-label="Открыть контакты">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+        <button class="float-toggle float-toggle--magnet" id="floatToggle" aria-label="Открыть контакты" type="button">
+            <span class="float-magnet-arr" aria-hidden="true">↗</span>
+            <span class="float-magnet-txt">Обсудить</span>
         </button>
     </div>
 
     <script src="js/config.js" defer></script>
-    <script src="js/leads.js" defer></script>
+    <script src="js/leads.js?v=redesign-7" defer></script>
     <script src="js/cases-data.js" defer></script>
     <script src="js/services-data.js?v=service-page-43" defer></script>
     <script src="js/services-render.js?v=service-page-43" defer></script>
     <script src="js/case-collage.js" defer></script>
     <script src="js/analytics.js" defer></script>
     <script src="js/particles.js" defer></script>
+    <script>
+    (function () {
+        var v = document.querySelector('.robot-scroll-video');
+        if (!v) return;
+        function prefersHigh() {
+            try {
+                var et = navigator.connection && navigator.connection.effectiveType;
+                return (et === '4g' || window.innerWidth >= 1400);
+            } catch (e) {
+                return window.innerWidth >= 1400;
+            }
+        }
+        function canPlayWebM() {
+            var vid = document.createElement('video');
+            if (!vid || !vid.canPlayType) return false;
+            return !!(vid.canPlayType('video/webm; codecs=\"vp9\"') || vid.canPlayType('video/webm; codecs=\"vp9.0\"') || vid.canPlayType('video/webm'));
+        }
+        // Prefer MP4 HQ for maximum compatibility; use WebM only if explicitly supported and smaller.
+        var src = null;
+        if (prefersHigh() && v.dataset.srcHq) src = v.dataset.srcHq;
+        else src = v.dataset.srcLite || v.dataset.srcHq;
+        // if webm is supported and we detect a fast network, prefer webm (optional)
+        if (canPlayWebM() && navigator.connection && navigator.connection.effectiveType === '4g' && v.dataset.srcWebm) {
+            src = v.dataset.srcWebm;
+        }
+        v.src = src;
+        try { v.load(); } catch (_) {}
+    })();
+    </script>
+    <script src="js/robot-scroll-hero.js?v=redesign-7" defer></script>
     <script src="js/main.js?v=service-page-43" defer></script>
     <script src="js/motion-scenes.js?v=service-page-43" defer></script>
     <script src="js/motion.js?v=service-page-43" defer></script>

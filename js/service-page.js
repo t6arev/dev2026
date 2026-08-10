@@ -281,11 +281,26 @@
 
     function renderCases(caseIds) {
         if (!caseIds || !caseIds.length) return emptyState('Реализованные проекты');
+        var editorial = document.body.classList.contains('service-page--editorial');
         var cards = caseIds.map(function (caseId, index) {
             var data = window.caseData && window.caseData[caseId];
             if (!data) return '';
             var url = window.ServicesConfig.getCaseUrl(caseId);
             if (!url) return '';
+            var title = data.title || 'Проект';
+
+            // Editorial services: same Hov-B wipe rows as case "Похожие проекты"
+            if (editorial) {
+                return (
+                    '<a href="' + escapeHtml(url) + '" class="case-related-case-card service-case-wipe" data-case-index="' + index + '">' +
+                    '<span class="wipe-stack">' +
+                    '<span class="wipe-line">' + escapeHtml(title) + ' <span aria-hidden="true">↗</span></span>' +
+                    '<span class="wipe-line wipe-line--alt">Открыть проект <span aria-hidden="true">↗</span></span>' +
+                    '</span>' +
+                    '</a>'
+                );
+            }
+
             var thumb = resolveAssetUrl(data.img || (data.images && data.images[0]) || '');
             var thumbHtml = thumb
                 ? '<span class="service-case-thumb"><img src="' + escapeHtml(thumb) + '" alt="" loading="lazy" decoding="async" width="160" height="100"></span>'
@@ -295,13 +310,14 @@
                 thumbHtml +
                 '<span class="service-case-body">' +
                 '<span class="service-case-cat">' + escapeHtml(data.category || 'Кейс') + '</span>' +
-                '<span class="service-case-title">' + escapeHtml(data.title) + '</span>' +
+                '<span class="service-case-title">' + escapeHtml(title) + '</span>' +
                 '<span class="service-case-link">Смотреть кейс ↗</span>' +
                 '</span>' +
                 '</a>'
             );
         }).filter(Boolean).join('');
-        return cards || emptyState('Реализованные проекты');
+        if (!cards) return emptyState('Реализованные проекты');
+        return editorial ? '<div class="case-related-cases-grid service-cases-wipe">' + cards + '</div>' : cards;
     }
 
     function renderFaq(items) {

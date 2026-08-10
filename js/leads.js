@@ -223,10 +223,9 @@ function ensureFloatWidget() {
                 </form>
             </div>
         </div>
-        <button class="float-toggle" id="floatToggle" aria-label="Открыть контакты">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+        <button class="float-toggle float-toggle--magnet" id="floatToggle" aria-label="Открыть контакты" type="button">
+            <span class="float-magnet-arr" aria-hidden="true">↗</span>
+            <span class="float-magnet-txt">Обсудить</span>
         </button>
     `;
     document.body.appendChild(widget);
