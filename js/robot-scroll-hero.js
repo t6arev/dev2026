@@ -1,15 +1,12 @@
 /* ==========================================================================
-   RobotScrollHero — full-page scroll-driven video backdrop
+   RobotScrollHero — scroll-scrub with a keyframe-dense source only.
+   Never scrub robot-source-hq (2 keyframes → stuck / stutter).
    ========================================================================== */
 (function () {
     'use strict';
 
-    var MEDIA = {
-        intrinsicW: 1280,
-        intrinsicH: 720
-    };
+    var MEDIA = { intrinsicW: 1280, intrinsicH: 720 };
 
-    // Normalized against the source frame (object-fit: cover remapped in JS).
     var visorRect = {
         centerX: 0.5,
         centerY: 0.43,
@@ -26,70 +23,6 @@
     var sticky = root.querySelector('.robot-scroll-sticky');
     var media = root.querySelector('.robot-scroll-media');
     var video = root.querySelector('.robot-scroll-video');
-    // prefer the high-quality local source if present
-    try {
-        if (video && video.dataset) {
-            video.dataset.srcHq = video.dataset.srcHq || '/assets/motion/robot-source-hq.mp4';
-        }
-    } catch (e) { /* ignore */ }
-
-    // Lazy-load video & choose best source based on network/screen
-    function prefersHighQuality() {
-        try {
-            var et = navigator.connection && navigator.connection.effectiveType;
-            if (et) {
-                if (et === '4g') return true;
-                if (et.indexOf('2g') === 0 || et.indexOf('slow-2g') === 0) return false;
-            }
-        } catch (e) { /* ignore */ }
-        // for mobile we still allow video; prefer high quality on wide screens
-        return window.innerWidth >= 1200;
-    }
-
-    function canPlayWebM() {
-        try {
-            var vid = document.createElement('video');
-            return !!(vid.canPlayType && (vid.canPlayType('video/webm; codecs=\"vp9\"') || vid.canPlayType('video/webm')));
-        } catch (e) { return false; }
-    }
-
-    function pickSource() {
-        if (!video || !video.dataset) return null;
-        // prefer webm on fast connections if supported
-        if (canPlayWebM() && prefersHighQuality() && video.dataset.srcWebm) return video.dataset.srcWebm;
-        if (prefersHighQuality() && video.dataset.srcHq) return video.dataset.srcHq;
-        return video.dataset.srcLite || video.dataset.srcHq || video.dataset.srcWebm;
-    }
-
-    // Only initialize heavy video loading when hero is near viewport
-    var heroObserver = null;
-    function initWhenVisible() {
-        if (!video) return;
-        // if already loaded, skip
-        if (video.getAttribute('data-loaded') === '1') return;
-        var src = pickSource();
-        if (src) {
-            video.src = src;
-            try { video.load(); } catch (_) {}
-            video.setAttribute('data-loaded', '1');
-        }
-    }
-
-    if ('IntersectionObserver' in window) {
-        heroObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    initWhenVisible();
-                    // once loaded, no need to observe
-                    if (heroObserver) heroObserver.disconnect();
-                }
-            });
-        }, { root: null, threshold: 0.05 });
-        heroObserver.observe(root);
-    } else {
-        // fallback: init immediately
-        initWhenVisible();
-    }
     var finalImg = root.querySelector('.robot-scroll-final');
     var poster = root.querySelector('.robot-scroll-poster');
     var dim = root.querySelector('.robot-scroll-dim');
@@ -100,25 +33,23 @@
 
     if (!sticky || !media || !video || !finalImg || !copy) return;
 
-    // Only apply hero-wide body class on the homepage (avoid affecting case pages)
     try {
         var path = (window.location && window.location.pathname) || '';
-        var isHome = path === '/' || /index\\.html?$/.test(path);
+        var isHome = path === '/' || /index\.html?$/.test(path);
         if (isHome) document.body.classList.add('has-robot-hero');
-    } catch (e) {
-        // fallback: do not add class
-    }
+    } catch (e) { /* ignore */ }
 
     var duration = 0;
     var ready = false;
     var rafId = 0;
-    var displayedTime = 0;
     var progress = 0;
     var targetProgress = 0;
     var active = true;
-    var lastSetTime = -1;
+    var seeking = false;
+    var pendingTime = null;
+    var lastApplied = -1;
     var debugEls = null;
-    var scrubEase = 0.38; // higher = tighter to scroll (less lag)
+    var FRAME = 1 / 24;
 
     function clamp(v, a, b) {
         return v < a ? a : (v > b ? b : v);
@@ -133,6 +64,21 @@
         return t * t * (3 - 2 * t);
     }
 
+    function pickScrubSource() {
+        if (!video.dataset) return null;
+        // Scrub file first (dense keyframes). Lite is fallback. Never HQ source.
+        return video.dataset.srcScrub || video.dataset.srcLite || video.dataset.src || null;
+    }
+
+    function ensureSource() {
+        if (video.getAttribute('data-loaded') === '1') return;
+        var src = pickScrubSource();
+        if (!src) return;
+        video.src = src;
+        video.setAttribute('data-loaded', '1');
+        try { video.load(); } catch (_) { /* ignore */ }
+    }
+
     function getObjectPosition() {
         var styles = getComputedStyle(root);
         var x = parseFloat(styles.getPropertyValue('--robot-obj-x')) || 50;
@@ -145,9 +91,13 @@
         var scale = Math.max(viewW / MEDIA.intrinsicW, viewH / MEDIA.intrinsicH);
         var w = MEDIA.intrinsicW * scale;
         var h = MEDIA.intrinsicH * scale;
-        var left = (viewW - w) * pos.x;
-        var top = (viewH - h) * pos.y;
-        return { left: left, top: top, width: w, height: h, scale: scale };
+        return {
+            left: (viewW - w) * pos.x,
+            top: (viewH - h) * pos.y,
+            width: w,
+            height: h,
+            scale: scale
+        };
     }
 
     function visorInViewport(cover) {
@@ -159,7 +109,6 @@
         };
     }
 
-    // Scrub across most of the homepage so the robot keeps moving while browsing.
     function measureProgress() {
         var max = document.documentElement.scrollHeight - window.innerHeight;
         if (max <= 1) return 0;
@@ -168,28 +117,35 @@
 
     function mapVideoTime(p) {
         if (!duration) return 0;
-        var end = Math.max(0, duration - 0.05);
+        var end = Math.max(0, duration - FRAME);
         if (p <= 0.02) return 0;
         if (p <= 0.72) return end * ((p - 0.02) / 0.7);
         return end;
     }
 
-    function applyCurrentTime(time) {
-        if (!ready || !isFinite(time)) return;
-        var next = clamp(time, 0, Math.max(0, duration - 0.001));
-        // Skip microscopic seeks; keep threshold low so scroll feels locked to frames.
-        if (Math.abs(next - lastSetTime) < 0.006) return;
-        lastSetTime = next;
+    function flushSeek() {
+        if (!ready || pendingTime == null) return;
+        var next = clamp(pendingTime, 0, Math.max(0, duration - 0.001));
+        pendingTime = null;
+        if (Math.abs(next - lastApplied) < FRAME * 0.45) return;
+        lastApplied = next;
+        seeking = true;
         try {
-            // Prefer fastSeek — no play/pause thrash (was causing scroll lag).
-            if (typeof video.fastSeek === 'function') {
-                video.fastSeek(next);
-            } else {
-                video.currentTime = next;
-            }
+            video.currentTime = next;
         } catch (_) {
-            try { video.currentTime = next; } catch (__) { /* ignore */ }
+            seeking = false;
         }
+    }
+
+    function queueSeek(time) {
+        if (!ready || !isFinite(time)) return;
+        pendingTime = time;
+        if (!seeking) flushSeek();
+    }
+
+    function onSeeked() {
+        seeking = false;
+        if (pendingTime != null) flushSeek();
     }
 
     function updateScene(p) {
@@ -199,7 +155,6 @@
         var cover = getCoverLayout(viewW, viewH);
         var band = visorInViewport(cover);
 
-        // Hero copy fades as cases approach
         var textOut = smoothstep(0.06, 0.24, progress);
         copy.style.opacity = String(1 - textOut);
         copy.style.transform = 'translateY(' + (-18 * textOut).toFixed(2) + 'px)';
@@ -210,28 +165,23 @@
         var readPage = smoothstep(0.16, 0.42, progress) * 0.5;
         readability.style.opacity = String(clamp(readHero + readPage, 0, 0.88));
 
-        var target = mapVideoTime(progress);
-        displayedTime = lerp(displayedTime, target, scrubEase);
+        var targetTime = mapVideoTime(progress);
 
-        // ensure final frame locks after 0.72 — soft crossfade, no double stack
         if (progress < 0.70) {
             finalImg.style.opacity = '0';
             video.style.opacity = '1';
-            applyCurrentTime(displayedTime);
+            queueSeek(targetTime);
         } else {
-            applyCurrentTime(mapVideoTime(0.72));
+            queueSeek(mapVideoTime(0.72));
             var cross = smoothstep(0.70, 0.84, progress);
             finalImg.style.opacity = String(cross);
             video.style.opacity = String(1 - cross);
         }
 
-        // Push into the visor across the full page (softer scale ramp)
         var scaleT = smoothstep(0.38, 1, progress);
-        var scale = lerp(1, 1.14, scaleT);
-        media.style.transform = 'scale(' + scale.toFixed(4) + ')';
+        media.style.transform = 'scale(' + lerp(1, 1.14, scaleT).toFixed(4) + ')';
         media.style.transformOrigin = '50% 42%';
 
-        // Kill extra red glow before FAQ / "5 направлений" to avoid double-image look
         var glowPulse = smoothstep(0.52, 0.68, progress) * (1 - smoothstep(0.72, 0.82, progress));
         glow.style.left = band.x + 'px';
         glow.style.top = band.y + 'px';
@@ -239,7 +189,6 @@
         glow.style.height = Math.max(28, band.h * 10) + 'px';
         glow.style.opacity = String(glowPulse * 0.55);
 
-        // Stronger veil late in the page so content sits cleanly over the robot
         var veil = smoothstep(0.38, 0.72, progress);
         var deepVeil = smoothstep(0.72, 0.92, progress);
         reveal.style.opacity = String(clamp(veil * 0.72 + deepVeil * 0.35, 0, 0.95));
@@ -253,15 +202,11 @@
         if (!active) return;
         targetProgress = measureProgress();
         var prev = progress;
-        var prevTime = displayedTime;
-        updateScene(lerp(progress, targetProgress, 0.52));
-        // Keep animating until progress + video time settle (short inertia, not lag)
-        var unsettled =
-            Math.abs(targetProgress - progress) > 0.0008 ||
-            Math.abs(mapVideoTime(targetProgress) - displayedTime) > 0.012 ||
-            Math.abs(progress - prev) > 0.0003 ||
-            Math.abs(displayedTime - prevTime) > 0.006;
-        if (unsettled) requestTick();
+        // One soft follow — no second lerp on currentTime (that caused lag/stutter).
+        updateScene(lerp(progress, targetProgress, 0.55));
+        if (Math.abs(targetProgress - progress) > 0.0008 || Math.abs(progress - prev) > 0.0003) {
+            requestTick();
+        }
     }
 
     function requestTick() {
@@ -271,7 +216,6 @@
 
     function onScroll() {
         if (!active || prefersReduced) return;
-        targetProgress = measureProgress();
         requestTick();
     }
 
@@ -335,8 +279,10 @@
         debugEls.outline.style.width = band.w + 'px';
         debugEls.outline.style.height = Math.max(band.h, 2) + 'px';
         debugEls.stats.textContent =
-            'progress: ' + progress.toFixed(3) +
-            '\ntime: ' + (video.currentTime || 0).toFixed(3) + ' / ' + duration.toFixed(3);
+            'src: ' + ((video.currentSrc || '').split('/').pop() || '—') +
+            '\nprogress: ' + progress.toFixed(3) +
+            '\ntime: ' + (video.currentTime || 0).toFixed(3) + ' / ' + duration.toFixed(3) +
+            '\nseeking: ' + (seeking ? '1' : '0');
         Array.prototype.forEach.call(debugEls.values, function (el) {
             el.textContent = Number(visorRect[el.getAttribute('data-v')]).toFixed(3);
         });
@@ -356,42 +302,42 @@
     function onReady() {
         if (ready) return;
         duration = video.duration || 8;
+        if (!isFinite(duration) || duration <= 0) duration = 8;
         MEDIA.intrinsicW = video.videoWidth || MEDIA.intrinsicW;
         MEDIA.intrinsicH = video.videoHeight || MEDIA.intrinsicH;
         ready = true;
         root.classList.add('is-ready');
-        // Ensure the video layer is visible and poster/final are hidden so the
-        // decoded frames can be painted to the canvas/viewport immediately.
         try {
             video.style.display = 'block';
             video.style.opacity = '1';
+            poster.style.opacity = '0';
+            finalImg.style.opacity = '0';
         } catch (_) { /* ignore */ }
-        try { poster.style.opacity = '0'; } catch (_) { /* ignore */ }
-        try { finalImg.style.opacity = '0'; } catch (_) { /* ignore */ }
 
-        // Pause and seek to start frame, then kick the render loop.
-        video.pause();
-        applyCurrentTime(0);
+        try { video.pause(); } catch (_) { /* ignore */ }
+        seeking = false;
+        pendingTime = 0;
+        flushSeek();
         requestTick();
     }
 
     function warmDecoder() {
-        // Some browsers only paint seeked frames after a play/pause cycle.
         function finish() {
-            // Wait until the media reports a real seekable range.
             var tries = 0;
-            (function waitSeekable() {
-                var ok = video.seekable && video.seekable.length && video.seekable.end(0) > 0.5;
-                if (ok || tries > 40) {
+            (function waitReady() {
+                var hasDur = isFinite(video.duration) && video.duration > 0.5;
+                var hasSeek = video.seekable && video.seekable.length && video.seekable.end(0) > 0.5;
+                if ((hasDur && hasSeek) || tries > 50) {
                     onReady();
                     return;
                 }
                 tries += 1;
-                setTimeout(waitSeekable, 50);
+                setTimeout(waitReady, 40);
             })();
         }
 
-        var p = video.play();
+        var p;
+        try { p = video.play(); } catch (_) { p = null; }
         if (p && typeof p.then === 'function') {
             p.then(function () {
                 video.pause();
@@ -418,8 +364,11 @@
         video.setAttribute('webkit-playsinline', '');
         video.preload = 'auto';
         video.controls = false;
-        video.disablePictureInPicture = true;
+        try { video.disablePictureInPicture = true; } catch (_) { /* ignore */ }
 
+        ensureSource();
+
+        video.addEventListener('seeked', onSeeked);
         video.addEventListener('loadeddata', warmDecoder, { once: true });
         video.addEventListener('error', function () {
             root.classList.add('is-ready');
@@ -427,8 +376,6 @@
             video.style.opacity = '0';
         });
 
-        // Kick network fetch if needed
-        try { video.load(); } catch (_) { /* ignore */ }
         if (video.readyState >= 2) warmDecoder();
         else if (video.readyState >= 1) {
             video.addEventListener('canplay', warmDecoder, { once: true });

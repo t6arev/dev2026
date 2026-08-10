@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="css/main.css?v=redesign-8">
     <link rel="stylesheet" href="css/motion.css?v=redesign-8">
     <link rel="stylesheet" href="css/services.css?v=redesign-7">
-    <link rel="stylesheet" href="css/robot-scroll-hero.css?v=redesign-7">
+    <link rel="stylesheet" href="css/robot-scroll-hero.css?v=scrub-2">
     <!-- Yandex.Metrika counter -->
     <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
@@ -100,11 +100,10 @@
                     <div class="robot-scroll-media">
                         <img class="robot-scroll-poster" src="assets/motion/robot-poster.webp?v=hq4" alt="" width="1280" height="720" decoding="async">
                         <video class="robot-scroll-video"
-                            data-src-webm="assets/motion/robot-scroll-1080.webm"
-                            data-src-hq="/assets/motion/robot-source-hq.mp4"
+                            muted playsinline webkit-playsinline preload="auto"
+                            data-src-scrub="assets/motion/robot-scroll-scrub.mp4"
                             data-src-lite="assets/motion/robot-scroll-lite-720.mp4"
                             poster="assets/motion/robot-poster.webp?v=hq4"
-                            muted playsinline preload="metadata"
                             disablepictureinpicture></video>
                         <img class="robot-scroll-final" src="assets/motion/robot-final.webp?v=hq4" alt="" width="1280" height="720" decoding="async">
                         <div class="robot-scroll-dim"></div>
@@ -551,36 +550,7 @@
     <script src="js/case-collage.js" defer></script>
     <script src="js/analytics.js" defer></script>
     <script src="js/particles.js" defer></script>
-    <script>
-    (function () {
-        var v = document.querySelector('.robot-scroll-video');
-        if (!v) return;
-        function prefersHigh() {
-            try {
-                var et = navigator.connection && navigator.connection.effectiveType;
-                return (et === '4g' || window.innerWidth >= 1400);
-            } catch (e) {
-                return window.innerWidth >= 1400;
-            }
-        }
-        function canPlayWebM() {
-            var vid = document.createElement('video');
-            if (!vid || !vid.canPlayType) return false;
-            return !!(vid.canPlayType('video/webm; codecs=\"vp9\"') || vid.canPlayType('video/webm; codecs=\"vp9.0\"') || vid.canPlayType('video/webm'));
-        }
-        // Prefer MP4 HQ for maximum compatibility; use WebM only if explicitly supported and smaller.
-        var src = null;
-        if (prefersHigh() && v.dataset.srcHq) src = v.dataset.srcHq;
-        else src = v.dataset.srcLite || v.dataset.srcHq;
-        // if webm is supported and we detect a fast network, prefer webm (optional)
-        if (canPlayWebM() && navigator.connection && navigator.connection.effectiveType === '4g' && v.dataset.srcWebm) {
-            src = v.dataset.srcWebm;
-        }
-        v.src = src;
-        try { v.load(); } catch (_) {}
-    })();
-    </script>
-    <script src="js/robot-scroll-hero.js?v=redesign-7" defer></script>
+    <script src="js/robot-scroll-hero.js?v=scrub-2" defer></script>
     <script src="js/main.js?v=service-page-43" defer></script>
     <script src="js/motion-scenes.js?v=service-page-43" defer></script>
     <script src="js/motion.js?v=service-page-43" defer></script>

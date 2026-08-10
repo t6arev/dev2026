@@ -510,9 +510,11 @@
         var visual = document.getElementById('serviceHeroVisual');
         if (visual && service.homeCard && service.homeCard.sceneId) {
             var scene = visual.querySelector('.service-scene-canvas');
-            if (scene) scene.setAttribute('data-scene', service.homeCard.sceneId);
-            if (window.MotionScenes && typeof window.MotionScenes.refresh === 'function') {
-                window.MotionScenes.refresh();
+            if (scene) {
+                scene.setAttribute('data-scene', service.homeCard.sceneId);
+                if (window.MotionScenes && typeof window.MotionScenes.refresh === 'function') {
+                    window.MotionScenes.refresh();
+                }
             }
         }
 

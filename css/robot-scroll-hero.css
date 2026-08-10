@@ -37,6 +37,20 @@
 
 .motion .robot-scroll-hero .hero-main {
     transform: none;
+    padding-top: 0;
+}
+
+@media (max-width: 900px) {
+    .motion .robot-scroll-hero .hero-main {
+        padding-top: 0;
+        order: 0;
+    }
+
+    .motion .robot-scroll-hero.motion-hero {
+        justify-content: flex-start;
+        padding: 0;
+        min-height: 100svh;
+    }
 }
 
 @media (max-width: 768px) {
@@ -186,12 +200,19 @@
     min-height: 100svh;
     max-width: 1200px;
     margin: 0 auto;
-    padding: calc(58px + 18px) 40px 40px;
+    padding: calc(58px + 28px) 40px 40px;
     display: flex;
     align-items: flex-start;
-    padding-top: clamp(96px, 14vh, 132px);
     box-sizing: border-box;
     pointer-events: none;
+}
+
+.motion .robot-scroll-hero .robot-scroll-copy.hero-grid {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    grid-template-columns: 1fr;
+    min-height: 100svh;
 }
 
 .robot-scroll-copy .hero-main {
@@ -544,10 +565,13 @@ body.has-robot-hero .portfolio-item.is-open .portfolio-panel {
     color: #64748b;
 }
 
-/* mobile object-position tuning */
+/* mobile object-position + copy closer to header */
 @media (max-width: 768px) {
     .robot-scroll-hero { --robot-obj-x: 62%; --robot-obj-y: 42%; }
-    .robot-scroll-copy { padding: calc(48px + 32px) 20px 32px; }
+    .robot-scroll-copy {
+        padding: calc(env(safe-area-inset-top, 0px) + 64px) 20px 24px;
+        align-items: flex-start;
+    }
 }
 
 body.has-robot-hero .portfolio-card-layout {
@@ -634,7 +658,7 @@ body.has-robot-hero .portfolio-card-layout {
 
 @media (max-width: 640px) {
     .robot-scroll-copy {
-        padding: calc(72px + 18px) 20px 24px;
+        padding: calc(env(safe-area-inset-top, 0px) + 58px) 18px 20px;
         align-items: flex-start;
     }
 
