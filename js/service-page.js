@@ -486,7 +486,15 @@
             var heroPrimary = heroActions.querySelector('.primary-btn');
             var heroSecondary = heroActions.querySelector('.secondary-btn');
             if (heroPrimary && hero.ctaPrimary) heroPrimary.textContent = hero.ctaPrimary;
-            if (heroSecondary && hero.ctaSecondary) heroSecondary.textContent = hero.ctaSecondary;
+            if (heroSecondary) {
+                if (hero.ctaSecondary) heroSecondary.textContent = hero.ctaSecondary;
+                if (hero.ctaSecondaryHref) {
+                    heroSecondary.setAttribute('href', hero.ctaSecondaryHref);
+                } else if (hero.ctaSecondary && /кейс/i.test(hero.ctaSecondary)) {
+                    // Never leave "Смотреть кейсы" pointing at /services/
+                    heroSecondary.setAttribute('href', '#service-cases');
+                }
+            }
         }
 
         var bcParent = document.getElementById('serviceBreadcrumbParent');

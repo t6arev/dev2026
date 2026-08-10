@@ -40,7 +40,8 @@
                 title: 'Разработка Telegram-ботов',
                 lead: 'Разрабатываю Telegram-ботов для бизнеса и продуктовых идей: сценарии, интеграции, оплата и админка — под ключ.',
                 ctaPrimary: 'Обсудить проект',
-                ctaSecondary: 'Смотреть кейсы'
+                ctaSecondary: 'Смотреть кейсы',
+                ctaSecondaryHref: '#service-cases'
             },
             description: {
                 title: 'Telegram-бот на заказ',
@@ -204,7 +205,8 @@
                 title: 'Разработка AI-ботов для Telegram',
                 lead: 'Делаю AI-ботов в Telegram для бизнеса и подписочных продуктов: модели, база знаний, лимиты и админка.',
                 ctaPrimary: 'Обсудить проект',
-                ctaSecondary: 'Смотреть кейс'
+                ctaSecondary: 'Смотреть кейс',
+                ctaSecondaryHref: '#service-cases'
             },
             description: {
                 title: 'AI-бот в Telegram',
@@ -345,7 +347,8 @@
                 title: 'Внедрение ИИ в бизнес',
                 lead: 'Помогаю внедрить ИИ в процессы компании: от одного пилотного сценария до рабочего контура с контролем качества.',
                 ctaPrimary: 'Обсудить проект',
-                ctaSecondary: 'Все услуги'
+                ctaSecondary: 'Все услуги',
+                ctaSecondaryHref: '/services/'
             },
             description: {
                 title: 'Внедрение ИИ в действующий бизнес',
@@ -503,7 +506,8 @@
                 title: 'Разработка AI-ассистентов для бизнеса',
                 lead: 'Создаю AI-ассистентов, которые помогают команде работать с регламентами, знаниями и типовыми задачами.',
                 ctaPrimary: 'Обсудить проект',
-                ctaSecondary: 'Все услуги'
+                ctaSecondary: 'Все услуги',
+                ctaSecondaryHref: '/services/'
             },
             description: {
                 title: 'AI-ассистент для компании',
@@ -660,7 +664,8 @@
                 title: 'Разработка ИИ-агентов для бизнеса',
                 lead: 'Проектирую AI-агентов, которые выполняют цепочки действий: от заявки и документов до CRM и внутренних API.',
                 ctaPrimary: 'Обсудить проект',
-                ctaSecondary: 'Все услуги'
+                ctaSecondary: 'Все услуги',
+                ctaSecondaryHref: '/services/'
             },
             description: {
                 title: 'Когда нужен ИИ-агент',
@@ -817,7 +822,8 @@
                 title: 'Разработка сайтов и веб-сервисов',
                 lead: 'Делаю веб-сервисы и сайты как часть продукта: кабинеты, админки, API и связка с ботами или ИИ при необходимости.',
                 ctaPrimary: 'Обсудить проект',
-                ctaSecondary: 'Все услуги'
+                ctaSecondary: 'Все услуги',
+                ctaSecondaryHref: '/services/'
             },
             description: {
                 title: 'Веб под продуктовую задачу',
