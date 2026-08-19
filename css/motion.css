@@ -870,7 +870,8 @@
 @media (max-width: 900px) {
     .motion .nav-links { display: none; }
     .motion .nav-status { display: none; }
-    .motion .cta-button { display: none; }
+    /* Keep main Telegram CTA visible on mobile */
+    .motion .cta-button { display: inline-flex; }
     .motion .nav-toggle { display: flex; }
 
     .motion .hero-grid {
