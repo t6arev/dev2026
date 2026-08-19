@@ -2283,28 +2283,46 @@
 .motion .site-toast {
     min-width: min(92vw, 320px);
     padding: 14px 20px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(
-        145deg,
-        rgba(255, 255, 255, 0.09),
-        rgba(255, 255, 255, 0.03)
-    );
-    backdrop-filter: blur(20px) saturate(1.2);
-    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border-radius: 16px;
+    border: 1px solid rgba(37, 99, 235, 0.28);
+    background: rgba(248, 250, 252, 0.96);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
     box-shadow:
-        0 16px 48px rgba(0, 0, 0, 0.22),
-        0 0 36px rgba(var(--neon-blue), 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    color: var(--text-main);
+        0 18px 50px rgba(2, 8, 24, 0.22),
+        0 0 22px rgba(37, 99, 235, 0.12);
+    color: #0b1220;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    position: relative;
+    pointer-events: auto;
+    padding-right: 44px; /* space for close button */
+}
+
+.motion .site-toast-close {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(2, 6, 23, 0.55);
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+}
+
+.motion .site-toast-close:hover {
+    color: rgba(2, 6, 23, 0.85);
+    background: rgba(37, 99, 235, 0.08);
 }
 
 .motion .site-toast--success .site-toast-icon {
-    background: rgba(var(--neon-blue), 0.18);
-    color: #93c5fd;
-    box-shadow: 0 0 16px rgba(var(--neon-blue), 0.35);
+    display: none;
 }
 
 .motion .site-toast--error .site-toast-icon {
@@ -2316,7 +2334,7 @@
 .motion .site-toast-text {
     font-family: var(--font-ui);
     font-size: 0.92rem;
-    color: rgba(248, 250, 252, 0.92);
+    color: rgba(2, 6, 23, 0.88);
     line-height: 1.45;
 }
 

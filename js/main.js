@@ -301,7 +301,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Quiz modal
-function openModal() { document.getElementById('cost-modal').classList.add('active'); }
+function openModal() {
+    const modal = document.getElementById('cost-modal');
+    if (!modal) return;
+
+    // If the float widget is open, it can visually overlay the modal on some devices.
+    // Close it before opening the quiz to make the tap reliable.
+    const panel = document.getElementById('floatPanel');
+    if (panel) panel.classList.remove('open');
+    const toggle = document.getElementById('floatToggle');
+    if (toggle) toggle.classList.remove('open');
+
+    const wasClosed = !modal.classList.contains('active');
+    modal.classList.add('active');
+    if (wasClosed && typeof trackMetrikaGoal === 'function') {
+        trackMetrikaGoal('brief_open');
+    }
+}
 function closeModal() { document.getElementById('cost-modal').classList.remove('active'); }
 window.openModal = openModal;
 window.closeModal = closeModal;
@@ -355,7 +371,7 @@ if (quizFormEl) {
     }
 
     try {
-        await submitLead({
+        const leadResult = await submitLead({
             source: 'квиз «Обсудить проект»',
             task,
             hasTz: tz,
@@ -364,7 +380,9 @@ if (quizFormEl) {
             contact,
             website: this.querySelector('[name="website"]')?.value || ''
         });
-        trackLeadSubmit();
+        if (!leadResult?.fallback) {
+            trackLeadQuizSuccess();
+        }
         closeModal();
         this.reset();
         document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));

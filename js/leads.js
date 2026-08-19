@@ -49,11 +49,23 @@ function sendLeadToTelegram(data) {
     }
 }
 
-function trackLeadSubmit() {
-    const counterId = window.SITE_CONFIG.metrikaId;
-    if (typeof ym === 'function') {
-        ym(counterId, 'reachGoal', 'lead_submit');
+function trackMetrikaGoal(goal) {
+    const counterId = window.SITE_CONFIG && window.SITE_CONFIG.metrikaId;
+    if (goal && typeof ym === 'function' && counterId) {
+        ym(counterId, 'reachGoal', goal);
     }
+}
+
+function trackLeadSubmit() {
+    trackMetrikaGoal('lead_submit');
+}
+
+function trackLeadQuizSuccess() {
+    trackMetrikaGoal('lead_quiz_success');
+}
+
+function trackLeadCallbackSuccess() {
+    trackMetrikaGoal('lead_callback_success');
 }
 
 async function submitLead(data) {
@@ -166,6 +178,7 @@ function showSiteToast(message, type = 'success', duration = 5000) {
     const toast = document.createElement('div');
     toast.className = `site-toast site-toast--${type}`;
     toast.innerHTML = `
+        <button type="button" class="site-toast-close" aria-label="Закрыть">&times;</button>
         <span class="site-toast-icon">${type === 'success' ? '✓' : '!'}</span>
         <span class="site-toast-text">${message}</span>
     `;
@@ -178,11 +191,50 @@ function showSiteToast(message, type = 'success', duration = 5000) {
         setTimeout(() => toast.remove(), 260);
     };
 
+    const closeBtn = toast.querySelector('.site-toast-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            hide();
+        });
+    }
+
     setTimeout(hide, duration);
 }
 
-function showSuccessToast(message = 'Спасибо! Свяжусь с вами в ближайшее время.') {
-    showSiteToast(message, 'success', 5000);
+const LAB_THANK_YOU_VARIANTS = [
+    'Спасибо! Заявка отправлена. Свяжусь с вами в ближайшее время, чтобы обсудить детали.',
+    'Отлично, заявка принята! Я отвечу в течение 1 рабочего дня и предложу удобный формат старта.',
+    'Благодарю за обращение! Подготовлю решение под вашу задачу и вернусь с планом работ и вилкой по срокам.',
+    'Спасибо! Получил(а) заявку. Сейчас уточняю вводные — и скоро напишу вам с предложением по следующему шагу.',
+];
+
+// Export variants for the lab UI
+window.LAB_THANK_YOU_VARIANTS = LAB_THANK_YOU_VARIANTS;
+
+function isLabEnv() {
+    const h = (window.location && window.location.hostname) || '';
+    return /^localhost$/i.test(h) || /^127\.0\.0\.1$/i.test(h);
+}
+
+function getLabThankYouVariantMessage() {
+    if (!isLabEnv()) return null;
+    try {
+        const idxRaw = localStorage.getItem('leadThankYouVariantIdx');
+        const idx = idxRaw === null ? 0 : Number(idxRaw);
+        if (Number.isInteger(idx) && idx >= 0 && idx < LAB_THANK_YOU_VARIANTS.length) {
+            return LAB_THANK_YOU_VARIANTS[idx];
+        }
+    } catch (_) { /* ignore */ }
+    return LAB_THANK_YOU_VARIANTS[0];
+}
+
+function showSuccessToast(message) {
+    // On live site keep current default behavior unless caller explicitly passes message.
+    const labMsg = (message === undefined) ? getLabThankYouVariantMessage() : null;
+    const finalMsg = (message !== undefined && message !== null) ? message : (labMsg || 'Спасибо! Свяжусь с вами в ближайшее время.');
+    showSiteToast(finalMsg, 'success', 2000);
 }
 
 function ensureFloatWidget() {
@@ -198,12 +250,12 @@ function ensureFloatWidget() {
                 <button class="float-tab" data-float-tab="call">Заявка</button>
             </div>
             <div class="float-tab-content active" id="floatTabTg">
-                <a href="https://t.me/${username}" target="_blank" rel="noopener noreferrer" class="float-tg-btn">
+                <button type="button" class="float-tg-btn" onclick="if (window.openModal) window.openModal(); return false;">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                         <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z" />
                     </svg>
                     Написать в Telegram
-                </a>
+                </button>
             </div>
             <div class="float-tab-content" id="floatTabCall">
                 <form id="callbackForm">
@@ -295,14 +347,16 @@ function initFloatWidget() {
         }
 
         try {
-            await submitLead({
+            const leadResult = await submitLead({
                 source: 'виджет «Заказать звонок»',
                 name,
                 channel,
                 contact,
                 website: this.querySelector('[name="website"]')?.value || ''
             });
-            trackLeadSubmit();
+            if (!leadResult?.fallback) {
+                trackLeadCallbackSuccess();
+            }
             showSuccessToast();
             this.reset();
             initContactChannel(this);
