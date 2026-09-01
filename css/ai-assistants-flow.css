@@ -255,35 +255,34 @@
             border-top: 1px solid rgba(255,255,255,.12);
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
         }
-        .flow-price .from {
+        .flow-price-value {
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            color: #fff;
             font-family: var(--font-display, Unbounded, sans-serif);
-            font-size: clamp(1.25rem, 2.6vw, 1.65rem);
-            letter-spacing: -.05em;
-            line-height: 1.1;
-            color: #eef4ff;
+            font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+            font-weight: 700;
+            letter-spacing: -.04em;
+            line-height: 1.15;
         }
-        .flow-price .from span {
-            color: #93c5fd;
-            font-size: .72rem;
-            letter-spacing: .12em;
-            text-transform: uppercase;
+        .flow-price-label {
+            display: block;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, .72);
             font-family: var(--mono);
+            font-size: .72rem;
             font-weight: 500;
+            letter-spacing: .14em;
+            text-transform: uppercase;
         }
-        .flow-price p {
+        .flow-price-note {
             margin: 0;
             color: var(--muted);
             font-family: var(--copy);
             font-size: .88rem;
             line-height: 1.5;
         }
-        .flow-price .cta-set { margin-top: 2px; }
         .flow-split {
             display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: start;
         }
@@ -306,20 +305,54 @@
 .flow-page .container { position: relative; z-index: 2; }
 .flow-page .float-widget { display: none !important; }
 
-/* Black theme + neon */
+/* Black theme + neon — без белых вспышек */
+html:has(body.flow-page) {
+    background-color: #0b0e14;
+}
+
 body.flow-page {
-    background-color: #0b0e14 !important;
-    transition: background-color .9s ease;
+    background-color: transparent !important;
 }
-body.flow-page .background-container,
+
+.flow-page-underlay {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background: #0b0e14;
+    pointer-events: none;
+    transition: background-color 0.55s ease;
+}
+
+body.flow-page .background-container {
+    filter: none !important;
+    transform: none !important;
+    transition: opacity 0.55s ease !important;
+    background: linear-gradient(160deg, #030508 0%, #0a1020 40%, #0d0820 100%) !important;
+}
+
+body.flow-page .background-container .blob {
+    transition: opacity 0.55s ease !important;
+}
+
+body.flow-page .background-container::after {
+    display: none !important;
+}
+
 body.flow-page .texture-overlay {
-    transition: opacity .9s ease, filter .9s ease;
+    transition: opacity 0.55s ease !important;
 }
-body.flow-page.flow-theme-black {
-    background-color: #000 !important;
+
+body.flow-page.flow-theme-black .flow-page-underlay {
+    background: #000;
 }
-body.flow-page.flow-theme-black .background-container { opacity: 0; }
-body.flow-page.flow-theme-black .texture-overlay { opacity: .06; }
+
+body.flow-page.flow-theme-black .background-container {
+    opacity: 0.06 !important;
+}
+
+body.flow-page.flow-theme-black .texture-overlay {
+    opacity: 0.03 !important;
+}
 
 /* Усиленный неон в чёрной зоне */
 body.flow-page.flow-theme-black .primary-btn,
@@ -444,9 +477,8 @@ body.flow-page.flow-theme-black .flow-contact h2 {
     .case-hero-actions { flex-direction: column; align-items: stretch; }
     .case-hero-actions .primary-btn,
     .case-hero-actions .secondary-btn { width: 100%; justify-content: center; }
-    .flow-price { margin-top: 20px; padding-top: 20px; gap: 12px; }
-    .flow-price .from { font-size: clamp(1.15rem, 5vw, 1.45rem); }
-    .flow-price .primary-btn { width: 100%; justify-content: center; }
+    .flow-price { margin-top: 20px; padding-top: 20px; gap: 10px; }
+    .flow-price-value { font-size: clamp(1.35rem, 5.5vw, 1.65rem); }
     body.flow-page.flow-theme-black .f-hud .ch.active,
     body.flow-page.flow-theme-black .f-hud .submit {
         box-shadow: 0 0 0 1px rgba(125, 211, 252, .55);

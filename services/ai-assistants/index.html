@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="../../css/motion.css?v=flow-1">
     <link rel="stylesheet" href="../../css/ui-kit-a.css?v=a1">
     <link rel="stylesheet" href="../../css/forms-hud.css?v=hud2">
-    <link rel="stylesheet" href="../../css/ai-assistants-flow.css?v=flow-4">
+    <link rel="stylesheet" href="../../css/ai-assistants-flow.css?v=flow-6">
     <script type="text/javascript">
        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
        m[i].l=1*new Date();
@@ -42,6 +42,7 @@
 <body class="motion case-page flow-page ui-a-scrollbars" data-no-float-widget>
     <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="flow-page-underlay" aria-hidden="true"></div>
     <div class="background-container" aria-hidden="true">
         <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div><div class="blob blob-4"></div>
     </div>
@@ -82,7 +83,7 @@
             <div class="case-hero-copy">
                 <span class="portfolio-card-badge">Боты</span>
                 <h1>AI‑ассистент, который <span class="verb-slot"><span class="verb" id="flowVerb">консультирует</span></span></h1>
-                <p class="case-hero-lead">Закрывает дыры в знаниях, ответах клиентам и контенте — на ваших документах, а не на общих нейросетях.</p>
+                <p class="case-hero-lead">Внедряю ИИ в бизнес-процессы, оптимизирую задачи и помогаю бизнесу становиться эффективнее.</p>
 
                 <!-- CTA · как на боевом кейсе -->
                 <div class="case-hero-actions cta-set is-on" data-cta="a">
@@ -152,12 +153,32 @@
             </div>
         </section>
 
-        <p class="theme-hint" id="themeHint" hidden aria-hidden="true">ниже · уход в чёрное · неон</p>
         <div id="themeLock" aria-hidden="true" style="height:0;margin:0;padding:0;overflow:hidden"></div>
+
+        <!-- PROCESS · проводка -->
+        <section id="process" class="section visible process">
+            <h2 class="flow-section-title" data-reveal>Как работаю</h2>
+            <div class="flow-split">
+                <div class="process-stage">
+                    <div class="process-track" id="processTrack">
+                        <div class="process-step" data-reveal><span class="num">01</span><h3>Составляем ТЗ</h3><p>Фиксируем задачу, границы и результат</p></div>
+                        <div class="process-step" data-reveal data-delay="1"><span class="num">02</span><h3>Первичная консультация</h3><p>Разбираем процесс и точки автоматизации</p></div>
+                        <div class="process-step" data-reveal data-delay="2"><span class="num">03</span><h3>Архитектура</h3><p>Сценарии, интеграции, данные</p></div>
+                        <div class="process-step" data-reveal data-delay="3"><span class="num">04</span><h3>Договор</h3><p>Прозрачные условия и объём работ</p></div>
+                        <div class="process-step" data-reveal data-delay="4"><span class="num">05</span><h3>Сроки</h3><p>Этапы и контрольные точки</p></div>
+                        <div class="process-step" data-reveal data-delay="5"><span class="num">06</span><h3>Техподдержка</h3><p>После запуска — сопровождение</p></div>
+                    </div>
+                </div>
+                <aside class="flow-price" data-reveal data-delay="2">
+                    <p class="flow-price-value"><span class="flow-price-label">от</span>30&nbsp;000&nbsp;₽</p>
+                    <p class="flow-price-note">Старт зависит от задачи и объёма.</p>
+                </aside>
+            </div>
+        </section>
 
         <!-- CASES -->
         <section id="cases" class="section visible">
-            <h2 class="flow-section-title" data-reveal>Как это выглядит<br>в работе</h2>
+            <h2 class="flow-section-title" data-reveal>Как это выглядит</h2>
             <div class="flow-cases">
                 <a class="flow-case" href="/cases/ai-assistant-business/" data-reveal data-delay="1">
                     <span class="badge">01 · кейс</span>
@@ -181,30 +202,6 @@
                     </div>
                     <span class="go">Смотреть кейс ↗</span>
                 </a>
-            </div>
-        </section>
-
-        <!-- PROCESS · проводка -->
-        <section id="process" class="section visible process">
-            <h2 class="flow-section-title" data-reveal>Как работаю</h2>
-            <div class="flow-split">
-                <div class="process-stage">
-                    <div class="process-track" id="processTrack">
-                        <div class="process-step" data-reveal><span class="num">01</span><h3>Составляем ТЗ</h3><p>Фиксируем задачу, границы и результат</p></div>
-                        <div class="process-step" data-reveal data-delay="1"><span class="num">02</span><h3>Первичная консультация</h3><p>Разбираем процесс и точки автоматизации</p></div>
-                        <div class="process-step" data-reveal data-delay="2"><span class="num">03</span><h3>Архитектура</h3><p>Сценарии, интеграции, данные</p></div>
-                        <div class="process-step" data-reveal data-delay="3"><span class="num">04</span><h3>Договор</h3><p>Прозрачные условия и объём работ</p></div>
-                        <div class="process-step" data-reveal data-delay="4"><span class="num">05</span><h3>Сроки</h3><p>Этапы и контрольные точки</p></div>
-                        <div class="process-step" data-reveal data-delay="5"><span class="num">06</span><h3>Техподдержка</h3><p>После запуска — сопровождение</p></div>
-                    </div>
-                </div>
-                <aside class="flow-price" data-reveal data-delay="2">
-                    <div class="from"><span>от</span> 35 000 ₽</div>
-                    <p>Старт зависит от задачи и объёма.</p>
-                    <div class="cta-set is-on" data-cta-price="a">
-                        <a href="#contact" class="primary-btn">Обсудить похожий проект</a>
-                    </div>
-                </aside>
             </div>
         </section>
 
@@ -260,9 +257,9 @@
     <script src="../../js/config.js" defer></script>
     <script src="../../js/analytics.js" defer></script>
     <script src="../../js/leads.js?v=hud3" defer></script>
-    <script src="../../js/motion.js?v=flow-1" defer></script>
+    <script src="../../js/motion.js?v=flow-2" defer></script>
     <script src="../../js/service-page.js?v=flow-1" defer></script>
     <script src="../../js/main.js?v=flow-1" defer></script>
-    <script src="../../js/ai-assistants-flow.js?v=flow-1" defer></script>
+    <script src="../../js/ai-assistants-flow.js?v=flow-4" defer></script>
 </body>
 </html>

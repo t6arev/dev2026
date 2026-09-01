@@ -1,10 +1,6 @@
 (function () {
     'use strict';
 
-    function pageY() {
-        return window.scrollY || document.documentElement.scrollTop || 0;
-    }
-
     function initVerbRotation() {
         var verb = document.getElementById('flowVerb');
         if (!verb) return;
@@ -19,39 +15,53 @@
     function initBlackTheme() {
         if (!document.body.classList.contains('flow-page')) return;
 
-        var directions = document.getElementById('directions');
-        var themeLock = document.getElementById('themeLock');
-        var themeLatched = false;
-        var scrollTick = 0;
+        var trigger = document.getElementById('themeLock') || document.getElementById('directions');
+        if (!trigger) return;
 
-        function setThemeActive(on) {
-            document.body.classList.toggle('flow-theme-black', !!on);
+        var isBlack = false;
+
+        function setTheme(on) {
+            var next = !!on;
+            if (isBlack === next) return;
+            isBlack = next;
+            document.body.classList.toggle('flow-theme-black', next);
         }
 
-        function updateThemeFromScroll() {
-            var lockEl = themeLock || directions;
-            if (!lockEl) {
-                setThemeActive(true);
-                return;
+        if ('IntersectionObserver' in window) {
+            var lineRatio = 0.48;
+
+            function updateFromGeometry() {
+                var rect = trigger.getBoundingClientRect();
+                setTheme(rect.top < window.innerHeight * lineRatio);
             }
-            var y = pageY();
-            var lockTop = lockEl.offsetTop;
-            var lockAt = Math.max(0, lockTop - window.innerHeight * 0.55);
-            var unlockAt = Math.max(0, (directions ? directions.offsetTop : lockTop) - window.innerHeight * 0.15);
 
-            if (!themeLatched && y >= lockAt) themeLatched = true;
-            if (themeLatched && y <= unlockAt) themeLatched = false;
+            var observer = new IntersectionObserver(function () {
+                updateFromGeometry();
+            }, {
+                root: null,
+                threshold: [0, 0.01, 0.25, 0.5, 0.75, 1]
+            });
 
-            setThemeActive(themeLatched);
+            observer.observe(trigger);
+            window.addEventListener('scroll', updateFromGeometry, { passive: true });
+            window.addEventListener('resize', updateFromGeometry, { passive: true });
+            updateFromGeometry();
+            return;
         }
 
-        window.addEventListener('scroll', function () {
-            if (scrollTick) return;
-            scrollTick = requestAnimationFrame(function () {
-                scrollTick = 0;
-                updateThemeFromScroll();
-            });
-        }, { passive: true });
+        /* Fallback без IO */
+        var latched = false;
+        function updateThemeFromScroll() {
+            var y = window.scrollY || document.documentElement.scrollTop || 0;
+            var lockTop = trigger.offsetTop;
+            var lockAt = Math.max(0, lockTop - window.innerHeight * 0.52);
+            var unlockAt = Math.max(0, lockTop - window.innerHeight * 0.2);
+            if (!latched && y >= lockAt) latched = true;
+            if (latched && y <= unlockAt) latched = false;
+            setTheme(latched);
+        }
+
+        window.addEventListener('scroll', updateThemeFromScroll, { passive: true });
         window.addEventListener('resize', updateThemeFromScroll, { passive: true });
         updateThemeFromScroll();
     }
