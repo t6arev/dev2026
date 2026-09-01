@@ -271,11 +271,13 @@
         }
     
 
-/* Production: HUD CTA by default */
+/* Production: case-style CTA (primary + secondary) */
 .flow-page .case-hero-actions.cta-set { display: none !important; }
-.flow-page .case-hero-actions.cta-set[data-cta="b"] { display: flex !important; }
+.flow-page .case-hero-actions.cta-set[data-cta="a"],
+.flow-page .case-hero-actions.cta-set.is-on { display: flex !important; }
 .flow-page .flow-price .cta-set { display: none !important; }
-.flow-page .flow-price .cta-set[data-cta-price="b"] { display: flex !important; }
+.flow-page .flow-price .cta-set[data-cta-price="a"],
+.flow-page .flow-price .cta-set.is-on { display: flex !important; }
 .flow-page .container { position: relative; z-index: 2; }
 
 /* Black theme + neon */
@@ -388,6 +390,9 @@ body.flow-page.flow-theme-black .theme-hint { opacity: 1; }
     .flow-case:hover { transform: none; }
     .hud-btn { width: 100%; justify-content: center; }
     .case-hero-actions { flex-direction: column; align-items: stretch; }
+    .case-hero-actions .primary-btn,
+    .case-hero-actions .secondary-btn { width: 100%; justify-content: center; }
+    .flow-price .primary-btn { width: 100%; justify-content: center; }
     body.flow-page.flow-theme-black .f-hud .ch.active,
     body.flow-page.flow-theme-black .f-hud .submit {
         box-shadow: 0 0 0 1px rgba(125, 211, 252, .55);
