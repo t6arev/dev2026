@@ -4,12 +4,33 @@
     function initVerbRotation() {
         var verb = document.getElementById('flowVerb');
         if (!verb) return;
-        var words = ['консультирует', 'следит за клиентами', 'отвечает', 'создаёт КП', 'анализирует'];
+
+        var words = ['консультирует', 'отвечает', 'создаёт КП', 'анализирует'];
         var i = 0;
+        var swapping = false;
+
         setInterval(function () {
+            if (swapping) return;
+            swapping = true;
             i = (i + 1) % words.length;
-            verb.textContent = words[i];
-        }, 1800);
+
+            verb.style.opacity = '0';
+            window.setTimeout(function () {
+                verb.textContent = words[i];
+                verb.style.opacity = '1';
+                swapping = false;
+            }, 260);
+        }, 2200);
+    }
+
+    function initCollageLightbox() {
+        document.querySelectorAll('.case-collage [data-open-image]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var src = btn.getAttribute('data-open-image');
+                if (!src || typeof openLightbox !== 'function') return;
+                openLightbox(src);
+            });
+        });
     }
 
     function initBlackTheme() {
@@ -49,7 +70,6 @@
             return;
         }
 
-        /* Fallback без IO */
         var latched = false;
         function updateThemeFromScroll() {
             var y = window.scrollY || document.documentElement.scrollTop || 0;
@@ -87,6 +107,7 @@
 
     function boot() {
         initVerbRotation();
+        initCollageLightbox();
         initBlackTheme();
         initProcessTrack();
     }

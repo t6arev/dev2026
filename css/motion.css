@@ -2456,6 +2456,7 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    align-items: center;
     border: 1px solid rgba(var(--neon-blue), 0.22);
     border-radius: 24px;
     background: linear-gradient(145deg, rgba(8, 12, 22, 0.92), rgba(10, 14, 26, 0.88));
@@ -2496,8 +2497,10 @@
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
+    padding: clamp(22px, 3vw, 28px);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+    box-sizing: border-box;
 }
 
 .motion.case-page .quiz-input {

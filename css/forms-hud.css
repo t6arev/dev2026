@@ -13,14 +13,17 @@
 
 .f-hud {
     position: relative;
-    padding: 0;
     text-align: left;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+}
+
+.f-hud:not(.case-contact-form) {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .f-hud .field {
@@ -207,8 +210,54 @@
 }
 
 /* Case page two-column contact */
+.case-contact-inner {
+    align-items: center;
+}
+
+.case-contact-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
 .case-contact-form.f-hud {
     width: 100%;
+    max-width: 100%;
+    align-self: center;
+    display: grid;
+    gap: 2px;
+    padding: clamp(22px, 3vw, 28px);
+    border-radius: 18px;
+    background: rgba(8, 12, 22, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+}
+
+.case-contact-form.f-hud .field {
+    margin-bottom: 14px;
+}
+
+.case-contact-form.f-hud .field:last-of-type {
+    margin-bottom: 12px;
+}
+
+.case-contact-form.f-hud .consent-wrap {
+    margin: 4px 0 10px;
+}
+
+.case-contact-form.f-hud .submit {
+    margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+    .case-contact-inner {
+        align-items: stretch;
+    }
+
+    .case-contact-form.f-hud {
+        margin-top: 4px;
+    }
 }
 
 @media (max-width: 640px) {

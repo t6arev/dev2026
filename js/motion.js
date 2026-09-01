@@ -29,11 +29,6 @@
         var bar = document.querySelector('.scroll-progress');
         if (bar) bar.style.setProperty('--sp', scrollProgress.toFixed(4));
 
-        /* flow-page: фиксируем фон, иначе brightness/filter даёт белые вспышки */
-        if (document.body.classList.contains('flow-page')) {
-            return;
-        }
-
         document.body.style.setProperty('--scroll-soft', scrollProgress.toFixed(4));
 
         updateHud();
@@ -64,7 +59,7 @@
     }
 
     function updateAmbientBreathe() {
-        if (prefersReduced || document.body.classList.contains('flow-page')) return;
+        if (prefersReduced) return;
         var t = performance.now() * 0.00032;
         var breathe = 0.5 + 0.5 * Math.sin(t);
         document.body.style.setProperty('--bg-breathe', breathe.toFixed(4));

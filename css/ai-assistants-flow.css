@@ -8,15 +8,25 @@
 
         .flow-page .section { padding-top: 56px; padding-bottom: 56px; }
 
-        /* Verb: цвет + не обрезается */
+        /* Verb: без сдвига верстки при смене слова */
         .case-hero h1 .verb-slot {
-            display: block;
+            display: grid;
             margin-top: 0.08em;
             min-height: 1.15em;
         }
+        .case-hero h1 .verb-slot .verb-sizer {
+            grid-area: 1 / 1;
+            visibility: hidden;
+            pointer-events: none;
+            user-select: none;
+        }
+        .case-hero h1 .verb-slot .verb:not(.verb-sizer) {
+            grid-area: 1 / 1;
+            transition: opacity .28s ease;
+        }
         .case-hero h1 .verb {
             color: var(--verb) !important;
-            white-space: normal;
+            white-space: nowrap;
             font-weight: inherit;
         }
 
@@ -250,38 +260,42 @@
             max-width: 42ch;
         }
         .flow-price {
-            padding: 18px 0 4px;
-            margin-top: 12px;
+            width: 100%;
+            margin-top: 36px;
+            padding: 28px 0 8px;
             border-top: 1px solid rgba(255,255,255,.12);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
         }
         .flow-price-value {
             margin: 0;
             color: #fff;
             font-family: var(--font-display, Unbounded, sans-serif);
-            font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+            font-size: clamp(2.25rem, 6.5vw, 3.5rem);
             font-weight: 700;
             letter-spacing: -.04em;
-            line-height: 1.15;
+            line-height: 1.05;
         }
         .flow-price-label {
             display: block;
-            margin-bottom: 6px;
-            color: rgba(255, 255, 255, .72);
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, .78);
             font-family: var(--mono);
-            font-size: .72rem;
+            font-size: clamp(.78rem, 1.8vw, .92rem);
             font-weight: 500;
-            letter-spacing: .14em;
+            letter-spacing: .16em;
             text-transform: uppercase;
         }
         .flow-price-note {
             margin: 0;
             color: var(--muted);
             font-family: var(--copy);
-            font-size: .88rem;
+            font-size: .92rem;
             line-height: 1.5;
+            max-width: 36ch;
         }
         .flow-split {
             display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: start;
@@ -324,18 +338,11 @@ body.flow-page {
 }
 
 body.flow-page .background-container {
-    filter: none !important;
-    transform: none !important;
     transition: opacity 0.55s ease !important;
-    background: linear-gradient(160deg, #030508 0%, #0a1020 40%, #0d0820 100%) !important;
 }
 
 body.flow-page .background-container .blob {
     transition: opacity 0.55s ease !important;
-}
-
-body.flow-page .background-container::after {
-    display: none !important;
 }
 
 body.flow-page .texture-overlay {
@@ -347,7 +354,7 @@ body.flow-page.flow-theme-black .flow-page-underlay {
 }
 
 body.flow-page.flow-theme-black .background-container {
-    opacity: 0.06 !important;
+    opacity: 0.28 !important;
 }
 
 body.flow-page.flow-theme-black .texture-overlay {
@@ -477,8 +484,8 @@ body.flow-page.flow-theme-black .flow-contact h2 {
     .case-hero-actions { flex-direction: column; align-items: stretch; }
     .case-hero-actions .primary-btn,
     .case-hero-actions .secondary-btn { width: 100%; justify-content: center; }
-    .flow-price { margin-top: 20px; padding-top: 20px; gap: 10px; }
-    .flow-price-value { font-size: clamp(1.35rem, 5.5vw, 1.65rem); }
+    .flow-price { margin-top: 28px; padding-top: 24px; gap: 12px; }
+    .flow-price-value { font-size: clamp(2rem, 10vw, 2.75rem); }
     body.flow-page.flow-theme-black .f-hud .ch.active,
     body.flow-page.flow-theme-black .f-hud .submit {
         box-shadow: 0 0 0 1px rgba(125, 211, 252, .55);
