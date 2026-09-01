@@ -340,14 +340,17 @@ body.flow-page.flow-theme-black .theme-hint { opacity: 1; }
     min-height: min(72vh, 680px);
     padding-top: 72px;
     padding-bottom: 72px;
+    scroll-margin-top: 88px;
 }
 .flow-contact {
     display: grid;
     grid-template-columns: 1fr;
     gap: 18px;
     width: min(460px, 100%);
+    max-width: 100%;
     margin: 0 auto;
     text-align: left;
+    box-sizing: border-box;
 }
 .flow-contact-main { display: grid; gap: 20px; }
 .flow-contact h2 {
@@ -371,15 +374,22 @@ body.flow-page.flow-theme-black .theme-hint { opacity: 1; }
 
 @media (max-width: 900px) {
     .flow-hud-grid, .flow-cases, .flow-split { grid-template-columns: 1fr; }
-    #contact.section { min-height: auto; padding-top: 48px; padding-bottom: 48px; }
-    .flow-contact { width: 100%; }
+    #contact.section { min-height: auto; padding-top: 56px; padding-bottom: 48px; }
+    .flow-contact { width: 100%; padding: 0 2px; }
     .flow-hud-card p { font-size: 1rem; }
 }
 @media (max-width: 640px) {
     .flow-page .section { padding-top: 40px; padding-bottom: 40px; }
+    .flow-page .container { overflow-x: clip; }
+    body.flow-page { overflow-x: clip; }
     .flow-section-title { font-size: clamp(1.35rem, 6vw, 1.8rem); }
+    .flow-contact h2 { font-size: clamp(1.35rem, 6.5vw, 1.75rem); padding-top: 4px; }
     .flow-slide:hover, .flow-slide:focus-within { transform: none; }
     .flow-case:hover { transform: none; }
     .hud-btn { width: 100%; justify-content: center; }
     .case-hero-actions { flex-direction: column; align-items: stretch; }
+    body.flow-page.flow-theme-black .f-hud .ch.active,
+    body.flow-page.flow-theme-black .f-hud .submit {
+        box-shadow: 0 0 0 1px rgba(125, 211, 252, .55);
+    }
 }

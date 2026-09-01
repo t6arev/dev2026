@@ -18,14 +18,21 @@
     background: transparent;
     border: 0;
     box-shadow: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .f-hud .field {
     margin-bottom: 16px;
+    width: 100%;
+    min-width: 0;
 }
 
 .f-hud input:not([type="checkbox"]):not([type="hidden"]) {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     min-height: 46px;
     padding: 12px 0;
     border: 0;
@@ -52,13 +59,17 @@
 
 .f-hud .channels {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     margin-bottom: 6px;
+    width: 100%;
+    min-width: 0;
 }
 
 .f-hud .ch {
     min-height: 42px;
+    min-width: 0;
+    padding: 0 8px;
     border: 1px solid rgba(186, 214, 255, .32);
     background: rgba(255, 255, 255, .03);
     color: #e2ebf7;
@@ -103,10 +114,24 @@
 
 .consent-wrap {
     margin: 12px 0 16px;
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+}
+
+.f-hud .ui-a-check {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .f-hud .ui-a-check .txt {
     color: #d5e3f5 !important;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .f-hud .ui-a-check .txt a {
@@ -193,8 +218,18 @@
 
     .f-hud .ch {
         min-height: 40px;
-        font-size: .76rem;
+        font-size: clamp(.68rem, 2.9vw, .76rem);
         padding: 0 4px;
+        letter-spacing: -.01em;
+    }
+
+    /* Неон не раздувает ширину на узком экране */
+    .f-hud .ch.active {
+        box-shadow: inset 0 0 0 1px rgba(125, 211, 252, .55);
+    }
+
+    .f-hud .submit {
+        box-shadow: 0 0 0 1px rgba(125, 211, 252, .35);
     }
 
     .f-hud .ui-a-check .txt {
