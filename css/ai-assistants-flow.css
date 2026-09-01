@@ -25,9 +25,22 @@
             transition: opacity .28s ease;
         }
         .case-hero h1 .verb {
-            color: var(--verb) !important;
             white-space: nowrap;
             font-weight: inherit;
+        }
+        @media (min-width: 901px) {
+            .flow-page .case-hero h1 .verb {
+                background: linear-gradient(120deg, #e0f2fe 0%, #7dd3fc 45%, #569df3 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent !important;
+                filter: drop-shadow(0 0 18px rgba(86, 157, 243, .35));
+            }
+        }
+        @media (max-width: 900px) {
+            .flow-page .case-hero h1 .verb {
+                color: var(--verb) !important;
+            }
         }
 
         /* —— CTA variants —— */
@@ -468,6 +481,8 @@ body.flow-page.flow-theme-black .flow-contact h2 {
 
 @media (max-width: 900px) {
     .flow-hud-grid, .flow-cases, .flow-split { grid-template-columns: 1fr; }
+    .flow-page .case-hero .case-collage { display: none !important; }
+    .flow-page .case-hero { padding-bottom: 28px; min-height: 0; }
     #contact.section { min-height: auto; padding-top: 56px; padding-bottom: 48px; }
     .flow-contact { width: 100%; padding: 0 2px; }
     .flow-hud-card p { font-size: 1rem; }
