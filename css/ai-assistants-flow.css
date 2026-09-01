@@ -250,15 +250,40 @@
             max-width: 42ch;
         }
         .flow-price {
-            padding: 8px 0 0;
+            padding: 18px 0 4px;
+            margin-top: 12px;
             border-top: 1px solid rgba(255,255,255,.12);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
         .flow-price .from {
-            margin: 8px 0 10px; font-family: var(--font-display, Unbounded, sans-serif);
-            font-size: clamp(2rem,4vw,3rem); letter-spacing: -.08em;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-family: var(--font-display, Unbounded, sans-serif);
+            font-size: clamp(1.25rem, 2.6vw, 1.65rem);
+            letter-spacing: -.05em;
+            line-height: 1.1;
+            color: #eef4ff;
         }
-        .flow-price .from span { color: #c9e1ff; font-size: .55em; }
-        .flow-price p { margin: 0 0 14px; color: var(--muted); font-family: var(--copy); font-size: .9rem; line-height: 1.45; }
+        .flow-price .from span {
+            color: #93c5fd;
+            font-size: .72rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            font-family: var(--mono);
+            font-weight: 500;
+        }
+        .flow-price p {
+            margin: 0;
+            color: var(--muted);
+            font-family: var(--copy);
+            font-size: .88rem;
+            line-height: 1.5;
+        }
+        .flow-price .cta-set { margin-top: 2px; }
         .flow-split {
             display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: start;
         }
@@ -279,6 +304,7 @@
 .flow-page .flow-price .cta-set[data-cta-price="a"],
 .flow-page .flow-price .cta-set.is-on { display: flex !important; }
 .flow-page .container { position: relative; z-index: 2; }
+.flow-page .float-widget { display: none !important; }
 
 /* Black theme + neon */
 body.flow-page {
@@ -293,17 +319,44 @@ body.flow-page.flow-theme-black {
     background-color: #000 !important;
 }
 body.flow-page.flow-theme-black .background-container { opacity: 0; }
-body.flow-page.flow-theme-black .texture-overlay { opacity: .08; }
+body.flow-page.flow-theme-black .texture-overlay { opacity: .06; }
+
+/* Усиленный неон в чёрной зоне */
 body.flow-page.flow-theme-black .primary-btn,
 body.flow-page.flow-theme-black .cta-button,
-body.flow-page.flow-theme-black .hud-btn--pri,
 body.flow-page.flow-theme-black .f-hud .submit,
 body.flow-page.flow-theme-black .f-hud .ch.active {
     box-shadow:
-        0 0 0 1px rgba(125,211,252,.65),
-        0 0 18px rgba(86,157,243,.7),
-        0 0 42px rgba(56,140,255,.65),
-        0 0 72px rgba(56,140,255,.35);
+        0 0 0 1px rgba(147, 197, 253, .85),
+        0 0 14px rgba(86, 157, 243, .95),
+        0 0 32px rgba(56, 140, 255, .75),
+        0 0 64px rgba(37, 99, 235, .45);
+}
+body.flow-page.flow-theme-black .secondary-btn {
+    border-color: rgba(125, 211, 252, .55) !important;
+    color: #e8f4ff !important;
+    box-shadow:
+        0 0 0 1px rgba(125, 211, 252, .35),
+        0 0 18px rgba(86, 157, 243, .35);
+}
+body.flow-page.flow-theme-black .flow-section-title {
+    text-shadow: 0 0 28px rgba(86, 157, 243, .35);
+}
+body.flow-page.flow-theme-black .flow-hud-card {
+    border-color: rgba(125, 211, 252, .35);
+    box-shadow: 0 0 24px rgba(86, 157, 243, .12);
+}
+body.flow-page.flow-theme-black .flow-hud-card::before,
+body.flow-page.flow-theme-black .flow-hud-card::after {
+    border-color: rgba(125, 211, 252, .95);
+    box-shadow: 0 0 12px rgba(86, 157, 243, .65);
+}
+body.flow-page.flow-theme-black .flow-case .badge,
+body.flow-page.flow-theme-black .flow-case .go {
+    text-shadow: 0 0 16px rgba(125, 211, 252, .5);
+}
+body.flow-page.flow-theme-black .process-track::after {
+    box-shadow: 0 0 32px rgba(102, 173, 255, .75);
 }
 body.flow-page.flow-theme-black .f-hud input:not([type="checkbox"]):not([type="hidden"]) {
     border-bottom-color: rgba(125,211,252,.55);
@@ -317,22 +370,21 @@ body.flow-page.flow-theme-black .f-hud .submit {
     background: rgba(86,157,243,.28);
 }
 body.flow-page.flow-theme-black .process-step.is-in::before {
-    box-shadow: 0 0 28px rgba(125,211,252,1);
+    box-shadow: 0 0 20px rgba(125, 211, 252, 1), 0 0 40px rgba(86, 157, 243, .65);
+}
+body.flow-page.flow-theme-black .process-step.is-in h3 {
+    color: #f0f7ff;
+    text-shadow: 0 0 18px rgba(125, 211, 252, .45);
 }
 body.flow-page.flow-theme-black .flow-case:hover::after {
-    box-shadow: 0 0 22px rgba(86,157,243,.55);
+    box-shadow: 0 0 28px rgba(86, 157, 243, .85);
+}
+body.flow-page.flow-theme-black .flow-contact h2 {
+    text-shadow: 0 0 32px rgba(86, 157, 243, .4);
 }
 .theme-hint {
-    margin: 0 0 10px;
-    font-family: var(--mono);
-    font-size: .68rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: #7dd3fc;
-    opacity: 0;
-    transition: opacity .45s ease;
+    display: none;
 }
-body.flow-page.flow-theme-black .theme-hint { opacity: 1; }
 
 /* Contact section layout */
 #contact.section {
@@ -392,6 +444,8 @@ body.flow-page.flow-theme-black .theme-hint { opacity: 1; }
     .case-hero-actions { flex-direction: column; align-items: stretch; }
     .case-hero-actions .primary-btn,
     .case-hero-actions .secondary-btn { width: 100%; justify-content: center; }
+    .flow-price { margin-top: 20px; padding-top: 20px; gap: 12px; }
+    .flow-price .from { font-size: clamp(1.15rem, 5vw, 1.45rem); }
     .flow-price .primary-btn { width: 100%; justify-content: center; }
     body.flow-page.flow-theme-black .f-hud .ch.active,
     body.flow-page.flow-theme-black .f-hud .submit {

@@ -371,7 +371,20 @@ function showSuccessToast(message) {
     showSiteToast(finalMsg, 'success', 2000);
 }
 
+function shouldShowFloatWidget() {
+    const body = document.body;
+    if (!body) return true;
+    if (body.hasAttribute('data-no-float-widget')) return false;
+    if (body.classList.contains('flow-page')) return false;
+    return true;
+}
+
 function ensureFloatWidget() {
+    if (!shouldShowFloatWidget()) {
+        const existing = document.getElementById('floatWidget');
+        if (existing) existing.remove();
+        return;
+    }
     if (document.getElementById('floatWidget')) return;
     const username = getTelegramUsername();
     const widget = document.createElement('div');
@@ -427,6 +440,11 @@ function ensureFloatWidget() {
 }
 
 function initFloatWidget() {
+    if (!shouldShowFloatWidget()) {
+        const existing = document.getElementById('floatWidget');
+        if (existing) existing.remove();
+        return;
+    }
     ensureFloatWidget();
     const widget = document.getElementById('floatWidget');
     const panel = document.getElementById('floatPanel');
