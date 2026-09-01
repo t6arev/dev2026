@@ -122,30 +122,51 @@ function getContactPlaceholder(channel) {
 }
 
 function initContactChannel(formEl) {
-    const channelBtns = formEl.querySelectorAll('[data-channel]');
+    const channelBtns = formEl.querySelectorAll('.channel-btn[data-channel], .channel-selector [data-channel], .ch[data-channel]');
     const contactWrap = formEl.querySelector('.contact-field-wrap');
     const contactInput = formEl.querySelector('.contact-value-input');
     const channelHidden = formEl.querySelector('input[name="channel"]');
 
     if (!channelBtns.length || !contactInput) return;
+    if (formEl.dataset.channelInited === '1') return;
+    formEl.dataset.channelInited = '1';
 
     function setChannel(channel, btn, shouldFocus = true) {
-        channelBtns.forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
+        channelBtns.forEach((b) => {
+            b.classList.toggle('active', b === btn);
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
         if (channelHidden) channelHidden.value = channel;
         contactInput.placeholder = getContactPlaceholder(channel);
-        contactInput.type = channel === 'email' ? 'email' : (channel === 'phone' ? 'tel' : 'text');
+        // Не меняем type в том же жесте клика — на мобильных ломает фокус с 1-го раза.
+        // inputmode достаточно для клавиатуры телефона/email.
+        contactInput.removeAttribute('type');
+        contactInput.setAttribute('type', 'text');
+        if (channel === 'email') contactInput.setAttribute('inputmode', 'email');
+        else if (channel === 'phone') contactInput.setAttribute('inputmode', 'tel');
+        else contactInput.setAttribute('inputmode', 'text');
         contactInput.name = 'contact';
-        contactWrap.classList.add('visible');
-        if (shouldFocus) contactInput.focus();
+        if (contactWrap) contactWrap.classList.add('visible');
+        if (shouldFocus) {
+            // Фокус после отрисовки active/placeholder
+            requestAnimationFrame(() => {
+                contactInput.focus({ preventScroll: false });
+                try { contactInput.select(); } catch (_) { /* ignore */ }
+            });
+        }
     }
 
-    channelBtns.forEach(btn => {
-        btn.addEventListener('click', () => setChannel(btn.dataset.channel, btn, true));
+    channelBtns.forEach((btn) => {
+        btn.setAttribute('type', 'button');
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setChannel(btn.dataset.channel, btn, true);
+        });
     });
 
-    const defaultBtn = formEl.querySelector('[data-channel="telegram"]');
-    if (defaultBtn) setChannel('telegram', defaultBtn, false);
+    const defaultBtn = formEl.querySelector('[data-channel="telegram"]') || channelBtns[0];
+    if (defaultBtn) setChannel(defaultBtn.dataset.channel || 'telegram', defaultBtn, false);
 }
 
 function showFormError(formEl, message) {
@@ -157,6 +178,119 @@ function showFormError(formEl, message) {
     }
     err.textContent = message;
     err.hidden = !message;
+}
+
+function resetHudChannel(formEl) {
+    const channels = formEl.querySelector('[data-channels]');
+    const channelHidden = formEl.querySelector('input[name="channel"]');
+    const contactInput = formEl.querySelector('.contact-value-input');
+    const def = formEl.querySelector('[data-channel="telegram"]');
+    if (def && channels) {
+        channels.querySelectorAll('.ch, .channel-btn').forEach((b) => {
+            b.classList.toggle('active', b === def);
+        });
+    }
+    if (channelHidden) channelHidden.value = 'telegram';
+    if (contactInput) contactInput.placeholder = getContactPlaceholder('telegram');
+}
+
+function initHudLeadForms() {
+    document.querySelectorAll('[data-lead-form]').forEach((form) => {
+        if (form.dataset.leadInited === '1') return;
+        form.dataset.leadInited = '1';
+        initContactChannel(form);
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            showFormError(this, '');
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalLabel = submitBtn ? submitBtn.textContent : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Отправка...';
+            }
+
+            const nameInput = this.querySelector('[name="name"]') || this.querySelector('[name="contactName"]');
+            const name = nameInput ? nameInput.value.trim() : '';
+            const channel = this.querySelector('input[name="channel"]')?.value || 'telegram';
+            const contact = this.querySelector('.contact-value-input')?.value.trim() || '';
+            const pdn = this.querySelector('[name="pdn"]');
+            const pageTitle = document.body.dataset.caseId && window.caseData?.[document.body.dataset.caseId]?.title;
+
+            if (!name || name.length < 2) {
+                showFormError(this, 'Укажите имя');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalLabel;
+                }
+                return;
+            }
+
+            if (pdn && !pdn.checked) {
+                showFormError(this, 'Подтвердите согласие на обработку персональных данных');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalLabel;
+                }
+                return;
+            }
+
+            const contactError = validateContact(channel, contact);
+            if (contactError) {
+                showFormError(this, contactError);
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalLabel;
+                }
+                return;
+            }
+
+            const source = this.dataset.leadSource
+                || (pageTitle ? `страница кейса «${pageTitle}»` : 'сайт');
+            const task = pageTitle ? `Интересует похожий проект: ${pageTitle}` : undefined;
+
+            try {
+                const payload = {
+                    source,
+                    name,
+                    channel,
+                    contact,
+                    website: this.querySelector('[name="website"]')?.value || ''
+                };
+                if (task) payload.task = task;
+
+                const leadResult = await submitLead(payload);
+                if (!leadResult?.fallback) {
+                    if (this.id === 'quizForm') trackLeadQuizSuccess();
+                    else if (this.id === 'callbackForm') trackLeadCallbackSuccess();
+                    else trackLeadSubmit();
+                }
+
+                if (this.closest('#cost-modal') && typeof window.closeModal === 'function') {
+                    window.closeModal();
+                }
+                const floatPanel = document.getElementById('floatPanel');
+                const floatToggle = document.getElementById('floatToggle');
+                if (this.id === 'callbackForm' && floatPanel && floatToggle) {
+                    floatPanel.classList.remove('open');
+                    floatToggle.classList.remove('open');
+                }
+
+                this.reset();
+                initContactChannel(this);
+                resetHudChannel(this);
+                showSuccessToast();
+            } catch (err) {
+                showFormError(this, err.message || 'Не удалось отправить заявку');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalLabel;
+                }
+            }
+        });
+    });
 }
 
 function showFormSuccess(container, html) {
@@ -258,20 +392,29 @@ function ensureFloatWidget() {
                 </button>
             </div>
             <div class="float-tab-content" id="floatTabCall">
-                <form id="callbackForm">
+                <form id="callbackForm" class="f-hud f-hud--float" data-lead-form data-lead-source="виджет «Заказать звонок»" novalidate>
                     <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-                    <input type="text" class="float-input" placeholder="Ваше имя" name="name" required>
-                    <p class="field-hint">Как связаться?</p>
-                    <div class="channel-selector channel-selector--compact">
-                        <button type="button" class="channel-btn" data-channel="telegram">ТГ</button>
-                        <button type="button" class="channel-btn" data-channel="phone">Тел.</button>
-                        <button type="button" class="channel-btn" data-channel="email">Почта</button>
+                    <div class="field">
+                        <input type="text" placeholder="Как к вам обращаться" name="name" required autocomplete="name">
                     </div>
-                    <input type="hidden" name="channel" value="telegram">
-                    <div class="contact-field-wrap visible">
-                        <input type="text" class="float-input contact-value-input" placeholder="@username" required>
+                    <div class="field">
+                        <div class="channels" data-channels role="group" aria-label="Куда написать">
+                            <button type="button" class="ch active" data-channel="telegram">Telegram</button>
+                            <button type="button" class="ch" data-channel="phone">Телефон</button>
+                            <button type="button" class="ch" data-channel="email">Почта</button>
+                        </div>
+                        <input type="hidden" name="channel" value="telegram">
                     </div>
-                    <button type="submit" class="float-submit">Отправить заявку</button>
+                    <div class="field">
+                        <input type="text" class="contact-value-input" name="contact" placeholder="@username или t.me/..." required>
+                    </div>
+                    <label class="ui-a-check consent-wrap">
+                        <input type="checkbox" name="pdn" required>
+                        <span class="mark">✓</span>
+                        <span class="txt">Ознакомлен(а) с <a href="/privacy-policy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a> и даю согласие на <a href="/privacy-policy.html" target="_blank" rel="noopener">обработку персональных данных</a></span>
+                    </label>
+                    <button type="submit" class="submit">Отправить заявку</button>
+                    <p class="form-error" hidden></p>
                 </form>
             </div>
         </div>
@@ -290,8 +433,9 @@ function initFloatWidget() {
     const toggle = document.getElementById('floatToggle');
     const callbackForm = document.getElementById('callbackForm');
 
-    if (!widget || !panel || !toggle || !callbackForm || callbackForm.dataset.inited === '1') return;
-    callbackForm.dataset.inited = '1';
+    if (!widget || !panel || !toggle || !callbackForm) return;
+    if (callbackForm.dataset.floatInited === '1') return;
+    callbackForm.dataset.floatInited = '1';
 
     toggle.addEventListener('click', () => {
         panel.classList.toggle('open');
@@ -317,60 +461,9 @@ function initFloatWidget() {
     });
 
     initContactChannel(callbackForm);
-
-    callbackForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        showFormError(this, '');
-
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalLabel = submitBtn ? submitBtn.textContent : '';
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправка...';
-        }
-
-        const name = this.querySelector('[name="name"]').value.trim();
-        const channel = this.querySelector('input[name="channel"]').value;
-        const contact = this.querySelector('.contact-value-input').value.trim();
-
-        if (!name || name.length < 2) {
-            showFormError(this, 'Укажите имя');
-            if (submitBtn) submitBtn.disabled = false;
-            return;
-        }
-
-        const contactError = validateContact(channel, contact);
-        if (contactError) {
-            showFormError(this, contactError);
-            if (submitBtn) submitBtn.disabled = false;
-            return;
-        }
-
-        try {
-            const leadResult = await submitLead({
-                source: 'виджет «Заказать звонок»',
-                name,
-                channel,
-                contact,
-                website: this.querySelector('[name="website"]')?.value || ''
-            });
-            if (!leadResult?.fallback) {
-                trackLeadCallbackSuccess();
-            }
-            showSuccessToast();
-            this.reset();
-            initContactChannel(this);
-            panel.classList.remove('open');
-            toggle.classList.remove('open');
-        } catch (err) {
-            showFormError(this, err.message || 'Не удалось отправить заявку');
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalLabel;
-            }
-        }
-    });
 }
 
-document.addEventListener('DOMContentLoaded', initFloatWidget);
+document.addEventListener('DOMContentLoaded', function () {
+    initFloatWidget();
+    initHudLeadForms();
+});

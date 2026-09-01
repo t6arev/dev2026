@@ -2676,9 +2676,10 @@
         }
 
         .contact-field-wrap.visible {
-            max-height: 120px;
+            max-height: 220px;
             opacity: 1;
             margin-bottom: 4px;
+            overflow: visible;
         }
 
         .form-error {

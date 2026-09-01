@@ -83,8 +83,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.css?v=redesign-8">
+        <link rel="stylesheet" href="../../css/main.css?v=redesign-8">
     <link rel="stylesheet" href="../../css/motion.css?v=redesign-8">
+    <link rel="stylesheet" href="../../css/ui-kit-a.css?v=a1">
+    <link rel="stylesheet" href="../../css/forms-hud.css?v=hud1">
     <noscript><div><img src="https://mc.yandex.ru/watch/106920579" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </head>
 
@@ -265,31 +267,31 @@
                     </ul>
                 </div>
 
-                <form id="caseContactForm" class="case-contact-form">
+                                <form id="caseContactForm" class="case-contact-form f-hud" data-lead-form data-lead-source="страница кейса" novalidate>
                     <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-                    <label class="field-label" for="caseTask">Ваша задача</label>
-                    <textarea id="caseTask" name="task" class="quiz-input" rows="4"
-                        placeholder="Нужна AI-платформа, ИИ-агенты, база знаний и голосовое взаимодействие…"></textarea>
-
-                    <label class="field-label" for="caseName">Имя</label>
-                    <input type="text" id="caseName" name="contactName" class="quiz-input" placeholder="Как к вам обращаться" required>
-
-                    <p class="field-hint">Предпочтительный канал</p>
-                    <div class="channel-selector">
-                        <button type="button" class="channel-btn" data-channel="telegram">Telegram</button>
-                        <button type="button" class="channel-btn" data-channel="phone">Телефон</button>
-                        <button type="button" class="channel-btn" data-channel="email">Почта</button>
+                    <div class="field">
+                        <label class="sr-only" for="caseName">Имя</label>
+                        <input type="text" id="caseName" name="name" placeholder="Как к вам обращаться" required autocomplete="name">
                     </div>
-                    <input type="hidden" name="channel" value="telegram">
-
-                    <div class="contact-field-wrap visible">
-                        <label class="field-label field-label--sm" for="caseContactValue">Контакт</label>
-                        <input type="text" id="caseContactValue" class="quiz-input contact-value-input"
-                            placeholder="@username или t.me/..." required>
+                    <div class="field">
+                        <div class="channels" data-channels role="group" aria-label="Куда написать">
+                            <button type="button" class="ch active" data-channel="telegram">Telegram</button>
+                            <button type="button" class="ch" data-channel="phone">Телефон</button>
+                            <button type="button" class="ch" data-channel="email">Почта</button>
+                        </div>
+                        <input type="hidden" name="channel" value="telegram">
                     </div>
-
-                    <button type="submit" class="primary-btn case-contact-submit">Отправить заявку</button>
+                    <div class="field">
+                        <label class="sr-only" for="caseContactValue">Контакт</label>
+                        <input type="text" id="caseContactValue" class="contact-value-input" name="contact" placeholder="@username или t.me/..." required>
+                    </div>
+                    <label class="ui-a-check consent-wrap">
+                        <input type="checkbox" name="pdn" required>
+                        <span class="mark">✓</span>
+                        <span class="txt">Ознакомлен(а) с <a href="/privacy-policy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a> и даю согласие на <a href="/privacy-policy.html" target="_blank" rel="noopener">обработку персональных данных</a></span>
+                    </label>
+                    <button type="submit" class="submit">Отправить заявку</button>
+                    <p class="form-error" hidden></p>
                 </form>
             </div>
         </section>
@@ -318,7 +320,7 @@
     </div>
 
     <script src="../../js/config.js"></script>
-    <script src="../../js/leads.js?v=redesign-7"></script>
+    <script src="../../js/leads.js?v=hud1"></script>
     <script src="../../js/cases-data.js"></script>
     <script src="../../js/case-collage.js?v=redesign-8"></script>
     <script src="../../js/analytics.js"></script>

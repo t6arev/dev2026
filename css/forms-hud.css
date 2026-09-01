@@ -1,0 +1,204 @@
+/* F2 HUD lead form — shared across site */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.f-hud {
+    position: relative;
+    padding: 0;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.f-hud .field {
+    margin-bottom: 16px;
+}
+
+.f-hud input:not([type="checkbox"]):not([type="hidden"]) {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid rgba(186, 214, 255, .42);
+    border-radius: 0;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 1rem;
+    outline: none;
+    caret-color: #7dd3fc;
+    transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.f-hud input::placeholder {
+    color: #8fa6c0;
+    opacity: 1;
+}
+
+.f-hud input:not([type="checkbox"]):not([type="hidden"]):focus {
+    border-bottom-color: #7dd3fc;
+    box-shadow: 0 10px 28px -14px rgba(86, 157, 243, .95);
+}
+
+.f-hud .channels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.f-hud .ch {
+    min-height: 42px;
+    border: 1px solid rgba(186, 214, 255, .32);
+    background: rgba(255, 255, 255, .03);
+    color: #e2ebf7;
+    font-family: var(--font-ui, Onest, sans-serif);
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.f-hud .ch.active {
+    border-color: #7dd3fc;
+    color: #fff;
+    background: rgba(86, 157, 243, .18);
+    box-shadow: 0 0 0 1px rgba(125, 211, 252, .35), 0 0 22px rgba(86, 157, 243, .45);
+}
+
+.f-hud .submit {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    border: 1px solid #569df3;
+    background: rgba(86, 157, 243, .16);
+    color: #fff;
+    font-family: var(--font-ui, Onest, sans-serif);
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px rgba(125, 211, 252, .2), 0 0 28px rgba(86, 157, 243, .35);
+    transition: background .2s ease, box-shadow .35s ease, border-color .2s ease;
+}
+
+.f-hud .submit:hover {
+    background: rgba(86, 157, 243, .28);
+    box-shadow: 0 0 0 1px rgba(125, 211, 252, .45), 0 0 36px rgba(86, 157, 243, .55);
+}
+
+.f-hud .submit:disabled {
+    opacity: .65;
+    cursor: wait;
+}
+
+.consent-wrap {
+    margin: 12px 0 16px;
+}
+
+.f-hud .ui-a-check .txt {
+    color: #d5e3f5 !important;
+}
+
+.f-hud .ui-a-check .txt a {
+    color: #7dd3fc !important;
+}
+
+.f-hud .form-error {
+    margin: 10px 0 0;
+    color: #fca5a5;
+    font-size: .85rem;
+    line-height: 1.4;
+}
+
+.f-hud .form-success {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(86, 157, 243, .18);
+    color: #e8f2ff;
+    font-size: .88rem;
+    box-shadow: 0 0 24px rgba(86, 157, 243, .2);
+}
+
+.f-hud .form-success.show {
+    display: block;
+}
+
+/* Modal variant */
+.f-hud--modal .submit {
+    margin-top: 4px;
+}
+
+#cost-modal .modal-content:has(.f-hud) {
+    max-width: min(460px, 94vw);
+}
+
+#cost-modal .modal-header h3 {
+    margin-bottom: 6px;
+}
+
+#cost-modal .modal-subtitle {
+    margin-bottom: 18px;
+}
+
+/* Float widget compact */
+.f-hud--float .field {
+    margin-bottom: 12px;
+}
+
+.f-hud--float input:not([type="checkbox"]):not([type="hidden"]) {
+    min-height: 40px;
+    font-size: .92rem;
+}
+
+.f-hud--float .ch {
+    min-height: 36px;
+    font-size: .74rem;
+}
+
+.f-hud--float .consent-wrap {
+    margin: 8px 0 10px;
+}
+
+.f-hud--float .ui-a-check .txt {
+    font-size: .72rem;
+    line-height: 1.35;
+}
+
+.f-hud--float .submit {
+    min-height: 42px;
+    font-size: .88rem;
+}
+
+/* Case page two-column contact */
+.case-contact-form.f-hud {
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .f-hud .channels {
+        gap: 6px;
+    }
+
+    .f-hud .ch {
+        min-height: 40px;
+        font-size: .76rem;
+        padding: 0 4px;
+    }
+
+    .f-hud .ui-a-check .txt {
+        font-size: .78rem;
+        line-height: 1.35;
+    }
+}

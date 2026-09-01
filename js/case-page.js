@@ -53,7 +53,7 @@ function initCasePage() {
     document.querySelectorAll('.section').forEach((section) => observer.observe(section));
 
     const form = document.getElementById('caseContactForm');
-    if (form) {
+    if (form && !form.hasAttribute('data-lead-form')) {
         initContactChannel(form);
         const pageTitle = data.title || 'кейс';
         form.addEventListener('submit', async (e) => {

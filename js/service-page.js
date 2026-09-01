@@ -71,12 +71,14 @@
         var primaryBtn = cta.querySelector('.cta-actions .primary-btn');
         if (primaryBtn && primaryBtn.dataset.ctaBound !== '1') {
             primaryBtn.dataset.ctaBound = '1';
-            primaryBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (typeof window.openModal === 'function') {
-                    window.openModal();
-                }
-            });
+            if (!primaryBtn.getAttribute('onclick')) {
+                primaryBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (typeof window.openModal === 'function') {
+                        window.openModal();
+                    }
+                });
+            }
         }
     }
 
@@ -478,7 +480,10 @@
 
         var hero = service.hero || {};
         setText(document.getElementById('serviceHeroKicker'), hero.kicker);
-        setText(document.getElementById('serviceHeroTitle'), hero.title || service.title);
+        var heroTitleEl = document.getElementById('serviceHeroTitle');
+        if (heroTitleEl && heroTitleEl.getAttribute('data-keep-html') !== '1') {
+            setText(heroTitleEl, hero.title || service.title);
+        }
         setText(document.getElementById('serviceHeroLead'), hero.lead);
 
         var heroActions = document.querySelector('.service-hero-actions');
@@ -542,15 +547,20 @@
         );
 
         var problems = service.problems || {};
-        setSection(
-            'service-problems',
-            'serviceProblemsTitle',
-            'serviceProblemsBody',
-            problems.title || 'Какие задачи решает Telegram-бот',
-            renderProblemItems(problems.items, problems.title || 'Задачи'),
-            'serviceProblemsKicker',
-            problems.kicker
-        );
+        if (!problems.items || !problems.items.length) {
+            var problemsSection = document.getElementById('service-problems');
+            if (problemsSection) problemsSection.hidden = true;
+        } else {
+            setSection(
+                'service-problems',
+                'serviceProblemsTitle',
+                'serviceProblemsBody',
+                problems.title || 'Какие задачи решает Telegram-бот',
+                renderProblemItems(problems.items, problems.title || 'Задачи'),
+                'serviceProblemsKicker',
+                problems.kicker
+            );
+        }
 
         var tasks = service.tasks || {};
         setSection(

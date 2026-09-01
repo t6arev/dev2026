@@ -297,7 +297,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     initPortfolio();
-    initContactChannel(document.getElementById('quizForm'));
 });
 
 // Quiz modal
@@ -330,16 +329,11 @@ if (costModalEl) {
 }
 
 function quizNextStep(stepNum) {
-    if (stepNum === 2) {
-        const task = document.getElementById('taskInput').value.trim();
-        if (!task) { document.getElementById('taskInput').focus(); return; }
-    }
-    document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
-    document.getElementById('step' + stepNum).classList.add('active');
+    /* legacy noop — quiz replaced by f-hud single-step form */
 }
 
 const quizFormEl = document.getElementById('quizForm');
-if (quizFormEl) {
+if (quizFormEl && !quizFormEl.hasAttribute('data-lead-form')) {
     quizFormEl.addEventListener('submit', async function (e) {
         e.preventDefault();
         showFormError(this, '');
