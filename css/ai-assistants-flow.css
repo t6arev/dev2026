@@ -506,3 +506,24 @@ body.flow-page.flow-theme-black .flow-contact h2 {
         box-shadow: 0 0 0 1px rgba(125, 211, 252, .55);
     }
 }
+
+/* Telegram bots · фон без робота, hero как на AI-странице */
+body.flow-page--telegram.case-page .background-container {
+    background:
+        radial-gradient(90% 70% at 82% 22%, rgba(86, 157, 243, 0.16), transparent 55%),
+        radial-gradient(70% 55% at 12% 78%, rgba(125, 211, 252, 0.07), transparent 50%),
+        #05070c !important;
+}
+
+/* Cases · 2 крупных, остальные пары скрыты до автосмены */
+.flow-cases[data-cases-rotate] > .flow-case:not(.is-on) {
+    display: none;
+}
+.flow-cases[data-cases-rotate] > .flow-case.is-on {
+    display: block;
+    animation: flowCaseIn .55s cubic-bezier(.22,1,.36,1);
+}
+@keyframes flowCaseIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}

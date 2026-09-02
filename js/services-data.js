@@ -31,14 +31,14 @@
                 webglColor: [0.64, 0.84, 1.0]
             },
             seo: {
-                title: 'Разработка Telegram-ботов на заказ под ключ — dev2026',
-                description: 'Разрабатываю Telegram-ботов под ключ: чат-боты для бизнеса, CRM, оплата, подписки и автоматизация продаж и поддержки. Обсудим задачу и составлю MVP.',
-                keywords: 'разработка Telegram-ботов, Telegram-бот на заказ, заказать Telegram-бота, разработка чат-бота, бот для бизнеса, бот с CRM, бот с оплатой'
+                title: 'Разработка Telegram-ботов на заказ под ключ — от 10 000 ₽ | dev2026',
+                description: 'Разрабатываю Telegram-ботов на заказ под ключ: заявки, CRM, оплата, поддержка. Не конструктор — от 10 000 ₽. Обсудим задачу.',
+                keywords: 'разработка telegram бота, telegram бот на заказ, заказать telegram бота, разработка чат бота, бот для бизнеса под ключ'
             },
             hero: {
                 kicker: 'УСЛУГА',
                 title: 'Разработка Telegram-ботов',
-                lead: 'Разрабатываю Telegram-ботов для бизнеса и продуктовых идей: сценарии, интеграции, оплата и админка — под ключ.',
+                lead: 'Разрабатываю Telegram-ботов под ключ: заявки, поддержка, оплата и CRM — от 10 000 ₽.',
                 ctaPrimary: 'Обсудить проект',
                 ctaSecondary: 'Смотреть кейсы',
                 ctaSecondaryHref: '#service-cases'
@@ -134,7 +134,7 @@
             faq: [
                 {
                     q: "Сколько стоит разработка Telegram-бота?",
-                    a: "Оценка зависит от числа сценариев, CRM, оплаты, админки и того, нужен ли AI или Mini App. После разбора задачи даю состав MVP и предварительную вилку — без «прайса от» в отрыве от задачи."
+                    a: "Простой сценарий — от 10 000 ₽. С CRM, оплатой или продуктовой оболочкой считаем по задаче после разбора MVP."
                 },
                 {
                     q: "Можно заказать разработку под ключ?",
@@ -161,19 +161,19 @@
                 {
                     slug: "razrabotka-telegram-botov",
                     title: "Разработка Telegram-ботов под ключ",
-                    href: "/services/telegram-bots/#razrabotka-telegram-botov",
+                    href: "/services/telegram-bots/#process",
                     caseId: null
                 },
                 {
                     slug: "bot-dlya-biznesa",
                     title: "Telegram-бот для бизнеса",
-                    href: "/services/telegram-bots/#bot-dlya-biznesa",
+                    href: "/services/telegram-bots/#directions",
                     caseId: null
                 },
                 {
                     slug: "bot-kak-produkt",
                     title: "Бот как продукт и подписка",
-                    href: "/services/telegram-bots/#bot-kak-produkt",
+                    href: "/services/telegram-bots/#directions",
                     caseId: null
                 }
             ]
