@@ -260,6 +260,14 @@
 - Нужно: написать `/start` боту `@t6busdevbot`, иначе Telegram `chat not found`
 - Fallback формы на `@t6arev` остаётся включённым
 
+---
 
+## 2026-10-10 — диагностика форм / API
 
+- HTTPS `sslip.io:443`: TCP ок, TLS ClientHello режется снаружи; Node `:3001` OK
+- Причина «в личный TG»: `allowTelegramFallback` после падения API
+- VPS: prefix `snoviai.ru/dev2026-leads` → Node; формат «Заявочки»; xray/mtproto не трогали
+- Фронт: `apiUrl` → snoviai path, fallback off, cache `hud5`
+- Отчёт: `cur/reports/forms-api-diag-2026-10-10.md`
+- Осталось: deploy Pages + сменить root-пароль
 

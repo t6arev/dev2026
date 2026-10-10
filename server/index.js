@@ -10,6 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const LEADS_FILE = process.env.LEADS_FILE || path.join(__dirname, 'leads.jsonl');
+
+// Behind Caddy reverse proxy (needed for express-rate-limit + X-Forwarded-For).
+app.set('trust proxy', 1);
 
 app.use(cors());
 app.use(express.json({ limit: '32kb' }));
@@ -33,7 +37,8 @@ const limiter = rateLimit({
 });
 
 function formatLeadMessage(data) {
-    const lines = ['📋 Новая заявка с сайта', ''];
+    // Format matches chat «заявки» / topic «Заявочки»
+    const lines = ['Заявочки 📋 Новая заявка с сайта', ''];
     if (data.source) lines.push(`Источник: ${data.source}`);
     if (data.task) lines.push(`Задача: ${data.task}`);
     if (data.hasTz) lines.push(`ТЗ есть: ${data.hasTz}`);
@@ -109,6 +114,14 @@ const channelLabels = {
     email: 'Почта'
 };
 
+function persistLead(payload) {
+    const row = JSON.stringify({
+        at: new Date().toISOString(),
+        ...payload
+    }) + '\n';
+    fs.appendFileSync(LEADS_FILE, row, 'utf8');
+}
+
 app.post('/api/leads', limiter, async (req, res) => {
     if (!TOKEN || !CHAT_ID) {
         console.error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
@@ -134,13 +147,26 @@ app.post('/api/leads', limiter, async (req, res) => {
         contact: body.contact.trim()
     };
 
+    let telegramOk = false;
+    let telegramError = null;
     try {
         await sendTelegram(formatLeadMessage(payload));
-        return res.json({ ok: true });
+        telegramOk = true;
     } catch (err) {
-        console.error('Lead delivery failed:', err.message);
-        return res.status(502).json({ ok: false, error: 'Не удалось отправить заявку' });
+        telegramError = err.message;
+        console.error('Lead Telegram delivery failed:', telegramError);
     }
+
+    try {
+        persistLead({ ...payload, telegramOk, telegramError });
+    } catch (err) {
+        console.error('Lead file persist failed:', err.message);
+        if (!telegramOk) {
+            return res.status(502).json({ ok: false, error: 'Не удалось отправить заявку' });
+        }
+    }
+
+    return res.json({ ok: true, delivered: telegramOk });
 });
 
 app.listen(PORT, () => {

@@ -68,12 +68,21 @@ function trackLeadCallbackSuccess() {
     trackMetrikaGoal('lead_callback_success');
 }
 
+function resolveLeadApiUrl() {
+    const cfg = window.SITE_CONFIG || {};
+    const host = (window.location && window.location.hostname) || '';
+    const isLocal = /^localhost$/i.test(host) || /^127\.0\.0\.1$/i.test(host);
+    if (isLocal && cfg.apiUrlLocal) return cfg.apiUrlLocal;
+    return cfg.apiUrl;
+}
+
 async function submitLead(data) {
+    const apiUrl = resolveLeadApiUrl();
     const controller = new AbortController();
-    const timeoutMs = 12000;
+    const timeoutMs = 8000;
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
-        const response = await fetch(window.SITE_CONFIG.apiUrl, {
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -98,9 +107,9 @@ async function submitLead(data) {
             return { ok: true, fallback: 'telegram' };
         }
         if (err?.name === 'AbortError') {
-            throw new Error('Сервер долго не отвечает. Проверьте VPS и HTTPS endpoint формы.');
+            throw new Error('Сервер заявок не отвечает. Заявка не отправлена — попробуйте чуть позже.');
         }
-        throw new Error(`Не удалось отправить заявку. Проверьте endpoint: ${window.SITE_CONFIG.apiUrl}`);
+        throw new Error('Не удалось отправить заявку через бота. Попробуйте ещё раз через минуту.');
     } finally {
         clearTimeout(timeoutId);
     }
